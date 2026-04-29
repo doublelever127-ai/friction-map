@@ -1,0 +1,130 @@
+import {
+  countByDomain,
+  countByEmotion,
+  countByStage,
+  getLogsWithinDays,
+  getTopDomainStageEntry,
+  getTopEntries,
+  type TopFrictionEntry,
+} from "@/lib/frictionStats";
+import type { FrictionLog } from "@/types/friction";
+
+type WeeklyReportProps = {
+  logs: FrictionLog[];
+};
+
+type TopListProps = {
+  title: string;
+  entries: TopFrictionEntry<string>[];
+};
+
+function TopList({ title, entries }: TopListProps) {
+  return (
+    <div className="border-t border-slate-100 pt-4 dark:border-slate-800">
+      <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+        {title}
+      </h3>
+      <ol className="mt-3 grid gap-2">
+        {entries.map((entry, index) => (
+          <li
+            key={entry.label}
+            className="flex items-center justify-between gap-3 text-sm"
+          >
+            <span className="min-w-0 text-slate-700 dark:text-slate-300">
+              {index + 1}. {entry.label}
+            </span>
+            <span className="shrink-0 rounded-full bg-teal-50 px-2.5 py-1 text-xs font-semibold text-teal-800 dark:bg-teal-950 dark:text-teal-200">
+              {entry.count}회
+            </span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+export function WeeklyReport({ logs }: WeeklyReportProps) {
+  const weeklyLogs = getLogsWithinDays(logs, 7);
+
+  if (weeklyLogs.length === 0) {
+    return (
+      <section
+        aria-labelledby="weekly-report-heading"
+        className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-6"
+      >
+        <p className="text-sm font-medium text-teal-700 dark:text-teal-300">
+          주간 리포트
+        </p>
+        <h2
+          id="weekly-report-heading"
+          className="mt-1 text-2xl font-semibold text-slate-950 dark:text-slate-50"
+        >
+          이번 주의 마찰
+        </h2>
+        <p className="mt-4 text-sm leading-6 text-slate-600 dark:text-slate-400">
+          이번 주 기록이 아직 없습니다. 막힌 순간이 생기면 한 줄만
+          남겨보세요.
+        </p>
+      </section>
+    );
+  }
+
+  const topDomains = getTopEntries(countByDomain(weeklyLogs), 3);
+  const topStages = getTopEntries(countByStage(weeklyLogs), 3);
+  const topEmotions = getTopEntries(countByEmotion(weeklyLogs), 3);
+  const observation = getTopDomainStageEntry(weeklyLogs);
+
+  return (
+    <section
+      aria-labelledby="weekly-report-heading"
+      className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-6"
+    >
+      <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+        <div className="max-w-2xl">
+          <p className="text-sm font-medium text-teal-700 dark:text-teal-300">
+            주간 리포트
+          </p>
+          <h2
+            id="weekly-report-heading"
+            className="mt-1 text-2xl font-semibold text-slate-950 dark:text-slate-50"
+          >
+            이번 주의 마찰
+          </h2>
+          <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
+            리포트는 평가가 아니라 관찰해볼 패턴을 부드럽게 정리한
+            것입니다.
+          </p>
+        </div>
+
+        <div className="border-y border-teal-100 bg-teal-50 px-1 py-3 dark:border-teal-900 dark:bg-teal-950/60 lg:min-w-40">
+          <p className="text-sm font-medium text-teal-900 dark:text-teal-100">
+            이번 주 기록 수
+          </p>
+          <p className="mt-1 text-3xl font-semibold text-teal-950 dark:text-teal-50">
+            {weeklyLogs.length}
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-6 grid gap-5 md:grid-cols-3">
+        <TopList title="이번 주 자주 나타난 생활 영역" entries={topDomains} />
+        <TopList title="이번 주 자주 나타난 마찰 단계" entries={topStages} />
+        <TopList
+          title="이번 주 자주 함께 나타난 감정"
+          entries={topEmotions}
+        />
+      </div>
+
+      <div className="mt-6 border-t border-slate-100 pt-5 dark:border-slate-800">
+        <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+          다음 주에 관찰해볼 마찰 하나
+        </h3>
+        <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">
+          {observation
+            ? `다음 주에는 ‘${observation.domain} × ${observation.stage}’이 반복되는지 가볍게 관찰해볼 수 있습니다.`
+            : "다음 주에는 새로 남긴 기록에서 반복되는 조합이 있는지 가볍게 관찰해볼 수 있습니다."}
+        </p>
+      </div>
+    </section>
+  );
+}
