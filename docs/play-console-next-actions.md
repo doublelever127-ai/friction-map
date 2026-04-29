@@ -56,6 +56,14 @@ https://doublelever127-ai.github.io/friction-map/privacy/
 
 이 URL은 Play Console의 개인정보처리방침 URL로 사용합니다.
 
+만약 GitHub Pages 설정이 바로 반영되지 않거나 404가 계속된다면, 저장소가 Public인 동안 아래 공개 원문 URL을 임시 개인정보처리방침 URL로 사용할 수 있습니다.
+
+```text
+https://raw.githubusercontent.com/doublelever127-ai/friction-map/main/docs/privacy-policy.md
+```
+
+확인 결과 위 원문 URL은 공개 접근이 가능하며, `마찰지도 개인정보처리방침` 문구가 포함되어 있습니다.
+
 ## 4. Play Console 앱 만들기 입력값
 
 Play Console 첫 화면에서 `앱 만들기`를 눌렀을 때 아래 값으로 입력합니다.
@@ -97,6 +105,12 @@ GitHub Pages가 켜진 뒤 아래 URL을 사용합니다.
 
 ```text
 https://doublelever127-ai.github.io/friction-map/privacy/
+```
+
+GitHub Pages가 아직 404라면 아래 URL을 임시로 사용합니다.
+
+```text
+https://raw.githubusercontent.com/doublelever127-ai/friction-map/main/docs/privacy-policy.md
 ```
 
 ## 6. AAB 업로드 파일
@@ -146,4 +160,3 @@ C:\Users\ilove\OneDrive\문서\New project 3\friction-map\android\app\build\outp
 6. Data Safety 항목은 `docs/playstore-data-safety.md`를 참고해 작성합니다.
 7. AAB를 업로드합니다.
 8. 폐쇄 테스트 트랙을 만들고 테스터 이메일을 등록합니다.
-
