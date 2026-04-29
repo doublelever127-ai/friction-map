@@ -166,9 +166,15 @@ export function SettingsPanel({
             <li>사용자는 기록을 삭제하거나 내보낼 수 있습니다.</li>
           </ul>
           <p className="mt-4 text-xs leading-5 text-slate-500 dark:text-slate-500">
-            개인정보처리방침 초안은 문서로 준비되어 있으며, Play Store 등록 전
+            개인정보처리방침은 앱 안에서도 확인할 수 있으며, Play Store 등록 전
             누구나 볼 수 있는 공개 주소로 연결할 예정입니다.
           </p>
+          <a
+            href="/privacy"
+            className="mt-3 inline-flex text-sm font-semibold text-teal-700 underline-offset-4 hover:underline focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:text-teal-300 dark:focus:ring-offset-slate-900"
+          >
+            개인정보처리방침 보기
+          </a>
         </section>
 
         <section className="rounded-lg border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
