@@ -1,5 +1,6 @@
 "use client";
 
+import { ChoiceChip } from "@/components/ui/ChoiceChip";
 import type { FrictionExperimentStatus } from "@/types/friction";
 
 type ExperimentStatusControlProps = {
@@ -25,26 +26,26 @@ export function ExperimentStatusControl({
   onChange,
 }: ExperimentStatusControlProps) {
   return (
-    <label htmlFor={id} className="flex flex-col gap-2">
-      <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+    <fieldset className="flex flex-col gap-2" id={id}>
+      <legend className="text-xs font-semibold text-slate-500 dark:text-slate-400">
         현재 관찰 위치
-      </span>
-      <select
-        id={id}
-        value={status}
-        onChange={(event) => {
-          if (isExperimentStatus(event.target.value)) {
-            onChange(event.target.value);
-          }
-        }}
-        className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-800 outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-teal-400 dark:focus:ring-teal-900"
-      >
+      </legend>
+      <div className="flex flex-wrap gap-2">
         {statusOptions.map((option) => (
-          <option key={option} value={option}>
+          <ChoiceChip
+            key={option}
+            selected={status === option}
+            onClick={() => {
+              if (isExperimentStatus(option)) {
+                onChange(option);
+              }
+            }}
+            className="min-h-9 px-3 py-1.5 text-xs"
+          >
             {option}
-          </option>
+          </ChoiceChip>
         ))}
-      </select>
-    </label>
+      </div>
+    </fieldset>
   );
 }

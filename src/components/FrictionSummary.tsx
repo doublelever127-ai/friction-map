@@ -78,7 +78,7 @@ export function FrictionSummary({ logs }: FrictionSummaryProps) {
           자주 나타난 패턴
         </h2>
         <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">
-          요약은 진단이 아니라 패턴을 보기 위한 힌트입니다.
+          요약은 확정이 아니라 패턴을 보기 위한 힌트입니다.
         </p>
       </div>
 
