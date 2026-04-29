@@ -79,7 +79,7 @@ storeFile=$KeystoreFileName
 storePassword=$storePassword
 keyAlias=$KeyAlias
 keyPassword=$keyPassword
-"@ | Set-Content -Path $keystorePropertiesPath -Encoding UTF8 -NoNewline
+"@ | Set-Content -Path $keystorePropertiesPath -Encoding ASCII -NoNewline
 }
 finally {
     $storePassword = $null
