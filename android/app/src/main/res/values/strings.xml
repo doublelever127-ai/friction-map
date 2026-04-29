@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">마찰지도</string>
+    <string name="title_activity_main">마찰지도</string>
+    <string name="package_name">com.doublelever.frictionmap</string>
+    <string name="custom_url_scheme">com.doublelever.frictionmap</string>
+</resources>

@@ -8,6 +8,7 @@ import { FrictionList } from "@/components/FrictionList";
 import { FrictionMap } from "@/components/FrictionMap";
 import { FrictionSummary } from "@/components/FrictionSummary";
 import { SampleFrictionPreview } from "@/components/SampleFrictionPreview";
+import { SettingsPanel } from "@/components/SettingsPanel";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { WeeklyReport } from "@/components/WeeklyReport";
 import { Badge } from "@/components/ui/Badge";
@@ -15,11 +16,16 @@ import { SectionCard } from "@/components/ui/SectionCard";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { StatCard } from "@/components/ui/StatCard";
 import {
+  clearExperiments,
   createExperiment,
   loadExperiments,
   saveExperiments,
 } from "@/lib/experimentStorage";
-import { loadFrictionLogs, saveFrictionLogs } from "@/lib/frictionStorage";
+import {
+  clearFrictionLogs,
+  loadFrictionLogs,
+  saveFrictionLogs,
+} from "@/lib/frictionStorage";
 import type {
   CreateFrictionExperimentInput,
   CreateFrictionLogInput,
@@ -150,6 +156,14 @@ export default function Home() {
       saveExperiments(nextExperiments);
       return nextExperiments;
     });
+  }
+
+  function handleClearAllData() {
+    clearFrictionLogs();
+    clearExperiments();
+    setLogs([]);
+    setExperiments([]);
+    setLogFeedbackMessage("");
   }
 
   return (
@@ -346,6 +360,18 @@ export default function Home() {
             description="방금 남긴 기록과 이전 기록을 조용히 다시 훑어볼 수 있습니다."
           />
           <FrictionList logs={logs} onDelete={handleDeleteLog} />
+        </section>
+
+        <section className="grid gap-5">
+          <SectionHeader
+            title="설정과 개인정보"
+            description="출시 준비를 위해 기록 관리, 내보내기, 개인정보 안내를 한곳에서 확인할 수 있게 했습니다."
+          />
+          <SettingsPanel
+            logs={logs}
+            experiments={experiments}
+            onClearAllData={handleClearAllData}
+          />
         </section>
       </div>
     </main>

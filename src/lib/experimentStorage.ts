@@ -3,22 +3,15 @@ import type {
   FrictionExperiment,
   FrictionExperimentStatus,
 } from "@/types/friction";
+import {
+  getItem,
+  removeItem,
+  setItem,
+} from "@/lib/storageAdapter";
 
 export const STORAGE_KEY = "friction-map.experiments.v1";
 
 const DEFAULT_STATUS: FrictionExperimentStatus = "진행 전";
-
-function getLocalStorage(): Storage | null {
-  if (typeof window === "undefined") {
-    return null;
-  }
-
-  try {
-    return window.localStorage;
-  } catch {
-    return null;
-  }
-}
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
@@ -101,13 +94,7 @@ function createExperimentId(): string {
 }
 
 export function loadExperiments(): FrictionExperiment[] {
-  const storage = getLocalStorage();
-
-  if (!storage) {
-    return [];
-  }
-
-  const rawExperiments = storage.getItem(STORAGE_KEY);
+  const rawExperiments = getItem(STORAGE_KEY);
 
   if (!rawExperiments) {
     return [];
@@ -131,13 +118,11 @@ export function loadExperiments(): FrictionExperiment[] {
 }
 
 export function saveExperiments(experiments: FrictionExperiment[]): void {
-  const storage = getLocalStorage();
+  setItem(STORAGE_KEY, JSON.stringify(experiments));
+}
 
-  if (!storage) {
-    return;
-  }
-
-  storage.setItem(STORAGE_KEY, JSON.stringify(experiments));
+export function clearExperiments(): void {
+  removeItem(STORAGE_KEY);
 }
 
 export function createExperiment(

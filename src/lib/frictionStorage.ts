@@ -1,4 +1,9 @@
 import { frictionDomainOptions, frictionEmotionOptions, frictionStageOptions } from "@/lib/frictionOptions";
+import {
+  getItem,
+  removeItem,
+  setItem,
+} from "@/lib/storageAdapter";
 import type {
   CreateFrictionLogInput,
   FrictionDomain,
@@ -8,18 +13,6 @@ import type {
 } from "@/types/friction";
 
 export const STORAGE_KEY = "friction-map.logs.v1";
-
-function getLocalStorage(): Storage | null {
-  if (typeof window === "undefined") {
-    return null;
-  }
-
-  try {
-    return window.localStorage;
-  } catch {
-    return null;
-  }
-}
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
@@ -62,13 +55,7 @@ function createFrictionId(): string {
 }
 
 export function loadFrictionLogs(): FrictionLog[] {
-  const storage = getLocalStorage();
-
-  if (!storage) {
-    return [];
-  }
-
-  const rawLogs = storage.getItem(STORAGE_KEY);
+  const rawLogs = getItem(STORAGE_KEY);
 
   if (!rawLogs) {
     return [];
@@ -88,13 +75,11 @@ export function loadFrictionLogs(): FrictionLog[] {
 }
 
 export function saveFrictionLogs(logs: FrictionLog[]): void {
-  const storage = getLocalStorage();
+  setItem(STORAGE_KEY, JSON.stringify(logs));
+}
 
-  if (!storage) {
-    return;
-  }
-
-  storage.setItem(STORAGE_KEY, JSON.stringify(logs));
+export function clearFrictionLogs(): void {
+  removeItem(STORAGE_KEY);
 }
 
 export function createFrictionLog(input: CreateFrictionLogInput): FrictionLog {
