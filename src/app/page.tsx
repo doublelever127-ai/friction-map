@@ -7,6 +7,7 @@ import { FrictionForm } from "@/components/FrictionForm";
 import { FrictionList } from "@/components/FrictionList";
 import { FrictionMap } from "@/components/FrictionMap";
 import { FrictionSummary } from "@/components/FrictionSummary";
+import { SampleFrictionPreview } from "@/components/SampleFrictionPreview";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { WeeklyReport } from "@/components/WeeklyReport";
 import { Badge } from "@/components/ui/Badge";
@@ -216,6 +217,7 @@ export default function Home() {
               </div>
 
               <WeeklyReport logs={logs} />
+              {logs.length === 0 ? <SampleFrictionPreview /> : null}
             </div>
           </div>
         </section>
