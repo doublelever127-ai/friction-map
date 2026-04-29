@@ -166,8 +166,8 @@ export function SettingsPanel({
             <li>사용자는 기록을 삭제하거나 내보낼 수 있습니다.</li>
           </ul>
           <p className="mt-4 text-xs leading-5 text-slate-500 dark:text-slate-500">
-            개인정보처리방침 URL은 Play Store 등록 전 공개 주소로 연결할
-            예정입니다.
+            개인정보처리방침 초안은 문서로 준비되어 있으며, Play Store 등록 전
+            누구나 볼 수 있는 공개 주소로 연결할 예정입니다.
           </p>
         </section>
 
