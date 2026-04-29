@@ -41,7 +41,7 @@ export function Badge({
   return (
     <span
       className={joinClassNames(
-        "inline-flex min-h-7 items-center rounded-full border px-2.5 py-1 text-xs font-medium leading-4",
+        "inline-flex min-h-7 max-w-full items-center rounded-full border px-2.5 py-1 text-left text-xs font-medium leading-4 break-words whitespace-normal",
         badgeVariants[variant],
         className,
       )}

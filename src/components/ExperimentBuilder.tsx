@@ -27,10 +27,10 @@ const durationOptions = [3, 5, 7] as const;
 const defaultDurationDays: CreateFrictionExperimentInput["durationDays"] = 5;
 
 const inputClassName =
-  "h-12 rounded-xl border border-slate-300 bg-white px-4 text-sm text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-teal-600 focus:ring-4 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-teal-400 dark:focus:ring-teal-950";
+  "h-12 w-full min-w-0 rounded-xl border border-slate-300 bg-white px-4 text-sm text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-teal-600 focus:ring-4 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-teal-400 dark:focus:ring-teal-950";
 
 const textareaClassName =
-  "min-h-24 resize-y rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm leading-6 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-teal-600 focus:ring-4 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-teal-400 dark:focus:ring-teal-950";
+  "min-h-24 w-full min-w-0 resize-y rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm leading-6 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-teal-600 focus:ring-4 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-teal-400 dark:focus:ring-teal-950";
 
 function getLogOptionLabel(log: FrictionLog): string {
   if (log.text.length <= 42) {
@@ -47,7 +47,7 @@ function ExperimentStep({
   children,
 }: ExperimentStepProps) {
   return (
-    <section className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-950/50">
+    <section className="min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-950/50">
       <div className="mb-4 flex flex-col gap-2">
         <Badge variant="subtle">{step}</Badge>
         <div>
@@ -68,9 +68,9 @@ function ExperimentStep({
 
 function SelectedFrictionPreview({ log }: { log: FrictionLog }) {
   return (
-    <div className="rounded-xl border border-teal-100 bg-teal-50/70 p-4 dark:border-teal-900 dark:bg-teal-950/40">
+    <div className="min-w-0 overflow-hidden rounded-xl border border-teal-100 bg-teal-50/70 p-4 dark:border-teal-900 dark:bg-teal-950/40">
       <p className="text-xs font-semibold text-teal-800 dark:text-teal-200">
-        선택된 마찰 기록
+        선택한 기록
       </p>
       <p className="mt-2 break-words text-sm leading-6 text-slate-900 dark:text-slate-100">
         {log.text}
@@ -140,7 +140,7 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
     }
 
     if (!durationOptions.includes(durationDays)) {
-      setFormMessage("실험 기간은 3일, 5일, 7일 중에서 골라주세요.");
+      setFormMessage("기간은 3일, 5일, 7일 중에서 골라주세요.");
       return;
     }
 
@@ -165,20 +165,20 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
 
   if (logs.length === 0) {
     return (
-      <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-6">
+      <section className="min-w-0 overflow-hidden rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-6">
         <div className="mb-5 flex flex-col gap-2 border-b border-slate-100 pb-5 dark:border-slate-800">
           <h2 className="text-2xl font-semibold text-slate-950 dark:text-slate-50">
-            마찰을 작은 실험으로 바꾸기
+            먼저 기록이 필요합니다
           </h2>
           <p className="text-sm leading-6 text-slate-600 dark:text-slate-400">
-            정답을 찾는 것이 아니라, 3~7일 동안 가볍게 확인해볼 조건을
-            정합니다.
+            작게 바꿔보기는 기록 하나를 골라, 다음에 덜 버겁게 해볼 작은
+            방법을 정하는 방식입니다.
           </p>
         </div>
 
         <SoftEmptyState
-          title="실험으로 바꿀 마찰 기록이 아직 없습니다"
-          description="먼저 오늘 막혔던 순간을 한 줄로 기록하면, 그 기록을 작은 실험으로 바꿀 수 있습니다."
+          title="작게 바꿔볼 기록이 아직 없습니다"
+          description="먼저 오늘 막혔던 순간을 한 줄로 남기면, 그 기록을 바탕으로 작은 방법을 정할 수 있습니다."
         />
       </section>
     );
@@ -187,27 +187,27 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-6"
+      className="min-w-0 overflow-hidden rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-6"
     >
       <div className="mb-5 flex flex-col gap-2 border-b border-slate-100 pb-5 dark:border-slate-800">
         <h2 className="text-2xl font-semibold text-slate-950 dark:text-slate-50">
-          마찰을 작은 실험으로 바꾸기
+          작게 바꿔볼 방법 정하기
         </h2>
         <p className="text-sm leading-6 text-slate-600 dark:text-slate-400">
-          정답을 찾는 것이 아니라, 3~7일 동안 가볍게 확인해볼 조건을
-          정합니다.
+          바로 해결하지 않아도 괜찮습니다. 다음에 덜 버겁게 해볼 작은
+          방법만 정합니다.
         </p>
       </div>
 
       <div className="grid gap-4">
         <ExperimentStep
           step="1단계"
-          title="어떤 마찰을 볼까요?"
-          description="이미 남긴 기록 하나를 골라 작은 실험의 출발점으로 삼습니다."
+          title="어떤 막힘을 볼까요?"
+          description="이미 남긴 기록 하나를 골라 출발점으로 삼습니다."
         >
-          <label htmlFor="experiment-log" className="flex flex-col gap-2">
+          <label htmlFor="experiment-log" className="flex min-w-0 flex-col gap-2">
             <span className="text-sm font-medium text-slate-900 dark:text-slate-100">
-              연결할 마찰 기록
+              연결할 기록
             </span>
             <select
               id="experiment-log"
@@ -225,15 +225,15 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
 
           {selectedLog ? <SelectedFrictionPreview log={selectedLog} /> : null}
 
-          <label htmlFor="experiment-title" className="flex flex-col gap-2">
+          <label htmlFor="experiment-title" className="flex min-w-0 flex-col gap-2">
             <span className="text-sm font-medium text-slate-900 dark:text-slate-100">
-              실험 이름
+              카드 이름
             </span>
             <input
               id="experiment-title"
               value={title}
               onChange={(event) => setTitle(event.target.value)}
-              placeholder="예: 운동 시작 마찰 줄이기"
+              placeholder="예: 운동 시작 덜 버겁게 하기"
               className={inputClassName}
             />
           </label>
@@ -241,12 +241,12 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
 
         <ExperimentStep
           step="2단계"
-          title="왜 막혔다고 생각하나요?"
-          description="확정하지 않고 지금 떠오르는 가설을 적어봅니다."
+          title="왜 그랬을까요?"
+          description="확정하지 않고 지금 떠오르는 생각을 적어봅니다."
         >
-          <label htmlFor="experiment-hypothesis" className="flex flex-col gap-2">
+          <label htmlFor="experiment-hypothesis" className="flex min-w-0 flex-col gap-2">
             <span className="text-sm font-medium text-slate-900 dark:text-slate-100">
-              원인 가설
+              왜 그랬을까요?
             </span>
             <textarea
               id="experiment-hypothesis"
@@ -261,12 +261,12 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
 
         <ExperimentStep
           step="3단계"
-          title="어떤 작은 실험을 해볼까요?"
-          description="기간과 행동 단위를 작게 정해 부담을 줄입니다."
+          title="다음에 무엇을 작게 바꿔볼까요?"
+          description="기간과 행동 단위를 작게 정해 가볍게 확인해봅니다."
         >
           <fieldset className="flex flex-col gap-3">
             <legend className="text-sm font-medium text-slate-900 dark:text-slate-100">
-              실험 기간
+              며칠 동안 해볼까요?
             </legend>
             <div className="flex flex-wrap gap-2">
               {durationOptions.map((option) => (
@@ -281,9 +281,9 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
             </div>
           </fieldset>
 
-          <label htmlFor="experiment-action" className="flex flex-col gap-2">
+          <label htmlFor="experiment-action" className="flex min-w-0 flex-col gap-2">
             <span className="text-sm font-medium text-slate-900 dark:text-slate-100">
-              3~7일 동안 해볼 작은 실험
+              다음에 작게 바꿔볼 것
             </span>
             <textarea
               id="experiment-action"
@@ -298,12 +298,12 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
 
         <ExperimentStep
           step="4단계"
-          title="어떻게 관찰할까요?"
-          description="결과 판정보다 무엇을 확인할지 먼저 정합니다."
+          title="어떻게 확인할까요?"
+          description="무엇을 보면 충분할지 먼저 정합니다."
         >
-          <label htmlFor="experiment-success" className="flex flex-col gap-2">
+          <label htmlFor="experiment-success" className="flex min-w-0 flex-col gap-2">
             <span className="text-sm font-medium text-slate-900 dark:text-slate-100">
-              성공 기준
+              어떻게 확인할까요?
             </span>
             <textarea
               id="experiment-success"
@@ -317,10 +317,10 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
 
           <label
             htmlFor="experiment-interpretation"
-            className="flex flex-col gap-2"
+            className="flex min-w-0 flex-col gap-2"
           >
             <span className="text-sm font-medium text-slate-900 dark:text-slate-100">
-              예상대로 안 됐을 때의 해석
+              잘 안 됐을 때 어떻게 볼까요?
             </span>
             <textarea
               id="experiment-interpretation"
@@ -328,7 +328,7 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
               onChange={(event) =>
                 setFailureInterpretation(event.target.value)
               }
-              placeholder="예: 실험 단위가 아직 컸다는 신호로 보고 더 작게 조정한다"
+              placeholder="예: 방법이 아직 컸다는 신호로 보고 더 작게 조정한다"
               rows={3}
               className={textareaClassName}
             />
@@ -346,7 +346,7 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
         ) : null}
 
         <Button type="submit" className="w-full">
-          실험 카드 만들기
+          작게 바꿔보기 카드 만들기
         </Button>
       </div>
     </form>

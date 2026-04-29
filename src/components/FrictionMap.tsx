@@ -39,9 +39,9 @@ const shortStageLabels: Record<FrictionStage, string> = {
 
 const heatmapLegend = [
   { count: "0", label: "기록 없음" },
-  { count: "1", label: "가끔 나타남" },
-  { count: "2~3", label: "자주 나타남" },
-  { count: "4 이상", label: "반복 신호" },
+  { count: "1", label: "가끔 보임" },
+  { count: "2~3", label: "자주 보임" },
+  { count: "4 이상", label: "반복됨" },
 ] as const;
 
 function getCellClassName(count: number): string {
@@ -127,57 +127,82 @@ export function FrictionMap({ logs }: FrictionMapProps) {
           마찰 지도
         </h2>
         <p className="text-sm leading-6 text-slate-600 dark:text-slate-400">
-          반복해서 막히는 위치를 생활 영역과 행동 단계로 나눠 보는
-          화면입니다.
+          어느 쪽 일에서, 어느 순간에 자주 막히는지 보는 화면입니다.
         </p>
       </div>
 
-      {logs.length === 0 ? (
-        <SoftEmptyState
-          title="아직 지도가 비어 있습니다"
-          description="마찰 기록이 쌓이면 반복해서 막히는 위치가 여기에 나타납니다."
-        />
-      ) : (
-        <>
-          <div className="grid gap-3 sm:grid-cols-3">
+      <section className="grid gap-3">
+        <div>
+          <h3 className="text-base font-semibold text-slate-950 dark:text-slate-50">
+            자주 막힌 위치
+          </h3>
+          <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-400">
+            먼저 살펴볼 만한 일의 종류와 막힌 순간입니다.
+          </p>
+        </div>
+
+        {topEntries.length === 0 ? (
+          <SoftEmptyState
+            title="아직 자주 막힌 위치가 없습니다"
+            description="기록이 쌓이면 먼저 살펴볼 만한 위치가 여기에 나타납니다."
+            className="py-6"
+          />
+        ) : (
+          <div className="grid min-w-0 gap-3 sm:grid-cols-3">
             {topEntries.map((entry, index) => (
               <div
                 key={`${entry.domain}-${entry.stage}`}
-                className="rounded-lg border border-teal-100 bg-teal-50/70 p-4 dark:border-teal-900 dark:bg-teal-950/40"
+                className="min-w-0 overflow-hidden rounded-lg border border-teal-100 bg-teal-50/70 p-4 dark:border-teal-900 dark:bg-teal-950/40"
+                title={`${entry.domain} × ${entry.stage}: ${entry.count}회`}
               >
                 <Badge variant="status">Top {index + 1}</Badge>
                 <p className="mt-3 text-sm font-semibold text-slate-950 dark:text-slate-50">
                   {entry.domain} × {shortStageLabels[entry.stage]}
                 </p>
                 <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                  {entry.count}회 나타난 위치입니다.
+                  {entry.count}회 보인 위치입니다.
                 </p>
               </div>
             ))}
           </div>
+        )}
+      </section>
 
-          <div className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-950/50">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
-                현재 저장된 기록 {logs.length}개
-              </p>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                숫자가 높을수록 같은 위치에서 더 자주 나타났다는 뜻입니다.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {heatmapLegend.map((item) => (
-                <Badge key={item.count} variant="subtle">
-                  {item.count}: {item.label}
-                </Badge>
-              ))}
-            </div>
-          </div>
+      <div className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-950/50">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
+            범례
+          </p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            현재 저장된 기록 {logs.length}개
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {heatmapLegend.map((item) => (
+            <Badge key={item.count} variant="subtle">
+              {item.count}: {item.label}
+            </Badge>
+          ))}
+        </div>
+        <p className="text-xs leading-5 text-slate-500 dark:text-slate-400">
+          숫자가 높을수록 같은 위치에서 더 자주 막혔다는 뜻입니다.
+        </p>
+      </div>
 
-          <div className="overflow-x-auto pb-1">
+      {logs.length === 0 ? (
+        <SoftEmptyState
+          title="아직 지도가 비어 있습니다"
+          description="마찰 기록이 쌓이면 생활 영역과 행동 단계의 조합이 지도에 표시됩니다."
+        />
+      ) : (
+        <>
+          <p className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs leading-5 text-slate-500 dark:border-slate-800 dark:bg-slate-950/70 dark:text-slate-400 sm:hidden">
+            가로로 밀어 더 볼 수 있습니다.
+          </p>
+          <div className="w-full max-w-full overflow-x-auto overscroll-x-contain pb-1">
             <table className="min-w-[820px] border-separate border-spacing-2 text-left">
               <caption className="sr-only">
-                생활 영역과 마찰 단계 조합별 기록 개수
+                어느 쪽 일과 어느 순간에 막혔는지 보여주는 기록 개수
               </caption>
               <thead>
                 <tr>

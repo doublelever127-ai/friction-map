@@ -21,7 +21,7 @@ const buttonVariants: Record<ButtonVariant, string> = {
 };
 
 const buttonSizes: Record<ButtonSize, string> = {
-  sm: "min-h-10 px-3 text-sm",
+  sm: "min-h-11 px-3.5 text-sm",
   md: "min-h-12 px-5 text-sm",
 };
 
@@ -41,7 +41,7 @@ export function Button({
     <button
       type={type}
       className={joinClassNames(
-        "inline-flex items-center justify-center rounded-lg border font-semibold transition focus:outline-none focus:ring-2 focus:ring-teal-300 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:focus:ring-teal-800 dark:focus:ring-offset-slate-950",
+        "inline-flex max-w-full items-center justify-center rounded-lg border text-center font-semibold transition focus:outline-none focus:ring-2 focus:ring-teal-300 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:focus:ring-teal-800 dark:focus:ring-offset-slate-950",
         buttonVariants[variant],
         buttonSizes[size],
         className,

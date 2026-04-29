@@ -1,6 +1,9 @@
 "use client";
 
-import { ExperimentStatusControl } from "@/components/ExperimentStatusControl";
+import {
+  ExperimentStatusControl,
+  getExperimentStatusLabel,
+} from "@/components/ExperimentStatusControl";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { SoftEmptyState } from "@/components/ui/SoftEmptyState";
@@ -45,7 +48,7 @@ function formatDateTime(value: string): string {
 
 function ExperimentDetail({ label, children }: ExperimentDetailProps) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-950/50">
+    <div className="min-w-0 overflow-hidden rounded-xl border border-slate-200 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-950/50">
       <dt className="text-sm font-semibold text-slate-900 dark:text-slate-100">
         {label}
       </dt>
@@ -65,8 +68,8 @@ export function ExperimentList({
   if (experiments.length === 0) {
     return (
       <SoftEmptyState
-        title="아직 작은 실험 카드가 없습니다"
-        description="반복되는 마찰 하나를 골라, 부담을 줄이는 작은 조건을 정해보세요."
+        title="아직 작게 바꿔보기 카드가 없습니다"
+        description="반복되는 막힘이 보이면, 다음에 덜 버겁게 해볼 작은 방법을 정해보세요."
         className="bg-white shadow-sm dark:bg-slate-900"
       />
     );
@@ -80,19 +83,21 @@ export function ExperimentList({
   );
 
   return (
-    <div className="grid gap-4">
+    <div className="grid min-w-0 gap-4">
       {sortedExperiments.map((experiment) => {
         const linkedLog = logsById.get(experiment.frictionLogId);
 
         return (
           <article
             key={experiment.id}
-            className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-6"
+            className="min-w-0 overflow-hidden rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-6"
           >
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div className="min-w-0">
                 <div className="flex flex-wrap gap-2">
-                  <Badge variant="status">{experiment.status}</Badge>
+                  <Badge variant="status">
+                    {getExperimentStatusLabel(experiment.status)}
+                  </Badge>
                   <Badge variant="subtle">{experiment.durationDays}일</Badge>
                 </div>
                 <h3 className="mt-3 break-words text-xl font-semibold leading-7 text-slate-950 dark:text-slate-50">
@@ -105,16 +110,16 @@ export function ExperimentList({
                 variant="ghost"
                 size="sm"
                 onClick={() => onDelete(experiment.id)}
-                className="self-start sm:self-auto"
-                aria-label={`${experiment.title} 실험 삭제`}
+                className="shrink-0 self-start sm:self-auto"
+                aria-label={`${experiment.title} 카드 삭제`}
               >
                 삭제
               </Button>
             </div>
 
-            <div className="mt-5 rounded-2xl border border-teal-100 bg-teal-50/70 p-4 dark:border-teal-900 dark:bg-teal-950/40">
+            <div className="mt-5 min-w-0 overflow-hidden rounded-2xl border border-teal-100 bg-teal-50/70 p-4 dark:border-teal-900 dark:bg-teal-950/40">
               <p className="text-xs font-semibold text-teal-800 dark:text-teal-200">
-                연결된 마찰
+                연결된 기록
               </p>
               {linkedLog ? (
                 <>
@@ -129,23 +134,23 @@ export function ExperimentList({
                 </>
               ) : (
                 <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
-                  연결된 마찰 기록을 찾을 수 없습니다. 실험 카드는 그대로
+                  연결된 기록을 찾을 수 없습니다. 이 카드는 그대로
                   유지됩니다.
                 </p>
               )}
             </div>
 
-            <dl className="mt-4 grid gap-3 md:grid-cols-2">
-              <ExperimentDetail label="원인 가설">
+            <dl className="mt-4 grid min-w-0 gap-3 md:grid-cols-2">
+              <ExperimentDetail label="왜 그랬을까요?">
                 {experiment.hypothesis}
               </ExperimentDetail>
-              <ExperimentDetail label="작은 실험">
+              <ExperimentDetail label="다음에 작게 바꿔볼 것">
                 {experiment.action}
               </ExperimentDetail>
-              <ExperimentDetail label="성공 기준">
+              <ExperimentDetail label="어떻게 확인할까요?">
                 {experiment.successCriteria}
               </ExperimentDetail>
-              <ExperimentDetail label="예상대로 안 됐을 때의 해석">
+              <ExperimentDetail label="잘 안 됐을 때 어떻게 볼까요?">
                 {experiment.failureInterpretation}
               </ExperimentDetail>
             </dl>
@@ -158,7 +163,7 @@ export function ExperimentList({
                   onChange={(status) => onStatusChange(experiment.id, status)}
                 />
                 <p className="text-xs leading-5 text-slate-500 dark:text-slate-400">
-                  상태는 결과 판정이 아니라 지금 어디까지 관찰했는지 표시하는
+                  지금 상태는 평가가 아니라 어디까지 해봤는지 가볍게 표시하는
                   용도입니다.
                 </p>
               </div>

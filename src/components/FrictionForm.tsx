@@ -16,12 +16,44 @@ import type {
   FrictionStage,
 } from "@/types/friction";
 
+type QuickExample = {
+  text: string;
+  emotion: FrictionEmotion;
+  domain: FrictionDomain;
+  stage: FrictionStage;
+  intensity: number;
+};
+
 const quickExamples = [
-  "답장을 계속 미루고 있다",
-  "책상에 앉자마자 유튜브를 봤다",
-  "운동하려고 했는데 또 미뤘다",
-  "뭐부터 해야 할지 몰라 멈췄다",
-] as const;
+  {
+    text: "답장을 계속 미루고 있다",
+    emotion: "부담",
+    domain: "관계",
+    stage: "완성 마찰",
+    intensity: 4,
+  },
+  {
+    text: "책상에 앉자마자 유튜브를 봤다",
+    emotion: "지루함",
+    domain: "디지털",
+    stage: "지속 마찰",
+    intensity: 3,
+  },
+  {
+    text: "운동하려고 했는데 또 미뤘다",
+    emotion: "부담",
+    domain: "건강",
+    stage: "시작 전 마찰",
+    intensity: 4,
+  },
+  {
+    text: "뭐부터 해야 할지 몰라 멈췄다",
+    emotion: "막막함",
+    domain: "공부",
+    stage: "전환 마찰",
+    intensity: 3,
+  },
+] as const satisfies readonly QuickExample[];
 
 const intensityOptions = [
   { value: 1, label: "낮음" },
@@ -76,10 +108,11 @@ export function FrictionForm({ onCreate }: FrictionFormProps) {
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
       <div className="space-y-1">
         <h3 className="text-lg font-semibold text-slate-950 dark:text-slate-50">
-          마찰 기록하기
+          막힌 순간 남기기
         </h3>
         <p className="text-sm leading-6 text-slate-600 dark:text-slate-300">
-          하려고 했지만 막혔던 순간을 한 줄로 남겨보세요.
+          정확히 고르지 않아도 괜찮습니다. 지금 가장 가까운 느낌을
+          골라보세요.
         </p>
       </div>
 
@@ -113,21 +146,31 @@ export function FrictionForm({ onCreate }: FrictionFormProps) {
       </div>
 
       <div className="space-y-3">
-        <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
-          빠른 예시
-        </p>
+        <div className="space-y-1">
+          <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
+            빠른 예시
+          </p>
+          <p className="text-xs leading-5 text-slate-500 dark:text-slate-400">
+            예시는 시작을 돕는 힌트입니다. 고른 뒤 얼마든지 바꿀 수
+            있습니다.
+          </p>
+        </div>
         <div className="flex flex-wrap gap-2">
           {quickExamples.map((example) => (
             <ChoiceChip
-              key={example}
-              selected={text === example}
+              key={example.text}
+              selected={text === example.text}
               onClick={() => {
-                setText(example);
+                setText(example.text);
+                setEmotion(example.emotion);
+                setDomain(example.domain);
+                setStage(example.stage);
+                setIntensity(example.intensity);
                 setErrorMessage("");
               }}
-              className="text-left"
+              className="justify-start text-left"
             >
-              {example}
+              {example.text}
             </ChoiceChip>
           ))}
         </div>
@@ -135,7 +178,7 @@ export function FrictionForm({ onCreate }: FrictionFormProps) {
 
       <fieldset className="space-y-3">
         <legend className="text-sm font-medium text-slate-900 dark:text-slate-100">
-          감정
+          그때 느낌
         </legend>
         <div className="flex flex-wrap gap-2">
           {frictionEmotionOptions.map((option) => (
@@ -152,7 +195,7 @@ export function FrictionForm({ onCreate }: FrictionFormProps) {
 
       <fieldset className="space-y-3">
         <legend className="text-sm font-medium text-slate-900 dark:text-slate-100">
-          생활 영역
+          어느 쪽 일이었나요?
         </legend>
         <div className="flex flex-wrap gap-2">
           {frictionDomainOptions.map((option) => (
@@ -169,7 +212,7 @@ export function FrictionForm({ onCreate }: FrictionFormProps) {
 
       <fieldset className="space-y-3">
         <legend className="text-sm font-medium text-slate-900 dark:text-slate-100">
-          마찰 단계
+          어디에서 막혔나요?
         </legend>
         <div className="flex flex-wrap gap-2">
           {frictionStageOptions.map((option) => (
@@ -186,12 +229,12 @@ export function FrictionForm({ onCreate }: FrictionFormProps) {
 
       <fieldset className="space-y-3">
         <legend className="flex w-full items-center justify-between gap-3 text-sm font-medium text-slate-900 dark:text-slate-100">
-          마찰 강도
+          얼마나 버거웠나요?
           <span className="rounded-full bg-teal-50 px-3 py-1 text-sm text-teal-800 dark:bg-teal-950 dark:text-teal-100">
             {intensity}
           </span>
         </legend>
-        <div className="grid gap-2 sm:grid-cols-5">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
           {intensityOptions.map((option) => (
             <label
               key={option.value}
@@ -213,7 +256,7 @@ export function FrictionForm({ onCreate }: FrictionFormProps) {
       </fieldset>
 
       <Button type="submit" className="w-full sm:w-auto">
-        마찰 기록하기
+        막힌 순간 기록하기
       </Button>
     </form>
   );

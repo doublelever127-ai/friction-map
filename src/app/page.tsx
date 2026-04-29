@@ -32,7 +32,7 @@ const flowSteps = [
   {
     step: "01",
     title: "기록하기",
-    description: "막혔던 순간을 한 줄로 남깁니다.",
+    description: "자꾸 막히는 순간을 한 줄로 남깁니다.",
   },
   {
     step: "02",
@@ -41,10 +41,13 @@ const flowSteps = [
   },
   {
     step: "03",
-    title: "실험하기",
-    description: "작게 확인해볼 가설과 실험으로 바꿉니다.",
+    title: "작게 바꿔보기",
+    description: "다음에 덜 버겁게 해볼 조건을 정합니다.",
   },
 ] as const;
+
+const logSavedFeedbackMessage =
+  "기록이 지도에 표시됐어요. 비슷한 순간이 쌓이면 자주 막히는 위치가 보입니다.";
 
 function createLog(input: CreateFrictionLogInput): FrictionLog {
   return {
@@ -59,6 +62,11 @@ function createLog(input: CreateFrictionLogInput): FrictionLog {
 export default function Home() {
   const [logs, setLogs] = useState<FrictionLog[]>([]);
   const [experiments, setExperiments] = useState<FrictionExperiment[]>([]);
+  const [logFeedbackMessage, setLogFeedbackMessage] = useState("");
+  const hasNoLogs = logs.length === 0;
+  const hasOneLog = logs.length === 1;
+  const hasEarlyExperimentLogs = logs.length > 0 && logs.length < 3;
+  const hasPatternReadyLogs = logs.length >= 3;
   const activeExperimentCount = experiments.filter(
     (experiment) => experiment.status === "진행 중",
   ).length;
@@ -68,6 +76,18 @@ export default function Home() {
     setExperiments(loadExperiments());
   }, []);
 
+  useEffect(() => {
+    if (!logFeedbackMessage) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setLogFeedbackMessage("");
+    }, 5000);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [logFeedbackMessage]);
+
   function handleCreateLog(input: CreateFrictionLogInput) {
     setLogs((currentLogs) => {
       const nextLogs = [createLog(input), ...currentLogs];
@@ -75,6 +95,7 @@ export default function Home() {
       saveFrictionLogs(nextLogs);
       return nextLogs;
     });
+    setLogFeedbackMessage(logSavedFeedbackMessage);
   }
 
   function handleDeleteLog(id: string) {
@@ -140,7 +161,7 @@ export default function Home() {
               마찰지도
             </p>
             <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-400">
-              내가 자주 막히는 순간을 발견하는 생활 디버깅 도구
+              자꾸 막히는 순간을 한 줄로 남기는 앱
             </p>
           </div>
           <ThemeToggle />
@@ -149,16 +170,21 @@ export default function Home() {
         <section className="rounded-lg border border-white/70 bg-white/80 p-6 shadow-sm shadow-slate-200/70 backdrop-blur dark:border-slate-800 dark:bg-slate-900/80 dark:shadow-none sm:p-8 lg:p-10">
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end">
             <div className="max-w-3xl">
-              <Badge variant="status">기록하기 / 패턴 보기 / 실험하기</Badge>
+              <Badge variant="status">한 줄 기록으로 시작하기</Badge>
               <h1 className="mt-5 text-4xl font-semibold leading-tight text-slate-950 dark:text-slate-50 sm:text-5xl">
                 오늘 어디서 막혔나요?
               </h1>
               <p className="mt-5 text-lg leading-8 text-slate-700 dark:text-slate-300">
-                거창한 기록이 아니어도 괜찮습니다. 한 줄의 마찰이 쌓이면
-                반복되는 패턴이 보입니다.
+                미뤘던 일, 부담스러운 답장, 시작하지 못한 순간을 가볍게 한
+                줄로 남겨보세요.
+              </p>
+              <p className="mt-4 text-sm leading-6 text-slate-600 dark:text-slate-400">
+                여기서는 하려고 했지만 이상하게 막혔던 순간을 마찰이라고
+                부릅니다.
               </p>
               <p className="mt-5 rounded-lg border border-teal-100 bg-teal-50 px-4 py-3 text-base font-medium leading-7 text-teal-900 dark:border-teal-900 dark:bg-teal-950/70 dark:text-teal-100">
-                할 일을 더 늘리지 않습니다. 당신을 막는 마찰을 발견합니다.
+                할 일을 더 늘리지 않습니다. 자주 막히는 순간을 찾아, 다음에
+                덜 버겁게 만듭니다.
               </p>
             </div>
 
@@ -185,19 +211,29 @@ export default function Home() {
 
         <section className="grid gap-5">
           <SectionHeader
-            title="기록하기"
-            description="오늘 하려고 했지만 막혔던 순간을 먼저 한 줄로 남겨보세요."
+            title="오늘 막힌 순간"
+            description="가볍게 한 줄을 남기면, 아래에서 자주 막히는 위치를 차분히 볼 수 있습니다."
           />
 
-          <div className="grid gap-5 xl:grid-cols-[minmax(320px,0.9fr)_minmax(0,1.1fr)]">
+          <div className="grid min-w-0 gap-5 xl:grid-cols-[minmax(320px,0.9fr)_minmax(0,1.1fr)]">
             <SectionCard
               title="막혔던 순간"
               description="한 줄로 시작해도 충분합니다. 지금 막힌 위치를 작은 기록으로 남겨보세요."
+              className="min-w-0"
             >
               <FrictionForm onCreate={handleCreateLog} />
+              {logFeedbackMessage ? (
+                <div
+                  role="status"
+                  aria-live="polite"
+                  className="mt-5 rounded-xl border border-teal-100 bg-teal-50 px-4 py-3 text-sm leading-6 text-teal-900 shadow-sm shadow-teal-100/50 dark:border-teal-900 dark:bg-teal-950/70 dark:text-teal-100 dark:shadow-none"
+                >
+                  {logFeedbackMessage}
+                </div>
+              ) : null}
             </SectionCard>
 
-            <div className="grid gap-4">
+            <div className="grid min-w-0 gap-4">
               <div className="grid gap-4 sm:grid-cols-3 xl:grid-cols-1">
                 <StatCard
                   label="마찰 기록"
@@ -205,29 +241,56 @@ export default function Home() {
                   description="저장된 한 줄 기록"
                 />
                 <StatCard
-                  label="작은 실험"
+                  label="작게 바꿔보기"
                   value={`${experiments.length}개`}
-                  description="직접 세운 실험 카드"
+                  description="직접 정한 작은 방법"
                 />
                 <StatCard
-                  label="진행 중"
+                  label="해보는 중"
                   value={`${activeExperimentCount}개`}
-                  description="지금 관찰 중인 실험"
+                  description="지금 가볍게 해보는 카드"
                 />
               </div>
 
-              <WeeklyReport logs={logs} />
-              {logs.length === 0 ? <SampleFrictionPreview /> : null}
+              {hasNoLogs ? <SampleFrictionPreview /> : null}
             </div>
           </div>
         </section>
 
-        <section className="grid gap-5">
+        <section
+          className={`grid gap-5 ${
+            hasPatternReadyLogs
+              ? "rounded-lg border border-teal-100 bg-white/70 p-4 shadow-sm shadow-teal-100/50 dark:border-teal-900 dark:bg-slate-900/50 dark:shadow-none sm:p-5"
+              : ""
+          }`}
+        >
           <SectionHeader
-            title="패턴 보기"
-            description="요약은 확정이 아니라 패턴을 보기 위한 힌트입니다."
+            title="자주 막힌 위치"
+            description={
+              hasOneLog
+                ? "첫 기록이 지도에 표시되었습니다. 아직 판단하지 말고 어느 위치에 놓였는지 가볍게 확인해보세요."
+                : hasPatternReadyLogs
+                  ? "기록이 쌓이기 시작했습니다. 반복 요약과 마찰 지도에서 자주 막힌 위치를 살펴보세요."
+                  : "기록이 쌓이면 어느 쪽 일에서, 어느 순간에 자주 막히는지 보입니다."
+            }
           />
 
+          {hasOneLog ? (
+            <div className="rounded-xl border border-teal-100 bg-teal-50 px-4 py-3 text-sm leading-6 text-teal-900 dark:border-teal-900 dark:bg-teal-950/70 dark:text-teal-100">
+              첫 마찰이 지도에 표시됐어요. 비슷한 기록이 쌓이면 반복되는
+              위치가 더 선명해집니다. 지금은 패턴을 정하는 단계가 아니라
+              관찰을 시작하는 단계입니다.
+            </div>
+          ) : null}
+
+          {hasPatternReadyLogs ? (
+            <div className="rounded-xl border border-teal-100 bg-teal-50 px-4 py-3 text-sm leading-6 text-teal-900 dark:border-teal-900 dark:bg-teal-950/70 dark:text-teal-100">
+              기록이 3개 이상 쌓였습니다. 자주 보이는 생활 영역이나 마찰
+              단계를 골라 작게 바꿔볼 방법으로 이어가볼 수 있습니다.
+            </div>
+          ) : null}
+
+          <WeeklyReport logs={logs} />
           <FrictionSummary logs={logs} />
 
           <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900 dark:shadow-none sm:p-6">
@@ -237,11 +300,32 @@ export default function Home() {
 
         <section className="grid gap-5">
           <SectionHeader
-            title="작은 실험 카드"
-            description="반복되는 마찰 하나를 골라, 정답이 아니라 가볍게 확인해볼 실험으로 바꿔보세요."
+            title="작게 바꿔보기"
+            description="바로 해결하지 않아도 괜찮습니다. 자주 막히는 순간 하나를 골라, 다음에 덜 버겁게 해볼 작은 방법을 정해보세요."
           />
 
-          <div className="grid gap-5 xl:grid-cols-[minmax(320px,0.85fr)_minmax(0,1.15fr)]">
+          {hasNoLogs ? (
+            <div className="rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-sm leading-6 text-slate-600 shadow-sm dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-300">
+              작게 바꿔보기는 기록 하나를 고른 뒤 시작할 수 있습니다. 먼저
+              오늘 막혔던 순간을 한 줄로 남겨보세요.
+            </div>
+          ) : null}
+
+          {hasEarlyExperimentLogs ? (
+            <div className="rounded-xl border border-teal-100 bg-teal-50 px-4 py-3 text-sm leading-6 text-teal-900 dark:border-teal-900 dark:bg-teal-950/70 dark:text-teal-100">
+              지금 바로 작게 바꿔봐도 되고, 비슷한 기록이 조금 더 쌓인 뒤
+              골라도 괜찮습니다.
+            </div>
+          ) : null}
+
+          {hasPatternReadyLogs ? (
+            <div className="rounded-xl border border-teal-100 bg-teal-50 px-4 py-3 text-sm leading-6 text-teal-900 dark:border-teal-900 dark:bg-teal-950/70 dark:text-teal-100">
+              반복 요약이나 마찰 지도에서 자주 막힌 위치를 살펴보고, 그중
+              하나를 다음에 덜 버겁게 해볼 방법으로 바꿔볼 수 있습니다.
+            </div>
+          ) : null}
+
+          <div className="grid min-w-0 gap-5 xl:grid-cols-[minmax(320px,0.85fr)_minmax(0,1.15fr)]">
             <ExperimentBuilder
               logs={logs}
               onCreate={handleCreateExperiment}
@@ -256,7 +340,11 @@ export default function Home() {
           </div>
         </section>
 
-        <section>
+        <section className="grid gap-5">
+          <SectionHeader
+            title="최근 기록"
+            description="방금 남긴 기록과 이전 기록을 조용히 다시 훑어볼 수 있습니다."
+          />
           <FrictionList logs={logs} onDelete={handleDeleteLog} />
         </section>
       </div>
