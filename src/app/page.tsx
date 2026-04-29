@@ -1,15 +1,25 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { ExperimentBuilder } from "@/components/ExperimentBuilder";
+import { ExperimentList } from "@/components/ExperimentList";
 import { FrictionForm } from "@/components/FrictionForm";
 import { FrictionList } from "@/components/FrictionList";
 import { FrictionMap } from "@/components/FrictionMap";
 import { FrictionSummary } from "@/components/FrictionSummary";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { WeeklyReport } from "@/components/WeeklyReport";
+import {
+  createExperiment,
+  loadExperiments,
+  saveExperiments,
+} from "@/lib/experimentStorage";
 import { loadFrictionLogs, saveFrictionLogs } from "@/lib/frictionStorage";
 import type {
+  CreateFrictionExperimentInput,
   CreateFrictionLogInput,
+  FrictionExperiment,
+  FrictionExperimentStatus,
   FrictionLog,
 } from "@/types/friction";
 
@@ -25,9 +35,11 @@ function createLog(input: CreateFrictionLogInput): FrictionLog {
 
 export default function Home() {
   const [logs, setLogs] = useState<FrictionLog[]>([]);
+  const [experiments, setExperiments] = useState<FrictionExperiment[]>([]);
 
   useEffect(() => {
     setLogs(loadFrictionLogs());
+    setExperiments(loadExperiments());
   }, []);
 
   function handleCreateLog(input: CreateFrictionLogInput) {
@@ -48,6 +60,51 @@ export default function Home() {
     });
   }
 
+  function handleCreateExperiment(input: CreateFrictionExperimentInput) {
+    setExperiments((currentExperiments) => {
+      const nextExperiments = [
+        createExperiment(input),
+        ...currentExperiments,
+      ];
+
+      saveExperiments(nextExperiments);
+      return nextExperiments;
+    });
+  }
+
+  function handleExperimentStatusChange(
+    experimentId: string,
+    status: FrictionExperimentStatus,
+  ) {
+    setExperiments((currentExperiments) => {
+      const nextExperiments = currentExperiments.map((experiment) => {
+        if (experiment.id !== experimentId) {
+          return experiment;
+        }
+
+        return {
+          ...experiment,
+          status,
+          updatedAt: new Date().toISOString(),
+        };
+      });
+
+      saveExperiments(nextExperiments);
+      return nextExperiments;
+    });
+  }
+
+  function handleDeleteExperiment(experimentId: string) {
+    setExperiments((currentExperiments) => {
+      const nextExperiments = currentExperiments.filter(
+        (experiment) => experiment.id !== experimentId,
+      );
+
+      saveExperiments(nextExperiments);
+      return nextExperiments;
+    });
+  }
+
   return (
     <main className="min-h-screen bg-slate-50 px-4 py-6 text-slate-950 transition-colors dark:bg-slate-950 dark:text-slate-100 sm:px-6 lg:px-10">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 sm:gap-8">
@@ -55,7 +112,7 @@ export default function Home() {
           <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
             <div className="max-w-3xl">
               <p className="text-sm font-medium text-teal-700 dark:text-teal-300">
-                마찰지도 v0.1
+                마찰지도 v0.2
               </p>
               <h1 className="mt-2 text-4xl font-semibold leading-tight text-slate-950 dark:text-slate-50 sm:text-5xl">
                 마찰지도
@@ -107,6 +164,38 @@ export default function Home() {
         <FrictionSummary logs={logs} />
 
         <WeeklyReport logs={logs} />
+
+        <section aria-labelledby="experiment-heading" className="grid gap-5">
+          <div>
+            <p className="text-sm font-medium text-teal-700 dark:text-teal-300">
+              작은 실험
+            </p>
+            <h2
+              id="experiment-heading"
+              className="mt-1 text-2xl font-semibold text-slate-950 dark:text-slate-50"
+            >
+              작은 실험 카드
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">
+              반복되는 마찰 하나를 골라, 정답이 아니라 가볍게 확인해볼
+              실험으로 바꿔보세요.
+            </p>
+          </div>
+
+          <div className="grid gap-5 xl:grid-cols-[minmax(320px,0.85fr)_minmax(0,1.15fr)]">
+            <ExperimentBuilder
+              logs={logs}
+              onCreate={handleCreateExperiment}
+            />
+
+            <ExperimentList
+              experiments={experiments}
+              logs={logs}
+              onDelete={handleDeleteExperiment}
+              onStatusChange={handleExperimentStatusChange}
+            />
+          </div>
+        </section>
 
         <section aria-labelledby="friction-list-heading" className="grid gap-4">
           <div>

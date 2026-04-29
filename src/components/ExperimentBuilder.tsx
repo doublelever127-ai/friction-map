@@ -13,6 +13,7 @@ type ExperimentBuilderProps = {
 };
 
 const durationOptions = [3, 5, 7] as const;
+const defaultDurationDays: CreateFrictionExperimentInput["durationDays"] = 5;
 
 function getLogOptionLabel(log: FrictionLog): string {
   if (log.text.length <= 42) {
@@ -27,9 +28,16 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
   const [title, setTitle] = useState("");
   const [hypothesis, setHypothesis] = useState("");
   const [action, setAction] = useState("");
-  const [durationDays, setDurationDays] = useState<number>(3);
+  const [durationDays, setDurationDays] =
+    useState<CreateFrictionExperimentInput["durationDays"]>(
+      defaultDurationDays,
+    );
   const [successCriteria, setSuccessCriteria] = useState("");
   const [failureInterpretation, setFailureInterpretation] = useState("");
+  const [formMessage, setFormMessage] = useState("");
+  const selectedFrictionLogId = logs.some((log) => log.id === frictionLogId)
+    ? frictionLogId
+    : (logs[0]?.id ?? "");
 
   useEffect(() => {
     if (logs.length === 0) {
@@ -46,6 +54,7 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setFormMessage("");
 
     const trimmedTitle = title.trim();
     const trimmedHypothesis = hypothesis.trim();
@@ -54,18 +63,26 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
     const trimmedFailureInterpretation = failureInterpretation.trim();
 
     if (
-      !frictionLogId ||
+      !selectedFrictionLogId ||
       !trimmedTitle ||
       !trimmedHypothesis ||
       !trimmedAction ||
       !trimmedSuccessCriteria ||
       !trimmedFailureInterpretation
     ) {
+      setFormMessage(
+        "아직 비어 있는 항목이 있습니다. 지금 떠오르는 만큼만 차분히 채워주세요.",
+      );
+      return;
+    }
+
+    if (!durationOptions.includes(durationDays)) {
+      setFormMessage("실험 기간은 3일, 5일, 7일 중에서 골라주세요.");
       return;
     }
 
     onCreate({
-      frictionLogId,
+      frictionLogId: selectedFrictionLogId,
       title: trimmedTitle,
       hypothesis: trimmedHypothesis,
       action: trimmedAction,
@@ -77,12 +94,41 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
     setTitle("");
     setHypothesis("");
     setAction("");
-    setDurationDays(3);
+    setDurationDays(defaultDurationDays);
     setSuccessCriteria("");
     setFailureInterpretation("");
+    setFormMessage("");
   }
 
   const hasLogs = logs.length > 0;
+
+  if (!hasLogs) {
+    return (
+      <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-6">
+        <div className="mb-5 flex flex-col gap-2 border-b border-slate-100 pb-5 dark:border-slate-800">
+          <p className="text-sm font-medium text-teal-700 dark:text-teal-300">
+            작은 실험 만들기
+          </p>
+          <h2 className="text-2xl font-semibold text-slate-950 dark:text-slate-50">
+            실험 카드
+          </h2>
+          <p className="text-sm leading-6 text-slate-600 dark:text-slate-400">
+            직접 세운 가설을 작게 확인해보는 자리입니다.
+          </p>
+        </div>
+
+        <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 px-4 py-6 dark:border-slate-700 dark:bg-slate-950">
+          <h3 className="text-lg font-semibold text-slate-950 dark:text-slate-50">
+            실험으로 바꿀 마찰 기록이 아직 없습니다
+          </h3>
+          <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
+            먼저 오늘 막혔던 순간을 한 줄로 기록하면, 그 기록을 작은
+            실험으로 바꿀 수 있습니다.
+          </p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <form
@@ -102,20 +148,14 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
         </p>
       </div>
 
-      {!hasLogs ? (
-        <p className="rounded-lg border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-sm leading-6 text-slate-600 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-400">
-          작은 실험은 먼저 남긴 마찰 기록과 연결됩니다. 기록을 하나 남기면
-          여기에서 실험으로 바꿀 수 있습니다.
-        </p>
-      ) : (
-        <div className="grid gap-5">
+      <div className="grid gap-5">
           <label htmlFor="experiment-log" className="flex flex-col gap-2">
             <span className="text-sm font-medium text-slate-900 dark:text-slate-100">
               연결할 마찰 기록
             </span>
             <select
               id="experiment-log"
-              value={frictionLogId}
+              value={selectedFrictionLogId}
               onChange={(event) => setFrictionLogId(event.target.value)}
               className="h-11 rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-950 outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-teal-400 dark:focus:ring-teal-900"
             >
@@ -135,7 +175,7 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
               id="experiment-title"
               value={title}
               onChange={(event) => setTitle(event.target.value)}
-              placeholder="예: 운동복만 입어보기"
+              placeholder="예: 운동 시작 마찰 줄이기"
               className="h-11 rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-teal-400 dark:focus:ring-teal-900"
             />
           </label>
@@ -162,7 +202,7 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
               id="experiment-action"
               value={action}
               onChange={(event) => setAction(event.target.value)}
-              placeholder="예: 7일 동안 운동을 목표로 하지 않고 운동복만 입어본다"
+              placeholder="예: 5일 동안 운동을 목표로 하지 않고 운동복만 입어본다"
               rows={3}
               className="min-h-24 resize-y rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm leading-6 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-teal-400 dark:focus:ring-teal-900"
             />
@@ -219,11 +259,21 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
               onChange={(event) =>
                 setFailureInterpretation(event.target.value)
               }
-              placeholder="예: 실험 단위가 아직 컸다는 신호로 본다"
+              placeholder="예: 실험 단위가 아직 컸다는 신호로 보고 더 작게 조정한다"
               rows={3}
               className="min-h-24 resize-y rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm leading-6 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-teal-400 dark:focus:ring-teal-900"
             />
           </label>
+
+          {formMessage ? (
+            <p
+              className="rounded-lg bg-teal-50 px-4 py-3 text-sm leading-6 text-teal-900 dark:bg-teal-950 dark:text-teal-100"
+              role="status"
+              aria-live="polite"
+            >
+              {formMessage}
+            </p>
+          ) : null}
 
           <button
             type="submit"
@@ -232,7 +282,6 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
             실험 카드 저장
           </button>
         </div>
-      )}
     </form>
   );
 }

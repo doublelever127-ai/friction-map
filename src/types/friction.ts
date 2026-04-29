@@ -41,16 +41,24 @@ export type CreateFrictionLogInput = Pick<
   "text" | "emotion" | "domain" | "stage" | "intensity"
 >;
 
+export type FrictionExperimentStatus =
+  | "진행 전"
+  | "진행 중"
+  | "관찰 완료"
+  | "보류";
+
 export type FrictionExperiment = {
   id: string;
   frictionLogId: string;
   title: string;
   hypothesis: string;
   action: string;
-  durationDays: number;
+  durationDays: 3 | 5 | 7;
   successCriteria: string;
   failureInterpretation: string;
+  status: FrictionExperimentStatus;
   createdAt: string;
+  updatedAt: string;
 };
 
 export type CreateFrictionExperimentInput = Pick<
