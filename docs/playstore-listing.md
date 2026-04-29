@@ -180,3 +180,11 @@ https://doublelever127-ai.github.io/friction-map/privacy/
 ```
 
 배포 후 브라우저에서 직접 열어 공개 접근이 되는지 확인한 뒤 입력합니다.
+
+GitHub 저장소에서 Pages 설정이 필요하면 아래 경로를 확인합니다.
+
+```text
+Settings → Pages → Build and deployment → Source → GitHub Actions
+```
+
+워크플로는 `main`과 `v0.3-android-playstore` 브랜치 push에서 실행되도록 준비되어 있습니다.
