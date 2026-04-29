@@ -81,6 +81,12 @@ https://friction-map.example.com/privacy
 
 GitHub 저장소가 private이면 GitHub 문서 링크는 개인정보처리방침 URL로 적합하지 않습니다. 공개 접근 가능한 웹 URL을 준비해야 합니다.
 
+v0.3에서 준비한 GitHub Pages 배포 기준 권장 URL:
+
+```text
+https://doublelever127-ai.github.io/friction-map/privacy/
+```
+
 ## 8. 출시 전 다시 확인할 항목
 
 - Play Console Data Safety 질문의 최신 문구

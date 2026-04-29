@@ -170,3 +170,13 @@
 개인적인 내용을 꼭 적을 필요는 없습니다.
 가벼운 예시나 일상적인 상황으로 테스트해도 괜찮습니다.
 ```
+
+## 11. 개인정보처리방침 URL
+
+GitHub Pages 배포가 활성화되면 아래 URL을 Play Console 개인정보처리방침 입력란에 사용할 수 있습니다.
+
+```text
+https://doublelever127-ai.github.io/friction-map/privacy/
+```
+
+배포 후 브라우저에서 직접 열어 공개 접근이 되는지 확인한 뒤 입력합니다.
