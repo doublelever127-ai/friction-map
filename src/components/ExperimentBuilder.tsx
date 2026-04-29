@@ -191,10 +191,10 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
     >
       <div className="mb-5 flex flex-col gap-2 border-b border-slate-100 pb-5 dark:border-slate-800">
         <h2 className="text-2xl font-semibold text-slate-950 dark:text-slate-50">
-          작게 바꿔볼 방법 정하기
+          시도 카드 만들기
         </h2>
         <p className="text-sm leading-6 text-slate-600 dark:text-slate-400">
-          바로 해결하지 않아도 괜찮습니다. 다음에 덜 버겁게 해볼 작은
+          바로 해결하지 않아도 괜찮아요. 다음에 덜 버겁게 해볼 작은
           방법만 정합니다.
         </p>
       </div>
@@ -346,7 +346,7 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
         ) : null}
 
         <Button type="submit" className="w-full">
-          작게 바꿔보기 카드 만들기
+          시도 카드 만들기
         </Button>
       </div>
     </form>

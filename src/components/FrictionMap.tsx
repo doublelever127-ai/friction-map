@@ -127,7 +127,7 @@ export function FrictionMap({ logs }: FrictionMapProps) {
           마찰 지도
         </h2>
         <p className="text-sm leading-6 text-slate-600 dark:text-slate-400">
-          어느 쪽 일에서, 어느 순간에 자주 막히는지 보는 화면입니다.
+          어떤 일에서, 어떤 순간에 자주 막히는지 지도처럼 볼 수 있어요.
         </p>
       </div>
 
@@ -191,8 +191,8 @@ export function FrictionMap({ logs }: FrictionMapProps) {
 
       {logs.length === 0 ? (
         <SoftEmptyState
-          title="아직 지도가 비어 있습니다"
-          description="마찰 기록이 쌓이면 생활 영역과 행동 단계의 조합이 지도에 표시됩니다."
+          title="아직 지도가 비어 있어요"
+          description="막힌 순간을 하나 남기면 여기에 표시됩니다."
         />
       ) : (
         <>

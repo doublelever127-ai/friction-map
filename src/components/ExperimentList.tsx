@@ -68,7 +68,7 @@ export function ExperimentList({
   if (experiments.length === 0) {
     return (
       <SoftEmptyState
-        title="아직 작게 바꿔보기 카드가 없습니다"
+        title="아직 시도 카드가 없습니다"
         description="반복되는 막힘이 보이면, 다음에 덜 버겁게 해볼 작은 방법을 정해보세요."
         className="bg-white shadow-sm dark:bg-slate-900"
       />

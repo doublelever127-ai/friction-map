@@ -19,18 +19,18 @@ const navItems: Array<{
   },
   {
     id: "map",
-    label: "보기",
-    description: "자주 위치",
+    label: "지도",
+    description: "막힌 위치",
   },
   {
     id: "experiment",
-    label: "바꾸기",
+    label: "시도",
     description: "작은 방법",
   },
   {
     id: "manage",
-    label: "관리",
-    description: "기록 설정",
+    label: "내 기록",
+    description: "정리하기",
   },
 ];
 

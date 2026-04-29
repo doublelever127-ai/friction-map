@@ -37,7 +37,7 @@ import type {
 } from "@/types/friction";
 
 const logSavedFeedbackMessage =
-  "기록이 지도에 표시됐어요. 비슷한 순간이 쌓이면 자주 막히는 위치가 보입니다.";
+  "기록됐어요. 지도에 표시됐습니다.";
 
 const screenIntros: Record<
   AppTab,
@@ -51,25 +51,25 @@ const screenIntros: Record<
     eyebrow: "남기기",
     title: "오늘 어디서 막혔나요?",
     description:
-      "미뤘던 일, 부담스러운 답장, 시작하지 못한 순간을 가볍게 한 줄로 남겨보세요.",
+      "미뤘던 일, 부담스러운 답장, 시작하지 못한 순간을 한 줄만 남겨보세요.",
   },
   map: {
-    eyebrow: "보기",
+    eyebrow: "지도",
     title: "자주 막힌 위치",
     description:
-      "기록이 어느 쪽 일에서, 어느 순간에 자주 나타나는지 한 화면에서 살펴봅니다.",
+      "어떤 일에서, 어떤 순간에 자주 막히는지 지도처럼 볼 수 있어요.",
   },
   experiment: {
-    eyebrow: "바꾸기",
+    eyebrow: "시도",
     title: "작게 바꿔보기",
     description:
-      "바로 해결하지 않아도 괜찮습니다. 다음에 덜 버겁게 해볼 작은 방법을 정합니다.",
+      "바로 해결하지 않아도 괜찮아요. 다음에 덜 버겁게 해볼 작은 방법을 정해보세요.",
   },
   manage: {
-    eyebrow: "관리",
-    title: "기록과 설정",
+    eyebrow: "내 기록",
+    title: "내 기록",
     description:
-      "최근 기록을 다시 보고, 내 기록을 삭제하거나 파일로 저장할 수 있습니다.",
+      "내가 남긴 기록을 확인하고 정리할 수 있어요. 기록은 이 기기 안에 저장됩니다.",
   },
 };
 
@@ -306,7 +306,16 @@ export default function Home() {
                   aria-live="polite"
                   className="mt-5 rounded-xl border border-teal-100 bg-teal-50 px-4 py-3 text-sm leading-6 text-teal-900 shadow-sm shadow-teal-100/50 dark:border-teal-900 dark:bg-teal-950/70 dark:text-teal-100 dark:shadow-none"
                 >
-                  {logFeedbackMessage}
+                  <p>{logFeedbackMessage}</p>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => setActiveTab("map")}
+                    className="mt-3 w-full bg-white/80 dark:bg-slate-900/80 sm:w-auto"
+                  >
+                    지도에서 보기
+                  </Button>
                 </div>
               ) : null}
             </SectionCard>
@@ -319,7 +328,7 @@ export default function Home() {
                   description="남긴 막힘"
                 />
                 <StatCard
-                  label="카드"
+                  label="시도"
                   value={`${experiments.length}개`}
                   description="작게 바꾸기"
                 />
@@ -344,10 +353,10 @@ export default function Home() {
               title="자주 막힌 위치"
               description={
                 hasOneLog
-                  ? "첫 기록이 지도에 표시되었습니다. 아직 판단하지 말고 어느 위치에 놓였는지 가볍게 확인해보세요."
+                  ? "첫 기록이 지도에 표시되었습니다. 아직은 관찰을 시작한 단계예요."
                   : hasPatternReadyLogs
-                    ? "기록이 쌓이기 시작했습니다. 반복 요약과 마찰 지도에서 자주 막힌 위치를 살펴보세요."
-                    : "기록이 쌓이면 어느 쪽 일에서, 어느 순간에 자주 막히는지 보입니다."
+                    ? "반복해서 보이는 위치를 살펴보세요. 바로 고치지 않아도 괜찮습니다."
+                    : "기록이 쌓이면 어떤 일에서, 어떤 순간에 자주 막히는지 보입니다."
               }
             />
 
@@ -355,25 +364,24 @@ export default function Home() {
 
             {hasOneLog ? (
               <div className="rounded-xl border border-teal-100 bg-teal-50 px-4 py-3 text-sm leading-6 text-teal-900 dark:border-teal-900 dark:bg-teal-950/70 dark:text-teal-100">
-                첫 마찰이 지도에 표시됐어요. 비슷한 기록이 쌓이면 반복되는
-                위치가 더 선명해집니다. 지금은 패턴을 정하는 단계가 아니라
-                관찰을 시작하는 단계입니다.
+                아직은 관찰을 시작한 단계예요. 비슷한 기록이 쌓이면 자주
+                막히는 위치가 더 선명해집니다.
               </div>
             ) : null}
 
             {hasPatternReadyLogs ? (
               <div className="rounded-xl border border-teal-100 bg-teal-50 px-4 py-3 text-sm leading-6 text-teal-900 dark:border-teal-900 dark:bg-teal-950/70 dark:text-teal-100">
-                기록이 3개 이상 쌓였습니다. 자주 보이는 생활 영역이나 마찰
-                단계를 골라 작게 바꿔볼 방법으로 이어가볼 수 있습니다.
+                반복해서 보이는 위치를 살펴보세요. 바로 고치지 않아도
+                괜찮습니다.
               </div>
             ) : null}
-
-            <WeeklyReport logs={logs} />
-            <FrictionSummary logs={logs} />
 
             <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900 dark:shadow-none sm:p-6">
               <FrictionMap logs={logs} />
             </section>
+
+            <FrictionSummary logs={logs} />
+            <WeeklyReport logs={logs} />
           </section>
         ) : null}
 
@@ -381,27 +389,37 @@ export default function Home() {
           <section className="grid min-w-0 gap-5">
             <SectionHeader
               title="작게 바꿔보기"
-              description="바로 해결하지 않아도 괜찮습니다. 자주 막히는 순간 하나를 골라, 다음에 덜 버겁게 해볼 작은 방법을 정해보세요."
+              description="바로 해결하지 않아도 괜찮아요. 다음에 덜 버겁게 해볼 작은 방법을 정해보세요."
             />
 
             {hasNoLogs ? (
               <div className="rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-sm leading-6 text-slate-600 shadow-sm dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-300">
-                작게 바꿔보기는 기록 하나를 고른 뒤 시작할 수 있습니다. 먼저
-                오늘 막혔던 순간을 한 줄로 남겨보세요.
+                <p>
+                  아직 시도할 기록이 없어요. 먼저 막힌 순간을 하나
+                  남겨보세요.
+                </p>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => setActiveTab("record")}
+                  className="mt-3 w-full sm:w-auto"
+                >
+                  남기러 가기
+                </Button>
               </div>
             ) : null}
 
             {hasEarlyExperimentLogs ? (
               <div className="rounded-xl border border-teal-100 bg-teal-50 px-4 py-3 text-sm leading-6 text-teal-900 dark:border-teal-900 dark:bg-teal-950/70 dark:text-teal-100">
-                지금 바로 작게 바꿔봐도 되고, 비슷한 기록이 조금 더 쌓인 뒤
-                골라도 괜찮습니다.
+                지금 바로 시도해봐도 되고, 비슷한 기록이 조금 더 쌓인 뒤
+                골라도 괜찮아요.
               </div>
             ) : null}
 
             {hasPatternReadyLogs ? (
               <div className="rounded-xl border border-teal-100 bg-teal-50 px-4 py-3 text-sm leading-6 text-teal-900 dark:border-teal-900 dark:bg-teal-950/70 dark:text-teal-100">
-                반복 요약이나 마찰 지도에서 자주 막힌 위치를 살펴보고, 그중
-                하나를 다음에 덜 버겁게 해볼 방법으로 바꿔볼 수 있습니다.
+                지도에서 자주 보이는 위치를 골라 작게 시도해볼 수 있어요.
               </div>
             ) : null}
 
@@ -424,13 +442,13 @@ export default function Home() {
         {activeTab === "manage" ? (
           <section className="grid min-w-0 gap-5">
             <SectionHeader
-              title="최근 기록"
-              description="방금 남긴 기록과 이전 기록을 조용히 다시 훑어볼 수 있습니다."
+              title="전체 기록"
+              description="내가 남긴 기록을 확인하고 정리할 수 있어요."
             />
             <FrictionList logs={logs} onDelete={handleDeleteLog} />
 
             <SectionHeader
-              title="설정과 개인정보"
+              title="기록 관리"
               description="기록 관리, 내보내기, 개인정보 안내를 한곳에서 확인할 수 있습니다."
             />
             <SettingsPanel
