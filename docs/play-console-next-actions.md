@@ -124,6 +124,11 @@ C:\Users\ilove\OneDrive\문서\New project 3\friction-map\android\app\build\outp
 주의:
 
 - Play Console 업로드 중 서명 관련 오류가 나면 Android Studio에서 `Generate Signed Bundle / APK` 흐름으로 업로드 키를 만들어야 합니다.
+- 또는 아래 스크립트로 서명된 AAB를 만들 수 있습니다.
+  ```powershell
+  cd "C:\Users\ilove\OneDrive\문서\New project 3\friction-map"
+  powershell -ExecutionPolicy Bypass -File .\scripts\create-signed-aab.ps1
+  ```
 - 키스토어 비밀번호는 사용자가 직접 정하고 안전한 곳에 보관해야 합니다.
 - 키스토어 파일과 비밀번호는 Git에 커밋하지 않습니다.
 

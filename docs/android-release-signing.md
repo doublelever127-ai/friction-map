@@ -33,6 +33,26 @@ android/keystore.properties
 
 ## 3. 키스토어 만들기
 
+가장 쉬운 방법은 아래 준비 스크립트를 사용하는 것입니다.
+
+```powershell
+cd "C:\Users\ilove\OneDrive\문서\New project 3\friction-map"
+powershell -ExecutionPolicy Bypass -File .\scripts\create-signed-aab.ps1
+```
+
+이 스크립트는 다음 작업을 한 번에 처리합니다.
+
+- upload key 키스토어 생성
+- `android/keystore.properties` 생성
+- `pnpm.cmd build`
+- `pnpm.cmd exec cap sync android`
+- `gradlew.bat bundleRelease`
+- `jarsigner` 서명 확인
+
+스크립트 실행 중 비밀번호를 물어보면 직접 입력합니다. 비밀번호는 채팅이나 문서에 적지 말고 안전한 곳에 따로 보관합니다.
+
+아래는 수동으로 진행할 때의 명령입니다.
+
 PowerShell에서 아래 명령을 실행합니다.
 
 ```powershell
@@ -116,4 +136,3 @@ jar verified.
 - 개인정보처리방침 URL 확인
 - Data Safety 작성
 - 폐쇄 테스트 테스터 이메일 준비
-
