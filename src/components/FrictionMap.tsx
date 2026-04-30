@@ -159,230 +159,234 @@ function getPrimaryEntry(
 
 function FrictionMapFocus({
   entry,
-  latestLog,
   totalCount,
 }: {
   entry: HeatmapEntry;
-  latestLog: FrictionLog | null;
   totalCount: number;
 }) {
   const isFirstPoint = totalCount === 1;
 
   return (
-    <section className="overflow-hidden rounded-[1.75rem] border border-[var(--accent)]/25 bg-[radial-gradient(circle_at_18%_18%,rgba(111,143,122,0.22),transparent_12rem),linear-gradient(145deg,var(--accent-soft),var(--surface))] p-5">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <section className="overflow-hidden rounded-[1.5rem] border border-[var(--accent)]/25 bg-[radial-gradient(circle_at_18%_18%,rgba(111,143,122,0.2),transparent_9rem),linear-gradient(145deg,var(--accent-soft),var(--surface))] p-3.5">
+      <div className="flex items-center justify-between gap-3">
         <Badge variant="status">
           {isFirstPoint ? "방금 찍힌 위치" : "가장 자주 보이는 위치"}
         </Badge>
-        <span className="rounded-full bg-[var(--surface)] px-3 py-1 text-xs font-semibold text-[var(--accent-strong)]">
+        <span className="rounded-full bg-[var(--surface)] px-2.5 py-1 text-xs font-semibold text-[var(--accent-strong)]">
           {entry.count}회
         </span>
       </div>
 
-      <div className="mt-5">
-        <p className="text-sm font-medium text-[var(--accent-strong)]">
-          {isFirstPoint
-            ? "이번 기록은 여기에서 막혔어요"
-            : "지금 가장 먼저 볼 위치예요"}
-        </p>
-        <h3 className="mt-2 text-3xl font-semibold leading-tight text-[var(--foreground)]">
-          {entry.domain} · {shortStageLabels[entry.stage]}
-        </h3>
-        <p className="mt-3 text-sm leading-6 text-[var(--text-muted)]">
-          {isFirstPoint
-            ? "아직 패턴을 판단하는 단계가 아니라, 지도에 첫 점을 찍은 상태입니다."
-            : `전체 ${totalCount}개 기록 중 이 위치가 ${entry.count}번 보였습니다.`}
-        </p>
+      <div className="mt-3 grid grid-cols-[5rem_1fr] items-center gap-3">
+        <div
+          className="relative flex h-20 w-20 shrink-0 items-center justify-center rounded-[1.35rem] border border-[var(--accent)]/25 bg-[linear-gradient(145deg,var(--surface),var(--accent-soft))]"
+          aria-hidden="true"
+        >
+          <span className="absolute left-2 top-2 h-2 w-2 rounded-full bg-[var(--accent)]/35" />
+          <span className="absolute bottom-3 right-3 h-3 w-3 rounded-full bg-[var(--accent)]/25" />
+          <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--accent)] text-sm font-semibold text-white shadow-[0_12px_24px_rgba(82,111,90,0.22)] dark:text-[#171512]">
+            여기
+          </span>
+        </div>
+
+        <div className="min-w-0">
+          <p className="text-xs font-medium leading-5 text-[var(--accent-strong)]">
+            {isFirstPoint
+              ? "이번 기록은 여기에서 막혔어요"
+              : "지금 먼저 볼 위치예요"}
+          </p>
+          <h3 className="mt-0.5 text-[2rem] font-semibold leading-tight tracking-normal text-[var(--foreground)]">
+            {entry.domain} · {shortStageLabels[entry.stage]}
+          </h3>
+          <p className="mt-1 text-xs leading-5 text-[var(--text-muted)]">
+            {isFirstPoint
+              ? "지도에 첫 점이 찍혔어요."
+              : `전체 ${totalCount}개 중 ${entry.count}번 보였어요.`}
+          </p>
+        </div>
       </div>
 
-      <div className="mt-5 grid grid-cols-[1fr_auto_1fr] items-stretch gap-2">
-        <div className="rounded-2xl border border-[var(--line-soft)] bg-[var(--surface)] p-4">
-          <p className="text-xs text-[var(--text-muted)]">어느 쪽 일?</p>
-          <p className="mt-2 text-lg font-semibold text-[var(--foreground)]">
+      <div className="mt-3 grid grid-cols-[1fr_auto_1fr] items-stretch gap-2">
+        <div className="rounded-2xl border border-[var(--line-soft)] bg-[var(--surface)] p-2.5">
+          <p className="text-xs text-[var(--text-muted)]">어느 쪽?</p>
+          <p className="mt-0.5 text-lg font-semibold text-[var(--foreground)]">
             {entry.domain}
           </p>
         </div>
         <div className="flex items-center">
-          <span className="h-0.5 w-5 rounded-full bg-[var(--accent)]/45" />
+          <span className="h-0.5 w-4 rounded-full bg-[var(--accent)]/45" />
         </div>
-        <div className="rounded-2xl border border-[var(--line-soft)] bg-[var(--surface)] p-4">
-          <p className="text-xs text-[var(--text-muted)]">어디에서 막힘?</p>
-          <p className="mt-2 text-lg font-semibold text-[var(--foreground)]">
+        <div className="rounded-2xl border border-[var(--line-soft)] bg-[var(--surface)] p-2.5">
+          <p className="text-xs text-[var(--text-muted)]">어디서?</p>
+          <p className="mt-0.5 text-lg font-semibold text-[var(--foreground)]">
             {shortStageLabels[entry.stage]}
           </p>
         </div>
       </div>
 
-      <div className="mt-4 rounded-2xl border border-[var(--line-soft)] bg-[var(--surface)] px-4 py-3">
-        <p className="text-xs font-medium text-[var(--text-muted)]">
-          지도 해석
-        </p>
-        <p className="mt-1 text-sm leading-6 text-[var(--foreground)]">
-          {stageGuide[entry.stage]}
-        </p>
-        {isFirstPoint && latestLog ? (
-          <p className="mt-3 border-t border-[var(--line-soft)] pt-3 text-sm leading-6 text-[var(--text-muted)]">
-            “{latestLog.text}”
-          </p>
-        ) : null}
-      </div>
+      <p className="mt-2 rounded-2xl border border-[var(--line-soft)] bg-[var(--surface)] px-3 py-2 text-xs leading-5 text-[var(--foreground)]">
+        {stageGuide[entry.stage]}
+      </p>
     </section>
+  );
+}
+
+function CompactTopLocations({
+  logs,
+  topEntries,
+}: {
+  logs: FrictionLog[];
+  topEntries: HeatmapEntry[];
+}) {
+  if (logs.length === 1) {
+    return null;
+  }
+
+  return (
+    <div className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      {topEntries.map((entry, index) => (
+        <div
+          key={`${entry.domain}-${entry.stage}`}
+          className="min-w-[9rem] rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent-soft)] px-3 py-3"
+          title={`${entry.domain} × ${entry.stage}: ${entry.count}회`}
+        >
+          <p className="text-xs font-semibold text-[var(--accent-strong)]">
+            {index + 1}번째 위치
+          </p>
+          <p className="mt-1 text-sm font-semibold text-[var(--foreground)]">
+            {entry.domain} · {shortStageLabels[entry.stage]}
+          </p>
+          <p className="mt-0.5 text-xs text-[var(--text-muted)]">
+            {entry.count}회
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function FullHeatmapTable({ logs }: { logs: FrictionLog[] }) {
+  return (
+    <details className="group rounded-2xl border border-[var(--line-soft)] bg-[var(--surface-soft)]">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-3.5 py-2.5 text-sm font-semibold text-[var(--foreground)]">
+        전체 지도 표 보기
+        <span className="text-xs font-medium text-[var(--text-muted)] group-open:hidden">
+          펼치기
+        </span>
+        <span className="hidden text-xs font-medium text-[var(--text-muted)] group-open:inline">
+          접기
+        </span>
+      </summary>
+
+      <div className="border-t border-[var(--line-soft)] p-4">
+        <div className="mb-4 flex flex-wrap gap-2">
+          {heatmapLegend.map((item) => (
+            <Badge key={item.count} variant="subtle">
+              {item.count}: {item.label}
+            </Badge>
+          ))}
+        </div>
+        <p className="mb-3 text-xs leading-5 text-[var(--text-muted)]">
+          표는 가로로 밀어 더 볼 수 있습니다.
+        </p>
+
+        <div className="min-w-0 max-w-full overflow-hidden rounded-2xl [contain:layout_paint]">
+          <div
+            className="w-full max-w-full overflow-x-auto overscroll-x-contain pb-1"
+            role="region"
+            aria-label="마찰 지도 전체 표"
+            tabIndex={0}
+          >
+            <table className="w-[820px] max-w-none border-separate border-spacing-2 text-left">
+              <caption className="sr-only">
+                어느 쪽 일과 어느 순간에 막혔는지 보여주는 기록 개수
+              </caption>
+              <thead>
+                <tr>
+                  <th
+                    scope="col"
+                    className="w-24 px-2 py-2 text-xs font-medium text-[var(--text-muted)]"
+                  >
+                    영역
+                  </th>
+                  {frictionStageOptions.map((stage) => (
+                    <th
+                      key={stage}
+                      scope="col"
+                      title={stage}
+                      className="w-24 px-2 py-2 text-center text-xs font-medium leading-5 text-[var(--text-muted)]"
+                    >
+                      <span aria-hidden="true">{shortStageLabels[stage]}</span>
+                      <span className="sr-only">{stage}</span>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {frictionDomainOptions.map((domain) => (
+                  <tr key={domain}>
+                    <th
+                      scope="row"
+                      className="px-2 py-2 text-sm font-semibold text-[var(--foreground)]"
+                    >
+                      {domain}
+                    </th>
+                    {frictionStageOptions.map((stage) => {
+                      const count = getHeatmapCount(logs, domain, stage);
+                      const level = getHeatmapLevel(count);
+
+                      return (
+                        <td key={`${domain}-${stage}`} className="p-0">
+                          <div
+                            role="img"
+                            className={`flex h-16 min-w-22 flex-col items-center justify-center rounded-xl border text-center transition hover:scale-[1.02] ${level.className}`}
+                            aria-label={`${domain} × ${stage}: ${count}회`}
+                            title={`${domain} × ${stage}: ${count}회`}
+                          >
+                            <span className="text-xl font-semibold leading-6">
+                              {level.label}
+                            </span>
+                            <span className="mt-0.5 text-[11px] font-medium leading-4 opacity-75">
+                              {level.helper}
+                            </span>
+                          </div>
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </details>
   );
 }
 
 export function FrictionMap({ logs }: FrictionMapProps) {
   const topEntries = getTopHeatmapEntries(logs);
-  const latestLog = getLatestLog(logs);
   const primaryEntry = getPrimaryEntry(logs, topEntries);
 
+  if (logs.length === 0 || !primaryEntry) {
+    return (
+      <SoftEmptyState
+        title="아직 지도가 비어 있어요"
+        description="막힌 순간을 하나 남기면 여기에 첫 위치가 표시됩니다."
+      />
+    );
+  }
+
   return (
-    <div className="flex min-w-0 flex-col gap-6">
-      {logs.length === 0 || !primaryEntry ? (
-        <SoftEmptyState
-          title="아직 지도가 비어 있어요"
-          description="막힌 순간을 하나 남기면 여기에 첫 위치가 표시됩니다."
-        />
-      ) : (
-        <>
-          <FrictionMapFocus
-            entry={primaryEntry}
-            latestLog={latestLog}
-            totalCount={logs.length}
-          />
+    <div className="flex min-w-0 flex-col gap-3">
+      <FrictionMapFocus
+        entry={primaryEntry}
+        totalCount={logs.length}
+      />
 
-          <section className="grid gap-3">
-            <div>
-              <h3 className="text-base font-semibold text-[var(--foreground)]">
-                자주 막힌 위치
-              </h3>
-              <p className="mt-1 text-sm leading-6 text-[var(--text-muted)]">
-                기록이 쌓이면 먼저 살펴볼 만한 위치가 순서대로 보입니다.
-              </p>
-            </div>
+      <CompactTopLocations logs={logs} topEntries={topEntries} />
 
-            {logs.length === 1 ? (
-              <div className="rounded-2xl border border-[var(--line-soft)] bg-[var(--surface-soft)] px-4 py-3 text-sm leading-6 text-[var(--text-muted)]">
-                지금은 첫 위치만 찍혀 있어요. 비슷한 기록이 쌓이면 다른
-                위치와 비교해서 볼 수 있습니다.
-              </div>
-            ) : (
-              <div className="grid min-w-0 gap-3 sm:grid-cols-3">
-                {topEntries.map((entry, index) => (
-                  <div
-                    key={`${entry.domain}-${entry.stage}`}
-                    className="min-w-0 overflow-hidden rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent-soft)] p-4"
-                    title={`${entry.domain} × ${entry.stage}: ${entry.count}회`}
-                  >
-                    <Badge variant="status">{index + 1}번째 위치</Badge>
-                    <p className="mt-3 text-sm font-semibold text-[var(--foreground)]">
-                      {entry.domain} × {shortStageLabels[entry.stage]}
-                    </p>
-                    <p className="mt-1 text-sm text-[var(--text-muted)]">
-                      {entry.count}회 보인 위치입니다.
-                    </p>
-                  </div>
-                ))}
-              </div>
-            )}
-          </section>
-
-          <div className="flex flex-col gap-3 rounded-2xl border border-[var(--line-soft)] bg-[var(--surface-soft)] p-4">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className="text-sm font-medium text-[var(--foreground)]">
-                전체 지도 범례
-              </p>
-              <p className="text-xs text-[var(--text-muted)]">
-                저장된 기록 {logs.length}개
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {heatmapLegend.map((item) => (
-                <Badge key={item.count} variant="subtle">
-                  {item.count}: {item.label}
-                </Badge>
-              ))}
-            </div>
-            <p className="text-xs leading-5 text-[var(--text-muted)]">
-              숫자가 높을수록 같은 위치에서 더 자주 막혔다는 뜻입니다.
-            </p>
-          </div>
-
-          <p className="rounded-2xl border border-[var(--line-soft)] bg-[var(--surface-soft)] px-3 py-2 text-xs leading-5 text-[var(--text-muted)] sm:hidden">
-            전체 표는 가로로 밀어 더 볼 수 있습니다.
-          </p>
-          <div className="min-w-0 max-w-full overflow-hidden rounded-2xl [contain:layout_paint]">
-            <div
-              className="w-full max-w-full overflow-x-auto overscroll-x-contain pb-1"
-              role="region"
-              aria-label="마찰 지도 전체 표"
-              tabIndex={0}
-            >
-              <table className="w-[820px] max-w-none border-separate border-spacing-2 text-left">
-                <caption className="sr-only">
-                  어느 쪽 일과 어느 순간에 막혔는지 보여주는 기록 개수
-                </caption>
-                <thead>
-                  <tr>
-                    <th
-                      scope="col"
-                      className="w-24 px-2 py-2 text-xs font-medium text-[var(--text-muted)]"
-                    >
-                      영역
-                    </th>
-                    {frictionStageOptions.map((stage) => (
-                      <th
-                        key={stage}
-                        scope="col"
-                        title={stage}
-                        className="w-24 px-2 py-2 text-center text-xs font-medium leading-5 text-[var(--text-muted)]"
-                      >
-                        <span aria-hidden="true">
-                          {shortStageLabels[stage]}
-                        </span>
-                        <span className="sr-only">{stage}</span>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {frictionDomainOptions.map((domain) => (
-                    <tr key={domain}>
-                      <th
-                        scope="row"
-                        className="px-2 py-2 text-sm font-semibold text-[var(--foreground)]"
-                      >
-                        {domain}
-                      </th>
-                      {frictionStageOptions.map((stage) => {
-                        const count = getHeatmapCount(logs, domain, stage);
-                        const level = getHeatmapLevel(count);
-
-                        return (
-                          <td key={`${domain}-${stage}`} className="p-0">
-                            <div
-                              role="img"
-                              className={`flex h-16 min-w-22 flex-col items-center justify-center rounded-xl border text-center transition hover:scale-[1.02] ${level.className}`}
-                              aria-label={`${domain} × ${stage}: ${count}회`}
-                              title={`${domain} × ${stage}: ${count}회`}
-                            >
-                              <span className="text-xl font-semibold leading-6">
-                                {level.label}
-                              </span>
-                              <span className="mt-0.5 text-[11px] font-medium leading-4 opacity-75">
-                                {level.helper}
-                              </span>
-                            </div>
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </>
-      )}
+      <FullHeatmapTable logs={logs} />
     </div>
   );
 }

@@ -311,12 +311,30 @@ export default function Home() {
           <ThemeToggle />
         </header>
 
-        <section className="overflow-hidden rounded-[2rem] border border-[var(--line-soft)] bg-[linear-gradient(145deg,var(--surface),var(--surface-soft))] p-5 shadow-[var(--shadow-float)] backdrop-blur sm:p-7">
+        <section
+          className={`overflow-hidden border border-[var(--line-soft)] bg-[linear-gradient(145deg,var(--surface),var(--surface-soft))] shadow-[var(--shadow-float)] backdrop-blur ${
+            activeTab === "map"
+              ? "rounded-[1.25rem] p-3 sm:p-4"
+              : "rounded-[2rem] p-5 sm:p-7"
+          }`}
+        >
           <Badge variant="status">{currentIntro.eyebrow}</Badge>
-          <h1 className="mt-4 text-3xl font-semibold leading-tight text-[var(--foreground)] sm:text-4xl">
+          <h1
+            className={`font-semibold leading-tight text-[var(--foreground)] ${
+              activeTab === "map"
+                ? "mt-2 text-xl sm:text-2xl"
+                : "mt-4 text-3xl sm:text-4xl"
+            }`}
+          >
             {currentIntro.title}
           </h1>
-          <p className="mt-3 text-base leading-7 text-[var(--text-muted)]">
+          <p
+            className={`text-[var(--text-muted)] ${
+              activeTab === "map"
+                ? "mt-1.5 text-sm leading-5"
+                : "mt-3 text-base leading-7"
+            }`}
+          >
             {currentIntro.description}
           </p>
 
@@ -390,15 +408,27 @@ export default function Home() {
         ) : null}
 
         {activeTab === "map" ? (
-          <section className="grid min-w-0 max-w-full gap-5 overflow-hidden">
+          <section className="grid min-w-0 max-w-full gap-3 overflow-hidden">
             {hasNoLogs ? <SampleFrictionPreview /> : null}
 
-            <section className="min-w-0 overflow-hidden rounded-3xl border border-[var(--line-soft)] bg-[var(--surface)] p-5 shadow-[var(--shadow-soft)] sm:p-6">
+            <section className="min-w-0 overflow-hidden rounded-[1.5rem] border border-[var(--line-soft)] bg-[var(--surface)] p-3 shadow-[var(--shadow-soft)] sm:p-4">
               <FrictionMap logs={logs} />
             </section>
 
-            <FrictionSummary logs={logs} />
-            <WeeklyReport logs={logs} />
+            {logs.length > 0 ? (
+              <details className="rounded-2xl border border-[var(--line-soft)] bg-[var(--surface)] shadow-[var(--shadow-soft)]">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold text-[var(--foreground)]">
+                  요약과 주간 리포트 보기
+                  <span className="text-xs font-medium text-[var(--text-muted)]">
+                    선택
+                  </span>
+                </summary>
+                <div className="grid gap-5 border-t border-[var(--line-soft)] p-4">
+                  <FrictionSummary logs={logs} />
+                  <WeeklyReport logs={logs} />
+                </div>
+              </details>
+            ) : null}
           </section>
         ) : null}
 

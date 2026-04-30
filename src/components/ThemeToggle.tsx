@@ -69,7 +69,7 @@ export function ThemeToggle() {
       type="button"
       onClick={handleToggleTheme}
       aria-pressed={isDark}
-      className="h-10 rounded-2xl border border-[var(--line-soft)] bg-[var(--surface)] px-3 text-sm font-semibold text-[var(--text-muted)] shadow-[var(--shadow-soft)] transition hover:bg-[var(--surface-muted)] hover:text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/40 focus:ring-offset-2 focus:ring-offset-[var(--background)]"
+      className="h-10 shrink-0 whitespace-nowrap rounded-2xl border border-[var(--line-soft)] bg-[var(--surface)] px-3 text-sm font-semibold text-[var(--text-muted)] shadow-[var(--shadow-soft)] transition hover:bg-[var(--surface-muted)] hover:text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/40 focus:ring-offset-2 focus:ring-offset-[var(--background)]"
     >
       {isDark ? "밝은 화면" : "어두운 화면"}
     </button>
