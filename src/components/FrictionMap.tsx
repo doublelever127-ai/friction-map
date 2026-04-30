@@ -27,6 +27,11 @@ type HeatmapEntry = {
   count: number;
 };
 
+type MapVector = {
+  x: number;
+  y: number;
+};
+
 const shortStageLabels: Record<FrictionStage, string> = {
   "시작 전 마찰": "시작 전",
   "전환 마찰": "전환",
@@ -53,6 +58,27 @@ const heatmapLegend = [
   { count: "2~3", label: "자주 보임" },
   { count: "4 이상", label: "반복됨" },
 ] as const;
+
+const domainAnchors: Record<FrictionDomain, MapVector> = {
+  일: { x: 24, y: 25 },
+  공부: { x: 50, y: 20 },
+  건강: { x: 76, y: 30 },
+  관계: { x: 75, y: 55 },
+  돈: { x: 52, y: 72 },
+  집안일: { x: 24, y: 68 },
+  디지털: { x: 23, y: 47 },
+  창작: { x: 50, y: 47 },
+};
+
+const stageOffsets: Record<FrictionStage, MapVector> = {
+  "시작 전 마찰": { x: -7, y: -8 },
+  "전환 마찰": { x: 4, y: -8 },
+  "지속 마찰": { x: 7, y: 0 },
+  "완성 마찰": { x: 4, y: 8 },
+  "회복 마찰": { x: -5, y: 8 },
+  "관계 마찰": { x: -8, y: 1 },
+  "결정 마찰": { x: 0, y: 0 },
+};
 
 function getCellClassName(count: number): string {
   if (count === 0) {
@@ -162,18 +188,79 @@ function getPrimaryEntry(
 }
 
 function getMapPoint(entry: HeatmapEntry) {
-  const stageIndex = frictionStageOptions.indexOf(entry.stage);
-  const domainIndex = frictionDomainOptions.indexOf(entry.domain);
-  const stageRange = frictionStageOptions.length - 1;
-  const domainRange = frictionDomainOptions.length - 1;
+  const anchor = domainAnchors[entry.domain];
+  const offset = stageOffsets[entry.stage];
 
   return {
-    left: 12 + (stageIndex / stageRange) * 76,
-    top: 14 + (domainIndex / domainRange) * 72,
+    left: Math.min(90, Math.max(10, anchor.x + offset.x)),
+    top: Math.min(86, Math.max(14, anchor.y + offset.y)),
   };
 }
 
-function MiniFrictionMap({
+function MapBackground() {
+  return (
+    <svg
+      className="absolute inset-0 h-full w-full"
+      viewBox="0 0 100 100"
+      aria-hidden="true"
+      preserveAspectRatio="none"
+    >
+      <defs>
+        <linearGradient id="mapWater" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0%" stopColor="var(--accent-soft)" />
+          <stop offset="100%" stopColor="var(--surface)" />
+        </linearGradient>
+        <radialGradient id="mapLand" cx="50%" cy="48%" r="62%">
+          <stop offset="0%" stopColor="var(--surface)" />
+          <stop offset="100%" stopColor="var(--accent-soft)" />
+        </radialGradient>
+      </defs>
+
+      <rect width="100" height="100" rx="18" fill="url(#mapWater)" />
+      <path
+        d="M17 26 C24 11 42 14 49 24 C57 12 79 17 82 35 C92 44 85 63 72 65 C67 82 43 86 36 72 C22 79 10 67 15 53 C6 43 9 30 17 26 Z"
+        fill="url(#mapLand)"
+        stroke="var(--accent)"
+        strokeOpacity="0.18"
+        strokeWidth="1.2"
+      />
+      <path
+        d="M18 60 C31 50 35 37 48 42 C60 47 63 28 79 33"
+        fill="none"
+        stroke="var(--coral)"
+        strokeDasharray="2.5 3.5"
+        strokeLinecap="round"
+        strokeOpacity="0.34"
+        strokeWidth="1.8"
+      />
+      <path
+        d="M24 28 C34 37 46 25 52 39 C58 53 72 48 76 58"
+        fill="none"
+        stroke="var(--accent)"
+        strokeDasharray="1.5 4"
+        strokeLinecap="round"
+        strokeOpacity="0.28"
+        strokeWidth="1.4"
+      />
+      {frictionDomainOptions.map((domain) => {
+        const anchor = domainAnchors[domain];
+
+        return (
+          <circle
+            key={domain}
+            cx={anchor.x}
+            cy={anchor.y}
+            r="8.5"
+            fill="var(--surface)"
+            opacity="0.58"
+          />
+        );
+      })}
+    </svg>
+  );
+}
+
+function VisualFrictionMap({
   entries,
   primaryEntry,
 }: {
@@ -182,13 +269,17 @@ function MiniFrictionMap({
 }) {
   return (
     <div
-      className="relative mt-3 h-36 overflow-hidden rounded-[1.35rem] border border-[var(--accent)]/25 bg-[radial-gradient(circle_at_18%_20%,rgba(111,143,122,0.22),transparent_4.5rem),radial-gradient(circle_at_78%_72%,rgba(201,130,115,0.14),transparent_5rem),linear-gradient(145deg,var(--surface),var(--accent-soft))]"
+      className="relative mt-3 h-56 overflow-hidden rounded-[1.35rem] border border-[var(--accent)]/25 bg-[var(--surface-soft)]"
       role="img"
-      aria-label={`마찰 지도에서 ${primaryEntry.domain} ${shortStageLabels[primaryEntry.stage]} 위치가 표시되어 있습니다.`}
+      aria-label={`마찰 지도에서 ${primaryEntry.domain} ${shortStageLabels[primaryEntry.stage]} 위치가 핀으로 표시되어 있습니다.`}
     >
-      <div className="absolute inset-3 rounded-[1rem] border border-dashed border-[var(--accent)]/20" />
-      <div className="absolute left-4 right-4 top-1/2 h-px bg-[var(--accent)]/15" />
-      <div className="absolute bottom-4 top-4 left-1/2 w-px bg-[var(--accent)]/15" />
+      <MapBackground />
+      <div className="absolute left-3 top-3 rounded-full border border-[var(--line-soft)] bg-[var(--surface)]/90 px-2.5 py-1 text-[11px] font-semibold text-[var(--accent-strong)] shadow-[var(--shadow-soft)]">
+        막힌 위치 지도
+      </div>
+      <div className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full border border-[var(--line-soft)] bg-[var(--surface)]/90 text-xs font-semibold text-[var(--foreground)] shadow-[var(--shadow-soft)]">
+        N
+      </div>
 
       {entries.map((entry) => {
         const point = getMapPoint(entry);
@@ -207,27 +298,32 @@ function MiniFrictionMap({
             title={`${entry.domain} × ${entry.stage}: ${entry.count}회`}
           >
             <span
-              className={`flex items-center justify-center rounded-full border-2 border-[var(--surface)] bg-[var(--accent)] text-center text-[11px] font-semibold leading-5 text-white shadow-[0_10px_20px_rgba(82,111,90,0.2)] dark:text-[#171512] ${
-                isPrimary ? "h-8 w-8 animate-[pulse_2.2s_ease-in-out_infinite]" : pinSize
+              className={`relative flex items-center justify-center rounded-full border-2 border-[var(--surface)] bg-[var(--accent)] text-center text-[11px] font-semibold leading-5 text-white shadow-[0_12px_24px_rgba(82,111,90,0.24)] dark:text-[#171512] ${
+                isPrimary ? "h-10 w-10 animate-[pulse_2.2s_ease-in-out_infinite]" : pinSize
               }`}
             >
+              <span className="absolute left-1/2 top-full h-3 w-3 -translate-x-1/2 -translate-y-1 rotate-45 rounded-[0.2rem] bg-[var(--accent)]" />
               {isPrimary ? (
-                <span className="h-2.5 w-2.5 rounded-full bg-[var(--surface)]" />
+                <span className="relative z-10 h-3 w-3 rounded-full bg-[var(--surface)]" />
               ) : (
-                entry.count
+                <span className="relative z-10">{entry.count}</span>
               )}
             </span>
 
             {isPrimary ? (
               <span
-                className={`absolute top-1/2 min-w-max -translate-y-1/2 rounded-full border border-[var(--accent)]/25 bg-[var(--surface)]/95 px-2.5 py-1 text-xs font-semibold text-[var(--foreground)] shadow-[var(--shadow-soft)] ${labelSide}`}
+                className={`absolute top-1/2 min-w-max -translate-y-1/2 rounded-full border border-[var(--accent)]/25 bg-[var(--surface)]/95 px-3 py-1.5 text-xs font-semibold text-[var(--foreground)] shadow-[var(--shadow-soft)] ${labelSide}`}
               >
-                {entry.domain} · {shortStageLabels[entry.stage]}
+                여기: {entry.domain} · {shortStageLabels[entry.stage]}
               </span>
             ) : null}
           </div>
         );
       })}
+
+      <div className="absolute bottom-3 left-3 right-3 rounded-2xl border border-[var(--line-soft)] bg-[var(--surface)]/90 px-3 py-2 text-xs leading-5 text-[var(--text-muted)] shadow-[var(--shadow-soft)]">
+        생활 영역은 지도 위의 지역처럼, 막힌 순간은 핀처럼 표시됩니다.
+      </div>
     </div>
   );
 }
@@ -254,7 +350,7 @@ function FrictionMapFocus({
         </span>
       </div>
 
-      <MiniFrictionMap entries={entries} primaryEntry={entry} />
+      <VisualFrictionMap entries={entries} primaryEntry={entry} />
 
       <div className="mt-3">
         <p className="text-xs font-medium leading-5 text-[var(--accent-strong)]">
