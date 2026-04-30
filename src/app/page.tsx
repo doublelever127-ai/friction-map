@@ -171,6 +171,14 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    const frameId = window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0 });
+    });
+
+    return () => window.cancelAnimationFrame(frameId);
+  }, [activeTab]);
+
+  useEffect(() => {
     if (!logFeedbackMessage) {
       return;
     }

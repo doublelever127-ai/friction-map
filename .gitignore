@@ -12,6 +12,7 @@
 
 # testing
 /coverage
+/tmp-mobile-*.png
 
 # next.js
 /.next/
