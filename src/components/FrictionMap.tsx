@@ -243,11 +243,11 @@ function CompactTopLocations({
   }
 
   return (
-    <div className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+    <div className="grid gap-2 sm:grid-cols-3">
       {topEntries.map((entry, index) => (
         <div
           key={`${entry.domain}-${entry.stage}`}
-          className="min-w-[9rem] rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent-soft)] px-3 py-3"
+          className="min-w-0 rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent-soft)] px-3 py-3"
           title={`${entry.domain} × ${entry.stage}: ${entry.count}회`}
         >
           <p className="text-xs font-semibold text-[var(--accent-strong)]">
@@ -265,11 +265,28 @@ function CompactTopLocations({
   );
 }
 
-function FullHeatmapTable({ logs }: { logs: FrictionLog[] }) {
+function RecordedLocationCards({ logs }: { logs: FrictionLog[] }) {
+  const recordedDomains = frictionDomainOptions
+    .map((domain) => {
+      const stages = frictionStageOptions
+        .map((stage) => ({
+          stage,
+          count: getHeatmapCount(logs, domain, stage),
+        }))
+        .filter((entry) => entry.count > 0);
+
+      return {
+        domain,
+        count: stages.reduce((total, entry) => total + entry.count, 0),
+        stages,
+      };
+    })
+    .filter((entry) => entry.count > 0);
+
   return (
     <details className="group rounded-2xl border border-[var(--line-soft)] bg-[var(--surface-soft)]">
       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-3.5 py-2.5 text-sm font-semibold text-[var(--foreground)]">
-        전체 지도 표 보기
+        기록된 위치 더 보기
         <span className="text-xs font-medium text-[var(--text-muted)] group-open:hidden">
           펼치기
         </span>
@@ -278,86 +295,63 @@ function FullHeatmapTable({ logs }: { logs: FrictionLog[] }) {
         </span>
       </summary>
 
-      <div className="border-t border-[var(--line-soft)] p-4">
-        <div className="mb-4 flex flex-wrap gap-2">
-          {heatmapLegend.map((item) => (
+      <div className="grid gap-3 border-t border-[var(--line-soft)] p-3">
+        <div className="flex flex-wrap gap-2">
+          {heatmapLegend.slice(1).map((item) => (
             <Badge key={item.count} variant="subtle">
               {item.count}: {item.label}
             </Badge>
           ))}
         </div>
-        <p className="mb-3 text-xs leading-5 text-[var(--text-muted)]">
-          표는 가로로 밀어 더 볼 수 있습니다.
+        <p className="text-xs leading-5 text-[var(--text-muted)]">
+          기록이 있는 위치만 보여줍니다. 아직 기록이 없는 위치는 숨겨두어
+          더 빨리 살펴볼 수 있게 했어요.
         </p>
 
-        <div className="min-w-0 max-w-full overflow-hidden rounded-2xl [contain:layout_paint]">
-          <div
-            className="w-full max-w-full overflow-x-auto overscroll-x-contain pb-1"
-            role="region"
-            aria-label="마찰 지도 전체 표"
-            tabIndex={0}
-          >
-            <table className="w-[820px] max-w-none border-separate border-spacing-2 text-left">
-              <caption className="sr-only">
-                어느 쪽 일과 어느 순간에 막혔는지 보여주는 기록 개수
-              </caption>
-              <thead>
-                <tr>
-                  <th
-                    scope="col"
-                    className="w-24 px-2 py-2 text-xs font-medium text-[var(--text-muted)]"
-                  >
-                    영역
-                  </th>
-                  {frictionStageOptions.map((stage) => (
-                    <th
-                      key={stage}
-                      scope="col"
-                      title={stage}
-                      className="w-24 px-2 py-2 text-center text-xs font-medium leading-5 text-[var(--text-muted)]"
-                    >
-                      <span aria-hidden="true">{shortStageLabels[stage]}</span>
-                      <span className="sr-only">{stage}</span>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {frictionDomainOptions.map((domain) => (
-                  <tr key={domain}>
-                    <th
-                      scope="row"
-                      className="px-2 py-2 text-sm font-semibold text-[var(--foreground)]"
-                    >
-                      {domain}
-                    </th>
-                    {frictionStageOptions.map((stage) => {
-                      const count = getHeatmapCount(logs, domain, stage);
-                      const level = getHeatmapLevel(count);
+        <div className="grid gap-3">
+          {recordedDomains.map((domainEntry) => (
+            <section
+              key={domainEntry.domain}
+              className="rounded-2xl border border-[var(--line-soft)] bg-[var(--surface)] p-3"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <h4 className="text-sm font-semibold text-[var(--foreground)]">
+                  {domainEntry.domain}
+                </h4>
+                <span className="rounded-full bg-[var(--surface-soft)] px-2.5 py-1 text-xs font-semibold text-[var(--text-muted)]">
+                  {domainEntry.count}회
+                </span>
+              </div>
 
-                      return (
-                        <td key={`${domain}-${stage}`} className="p-0">
-                          <div
-                            role="img"
-                            className={`flex h-16 min-w-22 flex-col items-center justify-center rounded-xl border text-center transition hover:scale-[1.02] ${level.className}`}
-                            aria-label={`${domain} × ${stage}: ${count}회`}
-                            title={`${domain} × ${stage}: ${count}회`}
-                          >
-                            <span className="text-xl font-semibold leading-6">
-                              {level.label}
-                            </span>
-                            <span className="mt-0.5 text-[11px] font-medium leading-4 opacity-75">
-                              {level.helper}
-                            </span>
-                          </div>
-                        </td>
-                      );
-                    })}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              <div className="mt-3 grid gap-2">
+                {domainEntry.stages.map(({ stage, count }) => {
+                  const level = getHeatmapLevel(count);
+
+                  return (
+                    <div
+                      key={`${domainEntry.domain}-${stage}`}
+                      role="img"
+                      className={`min-w-0 rounded-xl border px-3 py-2.5 transition ${level.className}`}
+                      aria-label={`${domainEntry.domain} × ${stage}: ${count}회`}
+                      title={`${domainEntry.domain} × ${stage}: ${count}회`}
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="min-w-0 text-sm font-semibold leading-5">
+                          {shortStageLabels[stage]}
+                        </span>
+                        <span className="text-lg font-semibold leading-5">
+                          {count}회
+                        </span>
+                      </div>
+                      <p className="mt-1 text-[11px] font-medium leading-4 opacity-75">
+                        {stageGuide[stage]}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          ))}
         </div>
       </div>
     </details>
@@ -386,7 +380,7 @@ export function FrictionMap({ logs }: FrictionMapProps) {
 
       <CompactTopLocations logs={logs} topEntries={topEntries} />
 
-      <FullHeatmapTable logs={logs} />
+      <RecordedLocationCards logs={logs} />
     </div>
   );
 }
