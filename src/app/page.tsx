@@ -166,11 +166,11 @@ export default function Home() {
     activeTab === "map"
       ? {
           eyebrow: "지도",
-          title: logs.length <= 1 ? "어디서 막혔는지 보기" : "자주 막힌 위치",
+          title: "마찰 지도",
           description:
             logs.length <= 1
-              ? "방금 남긴 기록이 어느 쪽 일, 어느 순간에 찍혔는지 보여줍니다."
-              : "어떤 일에서, 어떤 순간에 자주 막히는지 지도처럼 볼 수 있어요.",
+              ? "방금 남긴 기록이 어느 위치에 찍혔는지 핀으로 보여줍니다."
+              : "어떤 일에서, 어떤 순간에 자주 막히는지 핀으로 볼 수 있어요.",
         }
       : screenIntros[activeTab];
 

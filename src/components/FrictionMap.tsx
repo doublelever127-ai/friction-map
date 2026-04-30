@@ -124,6 +124,10 @@ function getTopHeatmapEntries(logs: readonly FrictionLog[]): HeatmapEntry[] {
     .slice(0, 3);
 }
 
+function getRecordedHeatmapEntries(logs: readonly FrictionLog[]): HeatmapEntry[] {
+  return getHeatmapEntries(logs).filter((entry) => entry.count > 0);
+}
+
 function getLatestLog(logs: readonly FrictionLog[]): FrictionLog | null {
   return [...logs].sort(
     (leftLog, rightLog) =>
@@ -157,11 +161,84 @@ function getPrimaryEntry(
   };
 }
 
+function getMapPoint(entry: HeatmapEntry) {
+  const stageIndex = frictionStageOptions.indexOf(entry.stage);
+  const domainIndex = frictionDomainOptions.indexOf(entry.domain);
+  const stageRange = frictionStageOptions.length - 1;
+  const domainRange = frictionDomainOptions.length - 1;
+
+  return {
+    left: 12 + (stageIndex / stageRange) * 76,
+    top: 14 + (domainIndex / domainRange) * 72,
+  };
+}
+
+function MiniFrictionMap({
+  entries,
+  primaryEntry,
+}: {
+  entries: HeatmapEntry[];
+  primaryEntry: HeatmapEntry;
+}) {
+  return (
+    <div
+      className="relative mt-3 h-36 overflow-hidden rounded-[1.35rem] border border-[var(--accent)]/25 bg-[radial-gradient(circle_at_18%_20%,rgba(111,143,122,0.22),transparent_4.5rem),radial-gradient(circle_at_78%_72%,rgba(201,130,115,0.14),transparent_5rem),linear-gradient(145deg,var(--surface),var(--accent-soft))]"
+      role="img"
+      aria-label={`마찰 지도에서 ${primaryEntry.domain} ${shortStageLabels[primaryEntry.stage]} 위치가 표시되어 있습니다.`}
+    >
+      <div className="absolute inset-3 rounded-[1rem] border border-dashed border-[var(--accent)]/20" />
+      <div className="absolute left-4 right-4 top-1/2 h-px bg-[var(--accent)]/15" />
+      <div className="absolute bottom-4 top-4 left-1/2 w-px bg-[var(--accent)]/15" />
+
+      {entries.map((entry) => {
+        const point = getMapPoint(entry);
+        const isPrimary =
+          entry.domain === primaryEntry.domain &&
+          entry.stage === primaryEntry.stage;
+        const labelSide = point.left > 58 ? "right-9 text-right" : "left-9";
+        const pinSize =
+          entry.count >= 4 ? "h-7 w-7" : entry.count >= 2 ? "h-6 w-6" : "h-5 w-5";
+
+        return (
+          <div
+            key={`${entry.domain}-${entry.stage}`}
+            className="absolute -translate-x-1/2 -translate-y-1/2"
+            style={{ left: `${point.left}%`, top: `${point.top}%` }}
+            title={`${entry.domain} × ${entry.stage}: ${entry.count}회`}
+          >
+            <span
+              className={`flex items-center justify-center rounded-full border-2 border-[var(--surface)] bg-[var(--accent)] text-center text-[11px] font-semibold leading-5 text-white shadow-[0_10px_20px_rgba(82,111,90,0.2)] dark:text-[#171512] ${
+                isPrimary ? "h-8 w-8 animate-[pulse_2.2s_ease-in-out_infinite]" : pinSize
+              }`}
+            >
+              {isPrimary ? (
+                <span className="h-2.5 w-2.5 rounded-full bg-[var(--surface)]" />
+              ) : (
+                entry.count
+              )}
+            </span>
+
+            {isPrimary ? (
+              <span
+                className={`absolute top-1/2 min-w-max -translate-y-1/2 rounded-full border border-[var(--accent)]/25 bg-[var(--surface)]/95 px-2.5 py-1 text-xs font-semibold text-[var(--foreground)] shadow-[var(--shadow-soft)] ${labelSide}`}
+              >
+                {entry.domain} · {shortStageLabels[entry.stage]}
+              </span>
+            ) : null}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 function FrictionMapFocus({
   entry,
+  entries,
   totalCount,
 }: {
   entry: HeatmapEntry;
+  entries: HeatmapEntry[];
   totalCount: number;
 }) {
   const isFirstPoint = totalCount === 1;
@@ -177,33 +254,22 @@ function FrictionMapFocus({
         </span>
       </div>
 
-      <div className="mt-3 grid grid-cols-[5rem_1fr] items-center gap-3">
-        <div
-          className="relative flex h-20 w-20 shrink-0 items-center justify-center rounded-[1.35rem] border border-[var(--accent)]/25 bg-[linear-gradient(145deg,var(--surface),var(--accent-soft))]"
-          aria-hidden="true"
-        >
-          <span className="absolute left-2 top-2 h-2 w-2 rounded-full bg-[var(--accent)]/35" />
-          <span className="absolute bottom-3 right-3 h-3 w-3 rounded-full bg-[var(--accent)]/25" />
-          <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--accent)] text-sm font-semibold text-white shadow-[0_12px_24px_rgba(82,111,90,0.22)] dark:text-[#171512]">
-            여기
-          </span>
-        </div>
+      <MiniFrictionMap entries={entries} primaryEntry={entry} />
 
-        <div className="min-w-0">
-          <p className="text-xs font-medium leading-5 text-[var(--accent-strong)]">
-            {isFirstPoint
-              ? "이번 기록은 여기에서 막혔어요"
-              : "지금 먼저 볼 위치예요"}
-          </p>
-          <h3 className="mt-0.5 text-[2rem] font-semibold leading-tight tracking-normal text-[var(--foreground)]">
-            {entry.domain} · {shortStageLabels[entry.stage]}
-          </h3>
-          <p className="mt-1 text-xs leading-5 text-[var(--text-muted)]">
-            {isFirstPoint
-              ? "지도에 첫 점이 찍혔어요."
-              : `전체 ${totalCount}개 중 ${entry.count}번 보였어요.`}
-          </p>
-        </div>
+      <div className="mt-3">
+        <p className="text-xs font-medium leading-5 text-[var(--accent-strong)]">
+          {isFirstPoint
+            ? "이번 기록은 지도에 이렇게 찍혔어요"
+            : "지금 먼저 볼 지도 위치예요"}
+        </p>
+        <h3 className="mt-0.5 text-2xl font-semibold leading-tight tracking-normal text-[var(--foreground)]">
+          {entry.domain} · {shortStageLabels[entry.stage]}
+        </h3>
+        <p className="mt-1 text-xs leading-5 text-[var(--text-muted)]">
+          {isFirstPoint
+            ? "아직은 첫 점입니다. 비슷한 점이 쌓이면 더 선명해져요."
+            : `전체 ${totalCount}개 중 ${entry.count}번 보였어요.`}
+        </p>
       </div>
 
       <div className="mt-3 grid grid-cols-[1fr_auto_1fr] items-stretch gap-2">
@@ -360,6 +426,7 @@ function RecordedLocationCards({ logs }: { logs: FrictionLog[] }) {
 
 export function FrictionMap({ logs }: FrictionMapProps) {
   const topEntries = getTopHeatmapEntries(logs);
+  const recordedEntries = getRecordedHeatmapEntries(logs);
   const primaryEntry = getPrimaryEntry(logs, topEntries);
 
   if (logs.length === 0 || !primaryEntry) {
@@ -375,6 +442,7 @@ export function FrictionMap({ logs }: FrictionMapProps) {
     <div className="flex min-w-0 flex-col gap-3">
       <FrictionMapFocus
         entry={primaryEntry}
+        entries={recordedEntries}
         totalCount={logs.length}
       />
 
