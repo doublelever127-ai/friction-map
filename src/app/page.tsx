@@ -65,11 +65,11 @@ const screenIntros: Record<
     description:
       "바로 해결하지 않아도 괜찮아요. 다음에 덜 버겁게 해볼 작은 방법을 정해보세요.",
   },
-  manage: {
-    eyebrow: "내 기록",
-    title: "내 기록",
+  review: {
+    eyebrow: "돌아보기",
+    title: "돌아보기",
     description:
-      "내가 남긴 기록을 확인하고 정리할 수 있어요. 기록은 이 기기 안에 저장됩니다.",
+      "해보니 어땠는지 살펴보고, 다음 시도를 더 작게 조정합니다.",
   },
 };
 
@@ -85,10 +85,10 @@ function createLog(input: CreateFrictionLogInput): FrictionLog {
 
 function RecentRecordPreview({
   logs,
-  onOpenManage,
+  onOpenReview,
 }: {
   logs: FrictionLog[];
-  onOpenManage: () => void;
+  onOpenReview: () => void;
 }) {
   if (logs.length === 0) {
     return (
@@ -141,10 +141,10 @@ function RecentRecordPreview({
         type="button"
         variant="secondary"
         size="sm"
-        onClick={onOpenManage}
+        onClick={onOpenReview}
         className="mt-4 w-full"
       >
-        최근 기록 보기
+        내 기록에서 보기
       </Button>
     </SectionCard>
   );
@@ -341,7 +341,7 @@ export default function Home() {
 
               <RecentRecordPreview
                 logs={logs}
-                onOpenManage={() => setActiveTab("manage")}
+                onOpenReview={() => setActiveTab("review")}
               />
             </aside>
           </section>
@@ -423,27 +423,49 @@ export default function Home() {
               </div>
             ) : null}
 
-            <div className="grid min-w-0 gap-5 xl:grid-cols-[minmax(320px,0.85fr)_minmax(0,1.15fr)]">
+            <div className="grid min-w-0 gap-5">
               <ExperimentBuilder
                 logs={logs}
                 onCreate={handleCreateExperiment}
               />
 
-              <ExperimentList
-                experiments={experiments}
-                logs={logs}
-                onDelete={handleDeleteExperiment}
-                onStatusChange={handleExperimentStatusChange}
-              />
+              {experiments.length > 0 ? (
+                <div className="rounded-xl border border-teal-100 bg-teal-50 px-4 py-3 text-sm leading-6 text-teal-900 dark:border-teal-900 dark:bg-teal-950/70 dark:text-teal-100">
+                  <p>
+                    만든 시도 카드는 돌아보기 화면에서 상태를 바꾸고 다시
+                    살펴볼 수 있습니다.
+                  </p>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => setActiveTab("review")}
+                    className="mt-3 w-full bg-white/80 dark:bg-slate-900/80 sm:w-auto"
+                  >
+                    돌아보러 가기
+                  </Button>
+                </div>
+              ) : null}
             </div>
           </section>
         ) : null}
 
-        {activeTab === "manage" ? (
+        {activeTab === "review" ? (
           <section className="grid min-w-0 gap-5">
             <SectionHeader
-              title="전체 기록"
-              description="내가 남긴 기록을 확인하고 정리할 수 있어요."
+              title="시도 돌아보기"
+              description="해보니 어땠는지 살펴보고, 다음에는 더 작게 조정할지 확인합니다."
+            />
+            <ExperimentList
+              experiments={experiments}
+              logs={logs}
+              onDelete={handleDeleteExperiment}
+              onStatusChange={handleExperimentStatusChange}
+            />
+
+            <SectionHeader
+              title="내 기록"
+              description="내가 남긴 기록을 확인하고 정리할 수 있어요. 기록은 이 기기 안에 저장됩니다."
             />
             <FrictionList logs={logs} onDelete={handleDeleteLog} />
 

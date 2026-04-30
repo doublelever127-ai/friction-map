@@ -1,6 +1,6 @@
 "use client";
 
-export type AppTab = "record" | "map" | "experiment" | "manage";
+export type AppTab = "record" | "map" | "experiment" | "review";
 
 type BottomNavProps = {
   activeTab: AppTab;
@@ -28,9 +28,9 @@ const navItems: Array<{
     description: "작은 방법",
   },
   {
-    id: "manage",
-    label: "내 기록",
-    description: "정리하기",
+    id: "review",
+    label: "돌아보기",
+    description: "살펴보기",
   },
 ];
 
