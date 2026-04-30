@@ -34,6 +34,7 @@ import type {
   FrictionExperiment,
   FrictionExperimentStatus,
   FrictionLog,
+  UpdateFrictionExperimentReviewInput,
 } from "@/types/friction";
 
 const logSavedFeedbackMessage =
@@ -116,7 +117,7 @@ function RecentRecordPreview({
   return (
     <SectionCard
       title="방금 남긴 기록"
-      description="최근 기록은 관리 화면에서 더 자세히 볼 수 있습니다."
+      description="최근 기록은 돌아보기 화면에서 더 자세히 볼 수 있습니다."
       contentClassName="mt-4 pt-4"
     >
       <div className="grid gap-3">
@@ -144,7 +145,7 @@ function RecentRecordPreview({
         onClick={onOpenReview}
         className="mt-4 w-full"
       >
-        내 기록에서 보기
+        돌아보기로 가기
       </Button>
     </SectionCard>
   );
@@ -226,6 +227,30 @@ export default function Home() {
           ...experiment,
           status,
           updatedAt: new Date().toISOString(),
+        };
+      });
+
+      saveExperiments(nextExperiments);
+      return nextExperiments;
+    });
+  }
+
+  function handleExperimentReviewSave(
+    experimentId: string,
+    review: UpdateFrictionExperimentReviewInput,
+  ) {
+    setExperiments((currentExperiments) => {
+      const now = new Date().toISOString();
+      const nextExperiments = currentExperiments.map((experiment) => {
+        if (experiment.id !== experimentId) {
+          return experiment;
+        }
+
+        return {
+          ...experiment,
+          ...review,
+          reviewedAt: now,
+          updatedAt: now,
         };
       });
 
@@ -461,6 +486,7 @@ export default function Home() {
               logs={logs}
               onDelete={handleDeleteExperiment}
               onStatusChange={handleExperimentStatusChange}
+              onReviewSave={handleExperimentReviewSave}
             />
 
             <SectionHeader

@@ -1,6 +1,7 @@
 import type {
   CreateFrictionExperimentInput,
   FrictionExperiment,
+  FrictionExperimentReviewFeeling,
   FrictionExperimentStatus,
 } from "@/types/friction";
 import {
@@ -34,8 +35,23 @@ function isExperimentStatus(
   );
 }
 
+function isExperimentReviewFeeling(
+  value: unknown,
+): value is FrictionExperimentReviewFeeling {
+  return (
+    value === "생각보다 가벼웠어요" ||
+    value === "조금 버거웠어요" ||
+    value === "상황이 달랐어요" ||
+    value === "아직 해보지 못했어요"
+  );
+}
+
 function readRequiredString(value: unknown): string | null {
   return typeof value === "string" ? value : null;
+}
+
+function readOptionalString(value: unknown): string | undefined {
+  return typeof value === "string" ? value : undefined;
 }
 
 function readTimestamp(value: unknown, fallback: string): string {
@@ -83,6 +99,12 @@ function normalizeExperiment(value: unknown): FrictionExperiment | null {
     status: isExperimentStatus(value.status) ? value.status : DEFAULT_STATUS,
     createdAt,
     updatedAt: readTimestamp(value.updatedAt, createdAt || now),
+    reviewFeeling: isExperimentReviewFeeling(value.reviewFeeling)
+      ? value.reviewFeeling
+      : undefined,
+    reviewNote: readOptionalString(value.reviewNote),
+    nextAdjustment: readOptionalString(value.nextAdjustment),
+    reviewedAt: readOptionalString(value.reviewedAt),
   };
 }
 

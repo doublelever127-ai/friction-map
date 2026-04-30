@@ -47,6 +47,12 @@ export type FrictionExperimentStatus =
   | "관찰 완료"
   | "보류";
 
+export type FrictionExperimentReviewFeeling =
+  | "생각보다 가벼웠어요"
+  | "조금 버거웠어요"
+  | "상황이 달랐어요"
+  | "아직 해보지 못했어요";
+
 export type FrictionExperiment = {
   id: string;
   frictionLogId: string;
@@ -59,6 +65,10 @@ export type FrictionExperiment = {
   status: FrictionExperimentStatus;
   createdAt: string;
   updatedAt: string;
+  reviewFeeling?: FrictionExperimentReviewFeeling;
+  reviewNote?: string;
+  nextAdjustment?: string;
+  reviewedAt?: string;
 };
 
 export type CreateFrictionExperimentInput = Pick<
@@ -71,3 +81,9 @@ export type CreateFrictionExperimentInput = Pick<
   | "successCriteria"
   | "failureInterpretation"
 >;
+
+export type UpdateFrictionExperimentReviewInput = {
+  reviewFeeling: FrictionExperimentReviewFeeling;
+  reviewNote: string;
+  nextAdjustment: string;
+};

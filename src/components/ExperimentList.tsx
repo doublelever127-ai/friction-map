@@ -1,16 +1,20 @@
 "use client";
 
+import { useState } from "react";
 import {
   ExperimentStatusControl,
   getExperimentStatusLabel,
 } from "@/components/ExperimentStatusControl";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { ChoiceChip } from "@/components/ui/ChoiceChip";
 import { SoftEmptyState } from "@/components/ui/SoftEmptyState";
 import type {
   FrictionExperiment,
+  FrictionExperimentReviewFeeling,
   FrictionExperimentStatus,
   FrictionLog,
+  UpdateFrictionExperimentReviewInput,
 } from "@/types/friction";
 
 type ExperimentListProps = {
@@ -20,6 +24,10 @@ type ExperimentListProps = {
   onStatusChange: (
     experimentId: string,
     status: FrictionExperimentStatus,
+  ) => void;
+  onReviewSave: (
+    experimentId: string,
+    review: UpdateFrictionExperimentReviewInput,
   ) => void;
 };
 
@@ -35,6 +43,13 @@ const dateFormatter = new Intl.DateTimeFormat("ko-KR", {
   hour: "2-digit",
   minute: "2-digit",
 });
+
+const reviewFeelingOptions = [
+  "생각보다 가벼웠어요",
+  "조금 버거웠어요",
+  "상황이 달랐어요",
+  "아직 해보지 못했어요",
+] as const satisfies readonly FrictionExperimentReviewFeeling[];
 
 function formatDateTime(value: string): string {
   const date = new Date(value);
@@ -59,11 +74,136 @@ function ExperimentDetail({ label, children }: ExperimentDetailProps) {
   );
 }
 
+function ExperimentReviewForm({
+  experiment,
+  onSave,
+}: {
+  experiment: FrictionExperiment;
+  onSave: (review: UpdateFrictionExperimentReviewInput) => void;
+}) {
+  const [reviewFeeling, setReviewFeeling] =
+    useState<FrictionExperimentReviewFeeling>(
+      experiment.reviewFeeling ?? "아직 해보지 못했어요",
+    );
+  const [reviewNote, setReviewNote] = useState(experiment.reviewNote ?? "");
+  const [nextAdjustment, setNextAdjustment] = useState(
+    experiment.nextAdjustment ?? "",
+  );
+  const [message, setMessage] = useState("");
+
+  function handleSave() {
+    onSave({
+      reviewFeeling,
+      reviewNote: reviewNote.trim(),
+      nextAdjustment: nextAdjustment.trim(),
+    });
+    setMessage("돌아보기를 저장했습니다.");
+  }
+
+  return (
+    <section className="mt-5 rounded-2xl border border-teal-100 bg-teal-50/60 p-4 dark:border-teal-900 dark:bg-teal-950/30">
+      <div className="flex flex-col gap-1">
+        <h4 className="text-base font-semibold text-slate-950 dark:text-slate-50">
+          해보니 어땠나요?
+        </h4>
+        <p className="text-sm leading-6 text-slate-600 dark:text-slate-400">
+          판정하는 곳이 아니라, 다음 시도를 더 작게 조정하는 곳입니다.
+        </p>
+      </div>
+
+      <fieldset className="mt-4 space-y-3">
+        <legend className="text-sm font-medium text-slate-900 dark:text-slate-100">
+          지금 가장 가까운 느낌
+        </legend>
+        <div className="flex flex-wrap gap-2">
+          {reviewFeelingOptions.map((option) => (
+            <ChoiceChip
+              key={option}
+              selected={reviewFeeling === option}
+              onClick={() => {
+                setReviewFeeling(option);
+                setMessage("");
+              }}
+              className="justify-start text-left"
+            >
+              {option}
+            </ChoiceChip>
+          ))}
+        </div>
+      </fieldset>
+
+      <div className="mt-4 grid gap-3">
+        <label
+          htmlFor={`experiment-review-note-${experiment.id}`}
+          className="grid gap-2"
+        >
+          <span className="text-sm font-medium text-slate-900 dark:text-slate-100">
+            짧게 남기기
+          </span>
+          <textarea
+            id={`experiment-review-note-${experiment.id}`}
+            value={reviewNote}
+            onChange={(event) => {
+              setReviewNote(event.target.value);
+              setMessage("");
+            }}
+            rows={3}
+            placeholder="예: 운동복을 입는 건 생각보다 괜찮았지만, 퇴근 직후에는 조금 버거웠다"
+            className="min-h-24 w-full resize-y rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm leading-6 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-teal-600 focus:ring-4 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-teal-400 dark:focus:ring-teal-950"
+          />
+        </label>
+
+        <label
+          htmlFor={`experiment-next-adjustment-${experiment.id}`}
+          className="grid gap-2"
+        >
+          <span className="text-sm font-medium text-slate-900 dark:text-slate-100">
+            다음엔 어떻게 더 작게 해볼까요?
+          </span>
+          <textarea
+            id={`experiment-next-adjustment-${experiment.id}`}
+            value={nextAdjustment}
+            onChange={(event) => {
+              setNextAdjustment(event.target.value);
+              setMessage("");
+            }}
+            rows={3}
+            placeholder="예: 운동복을 입는 것도 크면, 운동복을 꺼내두기만 해본다"
+            className="min-h-24 w-full resize-y rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm leading-6 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-teal-600 focus:ring-4 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-teal-400 dark:focus:ring-teal-950"
+          />
+        </label>
+      </div>
+
+      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <Button type="button" size="sm" onClick={handleSave}>
+          돌아보기 저장
+        </Button>
+        {experiment.reviewedAt ? (
+          <p className="text-xs leading-5 text-slate-500 dark:text-slate-400">
+            마지막 저장 {formatDateTime(experiment.reviewedAt)}
+          </p>
+        ) : null}
+      </div>
+
+      {message ? (
+        <p
+          role="status"
+          aria-live="polite"
+          className="mt-3 text-sm leading-6 text-teal-800 dark:text-teal-200"
+        >
+          {message}
+        </p>
+      ) : null}
+    </section>
+  );
+}
+
 export function ExperimentList({
   experiments,
   logs,
   onDelete,
   onStatusChange,
+  onReviewSave,
 }: ExperimentListProps) {
   if (experiments.length === 0) {
     return (
@@ -168,6 +308,11 @@ export function ExperimentList({
                 </p>
               </div>
             </div>
+
+            <ExperimentReviewForm
+              experiment={experiment}
+              onSave={(review) => onReviewSave(experiment.id, review)}
+            />
 
             <div className="mt-4 flex flex-col gap-1 border-t border-slate-100 pt-4 text-xs leading-5 text-slate-500 dark:border-slate-800 dark:text-slate-400 sm:flex-row sm:justify-between">
               <span>생성일 {formatDateTime(experiment.createdAt)}</span>
