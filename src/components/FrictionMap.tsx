@@ -118,7 +118,7 @@ export function FrictionMap({ logs }: FrictionMapProps) {
   const topEntries = getTopHeatmapEntries(logs);
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex min-w-0 flex-col gap-6">
       <div className="flex flex-col gap-2">
         <h2
           id="friction-map-heading"
@@ -199,67 +199,76 @@ export function FrictionMap({ logs }: FrictionMapProps) {
           <p className="rounded-2xl border border-[var(--line-soft)] bg-[var(--surface-soft)] px-3 py-2 text-xs leading-5 text-[var(--text-muted)] sm:hidden">
             가로로 밀어 더 볼 수 있습니다.
           </p>
-          <div className="w-full max-w-full overflow-x-auto overscroll-x-contain pb-1">
-            <table className="min-w-[820px] border-separate border-spacing-2 text-left">
-              <caption className="sr-only">
-                어느 쪽 일과 어느 순간에 막혔는지 보여주는 기록 개수
-              </caption>
-              <thead>
-                <tr>
-                  <th
-                    scope="col"
-                    className="w-24 px-2 py-2 text-xs font-medium text-[var(--text-muted)]"
-                  >
-                    영역
-                  </th>
-                  {frictionStageOptions.map((stage) => (
+          <div className="min-w-0 max-w-full overflow-hidden rounded-2xl [contain:layout_paint]">
+            <div
+              className="w-full max-w-full overflow-x-auto overscroll-x-contain pb-1"
+              role="region"
+              aria-label="마찰 지도 전체 표"
+              tabIndex={0}
+            >
+              <table className="w-[820px] max-w-none border-separate border-spacing-2 text-left">
+                <caption className="sr-only">
+                  어느 쪽 일과 어느 순간에 막혔는지 보여주는 기록 개수
+                </caption>
+                <thead>
+                  <tr>
                     <th
-                      key={stage}
                       scope="col"
-                      title={stage}
-                      className="w-24 px-2 py-2 text-center text-xs font-medium leading-5 text-[var(--text-muted)]"
+                      className="w-24 px-2 py-2 text-xs font-medium text-[var(--text-muted)]"
                     >
-                      <span aria-hidden="true">{shortStageLabels[stage]}</span>
-                      <span className="sr-only">{stage}</span>
+                      영역
                     </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {frictionDomainOptions.map((domain) => (
-                  <tr key={domain}>
-                    <th
-                      scope="row"
-                      className="px-2 py-2 text-sm font-semibold text-[var(--foreground)]"
-                    >
-                      {domain}
-                    </th>
-                    {frictionStageOptions.map((stage) => {
-                      const count = getHeatmapCount(logs, domain, stage);
-                      const level = getHeatmapLevel(count);
-
-                      return (
-                        <td key={`${domain}-${stage}`} className="p-0">
-                          <div
-                            role="img"
-                            className={`flex h-16 min-w-22 flex-col items-center justify-center rounded-xl border text-center transition hover:scale-[1.02] ${level.className}`}
-                            aria-label={`${domain} × ${stage}: ${count}회`}
-                            title={`${domain} × ${stage}: ${count}회`}
-                          >
-                            <span className="text-xl font-semibold leading-6">
-                              {level.label}
-                            </span>
-                            <span className="mt-0.5 text-[11px] font-medium leading-4 opacity-75">
-                              {level.helper}
-                            </span>
-                          </div>
-                        </td>
-                      );
-                    })}
+                    {frictionStageOptions.map((stage) => (
+                      <th
+                        key={stage}
+                        scope="col"
+                        title={stage}
+                        className="w-24 px-2 py-2 text-center text-xs font-medium leading-5 text-[var(--text-muted)]"
+                      >
+                        <span aria-hidden="true">
+                          {shortStageLabels[stage]}
+                        </span>
+                        <span className="sr-only">{stage}</span>
+                      </th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {frictionDomainOptions.map((domain) => (
+                    <tr key={domain}>
+                      <th
+                        scope="row"
+                        className="px-2 py-2 text-sm font-semibold text-[var(--foreground)]"
+                      >
+                        {domain}
+                      </th>
+                      {frictionStageOptions.map((stage) => {
+                        const count = getHeatmapCount(logs, domain, stage);
+                        const level = getHeatmapLevel(count);
+
+                        return (
+                          <td key={`${domain}-${stage}`} className="p-0">
+                            <div
+                              role="img"
+                              className={`flex h-16 min-w-22 flex-col items-center justify-center rounded-xl border text-center transition hover:scale-[1.02] ${level.className}`}
+                              aria-label={`${domain} × ${stage}: ${count}회`}
+                              title={`${domain} × ${stage}: ${count}회`}
+                            >
+                              <span className="text-xl font-semibold leading-6">
+                                {level.label}
+                              </span>
+                              <span className="mt-0.5 text-[11px] font-medium leading-4 opacity-75">
+                                {level.helper}
+                              </span>
+                            </div>
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </>
       )}

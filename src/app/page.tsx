@@ -288,7 +288,7 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(201,130,115,0.18),transparent_28rem),linear-gradient(180deg,var(--background),var(--surface-muted))] px-4 pb-32 pt-5 text-[var(--foreground)] transition-colors sm:px-6">
+    <main className="min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top_left,rgba(201,130,115,0.18),transparent_28rem),linear-gradient(180deg,var(--background),var(--surface-muted))] px-4 pb-32 pt-5 text-[var(--foreground)] transition-colors sm:px-6">
       <div className="mx-auto flex w-full max-w-[460px] flex-col gap-5">
         <header className="flex items-start justify-between gap-4">
           <div>
@@ -381,7 +381,7 @@ export default function Home() {
         ) : null}
 
         {activeTab === "map" ? (
-          <section className="grid min-w-0 gap-5">
+          <section className="grid min-w-0 max-w-full gap-5 overflow-hidden">
             <SectionHeader
               title="자주 막힌 위치"
               description={
@@ -409,7 +409,7 @@ export default function Home() {
               </div>
             ) : null}
 
-            <section className="rounded-3xl border border-[var(--line-soft)] bg-[var(--surface)] p-5 shadow-[var(--shadow-soft)] sm:p-6">
+            <section className="min-w-0 overflow-hidden rounded-3xl border border-[var(--line-soft)] bg-[var(--surface)] p-5 shadow-[var(--shadow-soft)] sm:p-6">
               <FrictionMap logs={logs} />
             </section>
 
