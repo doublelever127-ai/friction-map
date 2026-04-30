@@ -109,7 +109,7 @@ export function FrictionForm({ onCreate }: FrictionFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div className="rounded-[1.6rem] border border-[var(--line-soft)] bg-[var(--surface-soft)] p-3 shadow-inner">
         <label htmlFor="friction-text" className="sr-only">
           막혔던 순간
@@ -124,10 +124,10 @@ export function FrictionForm({ onCreate }: FrictionFormProps) {
             }
           }}
           placeholder="예: 운동하려고 했는데 또 미뤘다"
-          rows={3}
+          rows={2}
           aria-invalid={Boolean(errorMessage)}
           aria-describedby={errorMessage ? "friction-text-error" : undefined}
-          className="min-h-28 w-full resize-y rounded-2xl border border-transparent bg-[var(--surface)] px-4 py-4 text-base leading-7 text-[var(--foreground)] outline-none transition placeholder:text-[var(--text-subtle)] focus:border-[var(--accent)] focus:ring-4 focus:ring-[var(--accent)]/15"
+          className="min-h-24 w-full resize-y rounded-2xl border border-transparent bg-[var(--surface)] px-4 py-4 text-base leading-7 text-[var(--foreground)] outline-none transition placeholder:text-[var(--text-subtle)] focus:border-[var(--accent)] focus:ring-4 focus:ring-[var(--accent)]/15"
         />
         {errorMessage ? (
           <p
@@ -148,7 +148,7 @@ export function FrictionForm({ onCreate }: FrictionFormProps) {
             눌러도 바로 저장되지 않습니다. 필요하면 아래에서 바꿀 수 있어요.
           </p>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {quickExamples.map((example) => (
             <ChoiceChip
               key={example.text}
@@ -161,7 +161,7 @@ export function FrictionForm({ onCreate }: FrictionFormProps) {
                 setIntensity(example.intensity);
                 setErrorMessage("");
               }}
-              className="justify-start text-left"
+              className="shrink-0 justify-start whitespace-nowrap text-left"
             >
               {example.text}
             </ChoiceChip>

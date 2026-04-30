@@ -315,6 +315,8 @@ export default function Home() {
           className={`overflow-hidden border border-[var(--line-soft)] bg-[linear-gradient(145deg,var(--surface),var(--surface-soft))] shadow-[var(--shadow-float)] backdrop-blur ${
             activeTab === "map"
               ? "rounded-[1.25rem] p-3 sm:p-4"
+              : activeTab === "record"
+                ? "rounded-[1.5rem] p-4 sm:p-5"
               : "rounded-[2rem] p-5 sm:p-7"
           }`}
         >
@@ -323,6 +325,8 @@ export default function Home() {
             className={`font-semibold leading-tight text-[var(--foreground)] ${
               activeTab === "map"
                 ? "mt-2 text-xl sm:text-2xl"
+                : activeTab === "record"
+                  ? "mt-2 text-2xl sm:text-3xl"
                 : "mt-4 text-3xl sm:text-4xl"
             }`}
           >
@@ -332,6 +336,8 @@ export default function Home() {
             className={`text-[var(--text-muted)] ${
               activeTab === "map"
                 ? "mt-1.5 text-sm leading-5"
+                : activeTab === "record"
+                  ? "mt-2 text-sm leading-6"
                 : "mt-3 text-base leading-7"
             }`}
           >
@@ -339,16 +345,10 @@ export default function Home() {
           </p>
 
           {activeTab === "record" ? (
-            <>
-              <p className="mt-3 text-sm leading-6 text-[var(--text-muted)]">
-                여기서는 하려고 했지만 이상하게 막혔던 순간을 마찰이라고
-                부릅니다.
-              </p>
-              <p className="mt-4 rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent-soft)] px-4 py-3 text-sm font-medium leading-6 text-[var(--accent-strong)]">
-                할 일을 더 늘리지 않습니다. 자주 막히는 순간을 찾아, 다음에
-                덜 버겁게 만듭니다.
-              </p>
-            </>
+            <p className="mt-3 rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent-soft)] px-3 py-2 text-xs font-medium leading-5 text-[var(--accent-strong)]">
+              마찰은 하려고 했지만 막혔던 순간입니다. 할 일을 더 늘리지 않고,
+              다음에 덜 버겁게 볼 수 있게 남깁니다.
+            </p>
           ) : null}
         </section>
 
@@ -356,8 +356,9 @@ export default function Home() {
           <section className="grid min-w-0 gap-4">
             <SectionCard
               title="막힌 순간 남기기"
-              description="정확히 고르지 않아도 괜찮습니다. 지금 가장 가까운 느낌으로 시작해보세요."
-              className="min-w-0"
+              description="한 줄을 남기고, 필요하면 느낌과 위치만 살짝 조정해보세요."
+              className="min-w-0 p-4 sm:p-5"
+              contentClassName="mt-4 pt-4"
             >
               <FrictionForm onCreate={handleCreateLog} />
               {logFeedbackMessage ? (
