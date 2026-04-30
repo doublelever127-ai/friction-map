@@ -157,13 +157,22 @@ export default function Home() {
   const [experiments, setExperiments] = useState<FrictionExperiment[]>([]);
   const [logFeedbackMessage, setLogFeedbackMessage] = useState("");
   const hasNoLogs = logs.length === 0;
-  const hasOneLog = logs.length === 1;
   const hasEarlyExperimentLogs = logs.length > 0 && logs.length < 3;
   const hasPatternReadyLogs = logs.length >= 3;
   const activeExperimentCount = experiments.filter(
     (experiment) => experiment.status === "진행 중",
   ).length;
-  const currentIntro = screenIntros[activeTab];
+  const currentIntro =
+    activeTab === "map"
+      ? {
+          eyebrow: "지도",
+          title: logs.length <= 1 ? "어디서 막혔는지 보기" : "자주 막힌 위치",
+          description:
+            logs.length <= 1
+              ? "방금 남긴 기록이 어느 쪽 일, 어느 순간에 찍혔는지 보여줍니다."
+              : "어떤 일에서, 어떤 순간에 자주 막히는지 지도처럼 볼 수 있어요.",
+        }
+      : screenIntros[activeTab];
 
   useEffect(() => {
     setLogs(loadFrictionLogs());
@@ -382,32 +391,7 @@ export default function Home() {
 
         {activeTab === "map" ? (
           <section className="grid min-w-0 max-w-full gap-5 overflow-hidden">
-            <SectionHeader
-              title="자주 막힌 위치"
-              description={
-                hasOneLog
-                  ? "첫 기록이 지도에 표시되었습니다. 아직은 관찰을 시작한 단계예요."
-                  : hasPatternReadyLogs
-                    ? "반복해서 보이는 위치를 살펴보세요. 바로 고치지 않아도 괜찮습니다."
-                    : "기록이 쌓이면 어떤 일에서, 어떤 순간에 자주 막히는지 보입니다."
-              }
-            />
-
             {hasNoLogs ? <SampleFrictionPreview /> : null}
-
-            {hasOneLog ? (
-              <div className="rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent-soft)] px-4 py-3 text-sm leading-6 text-[var(--accent-strong)]">
-                아직은 관찰을 시작한 단계예요. 비슷한 기록이 쌓이면 자주
-                막히는 위치가 더 선명해집니다.
-              </div>
-            ) : null}
-
-            {hasPatternReadyLogs ? (
-              <div className="rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent-soft)] px-4 py-3 text-sm leading-6 text-[var(--accent-strong)]">
-                반복해서 보이는 위치를 살펴보세요. 바로 고치지 않아도
-                괜찮습니다.
-              </div>
-            ) : null}
 
             <section className="min-w-0 overflow-hidden rounded-3xl border border-[var(--line-soft)] bg-[var(--surface)] p-5 shadow-[var(--shadow-soft)] sm:p-6">
               <FrictionMap logs={logs} />
