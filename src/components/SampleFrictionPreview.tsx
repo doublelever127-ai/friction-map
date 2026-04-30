@@ -23,13 +23,13 @@ const sampleLogs = [
 
 export function SampleFrictionPreview() {
   return (
-    <section className="rounded-lg border border-teal-100 bg-white/85 p-5 shadow-sm shadow-teal-100/40 dark:border-teal-900 dark:bg-slate-900/85 dark:shadow-none">
+    <section className="rounded-3xl border border-[var(--accent)]/25 bg-[var(--surface)]/90 p-5 shadow-[var(--shadow-soft)]">
       <div className="flex flex-col gap-2">
         <Badge variant="status">예시로 둘러보기</Badge>
-        <h3 className="text-lg font-semibold text-slate-950 dark:text-slate-50">
+        <h3 className="text-lg font-semibold text-[var(--foreground)]">
           기록이 쌓이면 이렇게 보입니다
         </h3>
-        <p className="text-sm leading-6 text-slate-600 dark:text-slate-400">
+        <p className="text-sm leading-6 text-[var(--text-muted)]">
           아래 예시는 화면을 이해하기 위한 미리보기입니다. 실제 기록으로
           저장되지는 않습니다.
         </p>
@@ -39,9 +39,9 @@ export function SampleFrictionPreview() {
         {sampleLogs.map((sample) => (
           <article
             key={`${sample.domain}-${sample.stage}`}
-            className="rounded-xl border border-slate-200 bg-slate-50/80 p-4 dark:border-slate-800 dark:bg-slate-950/60"
+            className="rounded-2xl border border-[var(--line-soft)] bg-[var(--surface-soft)] p-4"
           >
-            <p className="break-words text-sm font-semibold leading-6 text-slate-950 dark:text-slate-50">
+            <p className="break-words text-sm font-semibold leading-6 text-[var(--foreground)]">
               {sample.text}
             </p>
             <div className="mt-3 flex flex-wrap gap-2">

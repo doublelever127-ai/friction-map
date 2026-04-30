@@ -107,16 +107,16 @@ export function FrictionForm({ onCreate }: FrictionFormProps) {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
       <div className="space-y-1">
-        <h3 className="text-lg font-semibold text-slate-950 dark:text-slate-50">
+        <h3 className="text-lg font-semibold text-[var(--foreground)]">
           막힌 순간 남기기
         </h3>
-        <p className="text-sm leading-6 text-slate-600 dark:text-slate-300">
+        <p className="text-sm leading-6 text-[var(--text-muted)]">
           정확히 고르지 않아도 괜찮습니다. 지금 가장 가까운 느낌을
           골라보세요.
         </p>
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-3 shadow-inner dark:border-slate-800 dark:bg-slate-950/60">
+      <div className="rounded-[1.6rem] border border-[var(--line-soft)] bg-[var(--surface-soft)] p-3 shadow-inner">
         <label htmlFor="friction-text" className="sr-only">
           막혔던 순간
         </label>
@@ -133,12 +133,12 @@ export function FrictionForm({ onCreate }: FrictionFormProps) {
           rows={5}
           aria-invalid={Boolean(errorMessage)}
           aria-describedby={errorMessage ? "friction-text-error" : undefined}
-          className="min-h-36 w-full resize-y rounded-xl border border-transparent bg-white px-4 py-4 text-base leading-7 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-teal-500 focus:ring-4 focus:ring-teal-100 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-teal-400 dark:focus:ring-teal-950"
+          className="min-h-36 w-full resize-y rounded-2xl border border-transparent bg-[var(--surface)] px-4 py-4 text-base leading-7 text-[var(--foreground)] outline-none transition placeholder:text-[var(--text-subtle)] focus:border-[var(--accent)] focus:ring-4 focus:ring-[var(--accent)]/15"
         />
         {errorMessage ? (
           <p
             id="friction-text-error"
-            className="mt-2 px-1 text-sm text-teal-800 dark:text-teal-200"
+            className="mt-2 px-1 text-sm text-[var(--accent-strong)]"
           >
             {errorMessage}
           </p>
@@ -147,10 +147,10 @@ export function FrictionForm({ onCreate }: FrictionFormProps) {
 
       <div className="space-y-3">
         <div className="space-y-1">
-          <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
+          <p className="text-sm font-medium text-[var(--foreground)]">
             빠른 예시
           </p>
-          <p className="text-xs leading-5 text-slate-500 dark:text-slate-400">
+          <p className="text-xs leading-5 text-[var(--text-muted)]">
             예시는 시작을 돕는 힌트입니다. 고른 뒤 얼마든지 바꿀 수
             있습니다.
           </p>
@@ -177,7 +177,7 @@ export function FrictionForm({ onCreate }: FrictionFormProps) {
       </div>
 
       <fieldset className="space-y-3">
-        <legend className="text-sm font-medium text-slate-900 dark:text-slate-100">
+        <legend className="text-sm font-medium text-[var(--foreground)]">
           그때 느낌
         </legend>
         <div className="flex flex-wrap gap-2">
@@ -194,7 +194,7 @@ export function FrictionForm({ onCreate }: FrictionFormProps) {
       </fieldset>
 
       <fieldset className="space-y-3">
-        <legend className="text-sm font-medium text-slate-900 dark:text-slate-100">
+        <legend className="text-sm font-medium text-[var(--foreground)]">
           어느 쪽 일이었나요?
         </legend>
         <div className="flex flex-wrap gap-2">
@@ -211,7 +211,7 @@ export function FrictionForm({ onCreate }: FrictionFormProps) {
       </fieldset>
 
       <fieldset className="space-y-3">
-        <legend className="text-sm font-medium text-slate-900 dark:text-slate-100">
+        <legend className="text-sm font-medium text-[var(--foreground)]">
           어디에서 막혔나요?
         </legend>
         <div className="flex flex-wrap gap-2">
@@ -228,9 +228,9 @@ export function FrictionForm({ onCreate }: FrictionFormProps) {
       </fieldset>
 
       <fieldset className="space-y-3">
-        <legend className="flex w-full items-center justify-between gap-3 text-sm font-medium text-slate-900 dark:text-slate-100">
+        <legend className="flex w-full items-center justify-between gap-3 text-sm font-medium text-[var(--foreground)]">
           얼마나 버거웠나요?
-          <span className="rounded-full bg-teal-50 px-3 py-1 text-sm text-teal-800 dark:bg-teal-950 dark:text-teal-100">
+          <span className="rounded-full bg-[var(--accent-soft)] px-3 py-1 text-sm text-[var(--accent-strong)]">
             {intensity}
           </span>
         </legend>
@@ -238,7 +238,7 @@ export function FrictionForm({ onCreate }: FrictionFormProps) {
           {intensityOptions.map((option) => (
             <label
               key={option.value}
-              className="flex min-h-14 cursor-pointer flex-col items-center justify-center rounded-xl border border-slate-300 bg-white px-3 py-2 text-center text-sm font-medium text-slate-700 transition has-checked:border-teal-600 has-checked:bg-teal-50 has-checked:text-teal-800 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:has-checked:border-teal-500 dark:has-checked:bg-teal-950 dark:has-checked:text-teal-100"
+              className="flex min-h-14 cursor-pointer flex-col items-center justify-center rounded-2xl border border-[var(--line-soft)] bg-[var(--surface)] px-3 py-2 text-center text-sm font-medium text-[var(--text-muted)] transition has-checked:border-[var(--accent)] has-checked:bg-[var(--accent-soft)] has-checked:text-[var(--accent-strong)]"
             >
               <input
                 type="radio"

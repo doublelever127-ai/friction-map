@@ -42,10 +42,10 @@ export function BottomNav({ activeTab, onChange }: BottomNavProps) {
   return (
     <nav
       aria-label="주요 화면"
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-slate-200 bg-white/95 px-3 py-2 shadow-[0_-12px_32px_rgba(15,23,42,0.10)] backdrop-blur dark:border-slate-800 dark:bg-slate-950/95 dark:shadow-none"
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-[9999] px-3 py-2"
       style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}
     >
-      <div className="mx-auto grid max-w-3xl grid-cols-4 gap-2">
+      <div className="pointer-events-auto mx-auto grid max-w-[460px] grid-cols-4 gap-1.5 rounded-[1.65rem] border border-[var(--line-soft)] bg-[var(--surface)]/95 p-2 shadow-[0_-18px_55px_rgba(54,45,35,0.14)] backdrop-blur dark:shadow-none">
         {navItems.map((item) => {
           const isActive = activeTab === item.id;
 
@@ -56,10 +56,10 @@ export function BottomNav({ activeTab, onChange }: BottomNavProps) {
               aria-current={isActive ? "page" : undefined}
               onClick={() => onChange(item.id)}
               className={joinClassNames(
-                "flex min-h-14 flex-col items-center justify-center rounded-2xl px-2 py-2 text-center transition focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:focus:ring-offset-slate-950",
+                "flex min-h-14 flex-col items-center justify-center rounded-2xl px-2 py-2 text-center transition duration-150 ease-out active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/40 focus:ring-offset-2 focus:ring-offset-[var(--background)]",
                 isActive
-                  ? "bg-teal-600 text-white shadow-sm shadow-teal-200 dark:bg-teal-500 dark:text-slate-950 dark:shadow-none"
-                  : "text-slate-500 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-900 dark:hover:text-slate-100",
+                  ? "bg-[var(--accent-soft)] text-[var(--accent-strong)] shadow-[0_10px_24px_rgba(82,111,90,0.14)] dark:shadow-none"
+                  : "text-[var(--text-subtle)] hover:bg-[var(--surface-muted)] hover:text-[var(--foreground)]",
               )}
             >
               <span className="text-sm font-semibold leading-5">
@@ -69,8 +69,8 @@ export function BottomNav({ activeTab, onChange }: BottomNavProps) {
                 className={joinClassNames(
                   "mt-0.5 text-[11px] leading-4",
                   isActive
-                    ? "text-teal-50 dark:text-slate-900"
-                    : "text-slate-400 dark:text-slate-500",
+                    ? "text-[var(--accent-strong)]/80"
+                    : "text-[var(--text-subtle)]",
                 )}
               >
                 {item.description}

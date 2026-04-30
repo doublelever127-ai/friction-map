@@ -46,18 +46,18 @@ const heatmapLegend = [
 
 function getCellClassName(count: number): string {
   if (count === 0) {
-    return "border-slate-100 bg-slate-50/70 text-slate-400 dark:border-slate-800 dark:bg-slate-900/50 dark:text-slate-600";
+    return "border-[var(--line-soft)] bg-[var(--surface-soft)] text-[var(--text-subtle)]";
   }
 
   if (count === 1) {
-    return "border-teal-100 bg-teal-50 text-teal-800 shadow-sm shadow-teal-100/60 dark:border-teal-900 dark:bg-teal-950 dark:text-teal-200 dark:shadow-none";
+    return "border-[var(--accent)]/20 bg-[var(--accent-soft)] text-[var(--accent-strong)] shadow-[0_8px_20px_rgba(82,111,90,0.10)] dark:shadow-none";
   }
 
   if (count <= 3) {
-    return "border-teal-200 bg-teal-100 text-teal-900 shadow-sm shadow-teal-100 dark:border-teal-800 dark:bg-teal-900 dark:text-teal-100 dark:shadow-none";
+    return "border-[var(--accent)]/35 bg-[var(--accent)]/22 text-[var(--accent-strong)] shadow-[0_10px_24px_rgba(82,111,90,0.14)] dark:shadow-none";
   }
 
-  return "border-teal-300 bg-teal-200 text-teal-950 shadow-md shadow-teal-200/70 dark:border-teal-500 dark:bg-teal-700 dark:text-white dark:shadow-none";
+  return "border-[var(--accent-strong)] bg-[var(--accent)] text-white shadow-[0_14px_32px_rgba(82,111,90,0.20)] dark:text-[#171512] dark:shadow-none";
 }
 
 function getHeatmapLevel(count: number): HeatmapLevel {
@@ -122,21 +122,21 @@ export function FrictionMap({ logs }: FrictionMapProps) {
       <div className="flex flex-col gap-2">
         <h2
           id="friction-map-heading"
-          className="text-2xl font-semibold text-slate-950 dark:text-slate-50"
+          className="text-2xl font-semibold text-[var(--foreground)]"
         >
           마찰 지도
         </h2>
-        <p className="text-sm leading-6 text-slate-600 dark:text-slate-400">
+        <p className="text-sm leading-6 text-[var(--text-muted)]">
           어떤 일에서, 어떤 순간에 자주 막히는지 지도처럼 볼 수 있어요.
         </p>
       </div>
 
       <section className="grid gap-3">
         <div>
-          <h3 className="text-base font-semibold text-slate-950 dark:text-slate-50">
+          <h3 className="text-base font-semibold text-[var(--foreground)]">
             자주 막힌 위치
           </h3>
-          <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-400">
+          <p className="mt-1 text-sm leading-6 text-[var(--text-muted)]">
             먼저 살펴볼 만한 일의 종류와 막힌 순간입니다.
           </p>
         </div>
@@ -152,14 +152,14 @@ export function FrictionMap({ logs }: FrictionMapProps) {
             {topEntries.map((entry, index) => (
               <div
                 key={`${entry.domain}-${entry.stage}`}
-                className="min-w-0 overflow-hidden rounded-lg border border-teal-100 bg-teal-50/70 p-4 dark:border-teal-900 dark:bg-teal-950/40"
+                className="min-w-0 overflow-hidden rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent-soft)] p-4"
                 title={`${entry.domain} × ${entry.stage}: ${entry.count}회`}
               >
                 <Badge variant="status">Top {index + 1}</Badge>
-                <p className="mt-3 text-sm font-semibold text-slate-950 dark:text-slate-50">
+                <p className="mt-3 text-sm font-semibold text-[var(--foreground)]">
                   {entry.domain} × {shortStageLabels[entry.stage]}
                 </p>
-                <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                <p className="mt-1 text-sm text-[var(--text-muted)]">
                   {entry.count}회 보인 위치입니다.
                 </p>
               </div>
@@ -168,12 +168,12 @@ export function FrictionMap({ logs }: FrictionMapProps) {
         )}
       </section>
 
-      <div className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-950/50">
+      <div className="flex flex-col gap-3 rounded-2xl border border-[var(--line-soft)] bg-[var(--surface-soft)] p-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
+          <p className="text-sm font-medium text-[var(--foreground)]">
             범례
           </p>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="text-xs text-[var(--text-muted)]">
             현재 저장된 기록 {logs.length}개
           </p>
         </div>
@@ -184,7 +184,7 @@ export function FrictionMap({ logs }: FrictionMapProps) {
             </Badge>
           ))}
         </div>
-        <p className="text-xs leading-5 text-slate-500 dark:text-slate-400">
+        <p className="text-xs leading-5 text-[var(--text-muted)]">
           숫자가 높을수록 같은 위치에서 더 자주 막혔다는 뜻입니다.
         </p>
       </div>
@@ -196,7 +196,7 @@ export function FrictionMap({ logs }: FrictionMapProps) {
         />
       ) : (
         <>
-          <p className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs leading-5 text-slate-500 dark:border-slate-800 dark:bg-slate-950/70 dark:text-slate-400 sm:hidden">
+          <p className="rounded-2xl border border-[var(--line-soft)] bg-[var(--surface-soft)] px-3 py-2 text-xs leading-5 text-[var(--text-muted)] sm:hidden">
             가로로 밀어 더 볼 수 있습니다.
           </p>
           <div className="w-full max-w-full overflow-x-auto overscroll-x-contain pb-1">
@@ -208,7 +208,7 @@ export function FrictionMap({ logs }: FrictionMapProps) {
                 <tr>
                   <th
                     scope="col"
-                    className="w-24 px-2 py-2 text-xs font-medium text-slate-500 dark:text-slate-400"
+                    className="w-24 px-2 py-2 text-xs font-medium text-[var(--text-muted)]"
                   >
                     영역
                   </th>
@@ -217,7 +217,7 @@ export function FrictionMap({ logs }: FrictionMapProps) {
                       key={stage}
                       scope="col"
                       title={stage}
-                      className="w-24 px-2 py-2 text-center text-xs font-medium leading-5 text-slate-600 dark:text-slate-300"
+                      className="w-24 px-2 py-2 text-center text-xs font-medium leading-5 text-[var(--text-muted)]"
                     >
                       <span aria-hidden="true">{shortStageLabels[stage]}</span>
                       <span className="sr-only">{stage}</span>
@@ -230,7 +230,7 @@ export function FrictionMap({ logs }: FrictionMapProps) {
                   <tr key={domain}>
                     <th
                       scope="row"
-                      className="px-2 py-2 text-sm font-semibold text-slate-800 dark:text-slate-200"
+                      className="px-2 py-2 text-sm font-semibold text-[var(--foreground)]"
                     >
                       {domain}
                     </th>

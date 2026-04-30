@@ -15,17 +15,17 @@ type BadgeProps = ComponentPropsWithoutRef<"span"> & {
 
 const badgeVariants: Record<BadgeVariant, string> = {
   neutral:
-    "border-slate-200 bg-slate-50 text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300",
+    "border-[var(--line-soft)] bg-[var(--surface-soft)] text-[var(--text-muted)]",
   emotion:
-    "border-rose-200 bg-rose-50 text-rose-800 dark:border-rose-900 dark:bg-rose-950 dark:text-rose-200",
+    "border-[var(--coral)]/30 bg-[var(--coral-soft)] text-[var(--coral)]",
   domain:
-    "border-sky-200 bg-sky-50 text-sky-800 dark:border-sky-900 dark:bg-sky-950 dark:text-sky-200",
+    "border-[#8ca8b0]/30 bg-[#edf4f4] text-[#52727b] dark:border-[#8ca8b0]/30 dark:bg-[#223134] dark:text-[#aac5ca]",
   stage:
-    "border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-200",
+    "border-[#c6a36c]/30 bg-[#f8efdf] text-[#8a6a35] dark:border-[#c6a36c]/30 dark:bg-[#332a1c] dark:text-[#ddc08a]",
   status:
-    "border-teal-200 bg-teal-50 text-teal-800 dark:border-teal-900 dark:bg-teal-950 dark:text-teal-200",
+    "border-[var(--accent)]/30 bg-[var(--accent-soft)] text-[var(--accent-strong)] dark:text-[var(--accent-strong)]",
   subtle:
-    "border-slate-200 bg-white text-slate-600 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-400",
+    "border-[var(--line-soft)] bg-[var(--surface)] text-[var(--text-muted)]",
 };
 
 function joinClassNames(...classNames: Array<string | false | undefined>) {
@@ -41,7 +41,7 @@ export function Badge({
   return (
     <span
       className={joinClassNames(
-        "inline-flex min-h-7 max-w-full items-center rounded-full border px-2.5 py-1 text-left text-xs font-medium leading-4 break-words whitespace-normal",
+        "inline-flex min-h-7 max-w-full items-center rounded-full border px-2.5 py-1 text-left text-xs font-semibold leading-4 break-words whitespace-normal",
         badgeVariants[variant],
         className,
       )}

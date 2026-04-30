@@ -20,14 +20,14 @@ export function SoftEmptyState({
   return (
     <div
       className={joinClassNames(
-        "rounded-lg border border-dashed border-slate-300 bg-slate-50 px-5 py-8 text-center dark:border-slate-700 dark:bg-slate-950",
+        "rounded-3xl border border-dashed border-[var(--line-soft)] bg-[var(--surface-soft)] px-5 py-8 text-center",
         className,
       )}
     >
-      <h3 className="text-xl font-semibold leading-7 text-slate-950 dark:text-slate-50">
+      <h3 className="text-xl font-semibold leading-7 text-[var(--foreground)]">
         {title}
       </h3>
-      <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-400">
+      <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-[var(--text-muted)]">
         {description}
       </p>
       {children ? <div className="mt-5">{children}</div> : null}

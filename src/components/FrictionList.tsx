@@ -34,12 +34,12 @@ function formatCreatedAt(createdAt: string): string {
 export function FrictionList({ logs, onDelete }: FrictionListProps) {
   const [showAll, setShowAll] = useState(false);
   const listHeader = (
-    <div className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:flex-row sm:items-end sm:justify-between">
+    <div className="flex flex-col gap-3 rounded-3xl border border-[var(--line-soft)] bg-[var(--surface)] p-5 shadow-[var(--shadow-soft)] sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <h3 className="text-xl font-semibold text-slate-950 dark:text-slate-50">
+        <h3 className="text-xl font-semibold text-[var(--foreground)]">
           최근 마찰 기록
         </h3>
-        <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">
+        <p className="mt-2 text-sm leading-6 text-[var(--text-muted)]">
           기록은 평가가 아니라 패턴을 보기 위한 재료입니다.
         </p>
       </div>
@@ -77,11 +77,11 @@ export function FrictionList({ logs, onDelete }: FrictionListProps) {
         {visibleLogs.map((log) => (
           <article
             key={log.id}
-            className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700"
+            className="rounded-3xl border border-[var(--line-soft)] bg-[var(--surface)] p-5 shadow-[var(--shadow-soft)] transition hover:border-[var(--accent)]/35"
           >
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div className="min-w-0">
-                <p className="break-words text-lg font-semibold leading-8 text-slate-950 dark:text-slate-50">
+                <p className="break-words text-lg font-semibold leading-8 text-[var(--foreground)]">
                   {log.text}
                 </p>
                 <div className="mt-3 flex flex-wrap gap-2">
@@ -96,16 +96,16 @@ export function FrictionList({ logs, onDelete }: FrictionListProps) {
                 variant="ghost"
                 size="sm"
                 onClick={() => onDelete(log.id)}
-                className="self-start text-slate-500 dark:text-slate-400"
+                className="self-start"
                 aria-label={`${log.text} 기록 삭제`}
               >
                 삭제
               </Button>
             </div>
 
-            <div className="mt-4 flex flex-col gap-2 border-t border-slate-100 pt-4 text-xs leading-5 text-slate-500 dark:border-slate-800 dark:text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+            <div className="mt-4 flex flex-col gap-2 border-t border-[var(--line-soft)] pt-4 text-xs leading-5 text-[var(--text-muted)] sm:flex-row sm:items-center sm:justify-between">
               <span>{formatCreatedAt(log.createdAt)}</span>
-              <span className="rounded-full bg-slate-100 px-2.5 py-1 font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+              <span className="rounded-full bg-[var(--surface-soft)] px-2.5 py-1 font-medium text-[var(--text-muted)]">
                 강도 {log.intensity}
               </span>
             </div>

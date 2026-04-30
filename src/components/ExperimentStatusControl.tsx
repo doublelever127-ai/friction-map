@@ -40,7 +40,7 @@ export function ExperimentStatusControl({
 }: ExperimentStatusControlProps) {
   return (
     <fieldset className="flex flex-col gap-2" id={id}>
-      <legend className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+      <legend className="text-xs font-semibold text-[var(--text-muted)]">
         지금 상태
       </legend>
       <div className="flex flex-wrap gap-2">

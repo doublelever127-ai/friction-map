@@ -23,14 +23,14 @@ export function SectionCard({
   return (
     <section
       className={joinClassNames(
-        "rounded-lg border border-slate-200 bg-white p-5 shadow-sm shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900 dark:shadow-none sm:p-6",
+        "rounded-3xl border border-[var(--line-soft)] bg-[var(--surface)] p-5 shadow-[var(--shadow-soft)] sm:p-6",
         className,
       )}
     >
       <SectionHeader title={title} description={description} />
       <div
         className={joinClassNames(
-          "mt-5 border-t border-slate-100 pt-5 dark:border-slate-800",
+          "mt-5 border-t border-[var(--line-soft)] pt-5",
           contentClassName,
         )}
       >

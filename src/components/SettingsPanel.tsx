@@ -71,12 +71,12 @@ export function SettingsPanel({
       title="내 기록 관리"
       description="마찰지도는 기록을 기기 안에 저장합니다. 필요할 때 모든 기록을 지우거나 파일로 저장할 수 있습니다."
     >
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-        <section className="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/60">
-          <h3 className="text-base font-semibold text-slate-950 dark:text-slate-50">
+      <div className="grid gap-5">
+        <section className="rounded-3xl border border-[var(--line-soft)] bg-[var(--surface-soft)] p-4">
+          <h3 className="text-base font-semibold text-[var(--foreground)]">
             기록 내보내기
           </h3>
-          <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">
+          <p className="mt-2 text-sm leading-6 text-[var(--text-muted)]">
             마찰 기록과 작게 바꿔보기 카드를 하나의 JSON 파일로 저장합니다.
             서버로 보내지 않고 이 기기에서 파일을 만듭니다.
           </p>
@@ -91,18 +91,18 @@ export function SettingsPanel({
           </div>
         </section>
 
-        <section className="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/60">
-          <h3 className="text-base font-semibold text-slate-950 dark:text-slate-50">
+        <section className="rounded-3xl border border-[var(--line-soft)] bg-[var(--surface-soft)] p-4">
+          <h3 className="text-base font-semibold text-[var(--foreground)]">
             모든 기록 삭제
           </h3>
-          <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">
+          <p className="mt-2 text-sm leading-6 text-[var(--text-muted)]">
             삭제하면 이 기기 안의 마찰 기록과 작게 바꿔보기 카드가
             사라집니다. 필요한 경우 먼저 내보내기를 해두세요.
           </p>
 
           {isConfirmingClear ? (
-            <div className="mt-4 rounded-lg border border-rose-200 bg-white p-3 dark:border-rose-900 dark:bg-slate-900">
-              <p className="text-sm leading-6 text-slate-700 dark:text-slate-300">
+            <div className="mt-4 rounded-2xl border border-[var(--coral)]/30 bg-[var(--surface)] p-3">
+              <p className="text-sm leading-6 text-[var(--text-muted)]">
                 삭제하면 이 기기 안의 기록이 사라집니다. 계속할까요?
               </p>
               <div className="mt-3 flex flex-col gap-2 sm:flex-row">
@@ -147,56 +147,56 @@ export function SettingsPanel({
         <p
           role="status"
           aria-live="polite"
-          className="mt-5 rounded-lg border border-teal-100 bg-teal-50 px-4 py-3 text-sm leading-6 text-teal-900 dark:border-teal-900 dark:bg-teal-950/70 dark:text-teal-100"
+          className="mt-5 rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent-soft)] px-4 py-3 text-sm leading-6 text-[var(--accent-strong)]"
         >
           {message}
         </p>
       ) : null}
 
-      <div className="mt-5 grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-        <section className="rounded-lg border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-          <h3 className="text-base font-semibold text-slate-950 dark:text-slate-50">
+      <div className="mt-5 grid gap-5">
+        <section className="rounded-3xl border border-[var(--line-soft)] bg-[var(--surface)] p-4">
+          <h3 className="text-base font-semibold text-[var(--foreground)]">
             개인정보 안내
           </h3>
-          <ul className="mt-3 space-y-2 text-sm leading-6 text-slate-600 dark:text-slate-400">
+          <ul className="mt-3 space-y-2 text-sm leading-6 text-[var(--text-muted)]">
             <li>기록은 이 기기 안에 저장됩니다.</li>
             <li>서버로 전송하지 않습니다.</li>
             <li>로그인 계정을 만들지 않습니다.</li>
             <li>광고나 분석 SDK를 사용하지 않습니다.</li>
             <li>사용자는 기록을 삭제하거나 내보낼 수 있습니다.</li>
           </ul>
-          <p className="mt-4 text-xs leading-5 text-slate-500 dark:text-slate-500">
+          <p className="mt-4 text-xs leading-5 text-[var(--text-subtle)]">
             개인정보처리방침은 앱 안에서도 확인할 수 있으며, Play Store 등록 전
             누구나 볼 수 있는 공개 주소로 연결할 예정입니다.
           </p>
           <a
             href="/privacy"
-            className="mt-3 inline-flex text-sm font-semibold text-teal-700 underline-offset-4 hover:underline focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:text-teal-300 dark:focus:ring-offset-slate-900"
+            className="mt-3 inline-flex text-sm font-semibold text-[var(--accent-strong)] underline-offset-4 hover:underline focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/40 focus:ring-offset-2 focus:ring-offset-[var(--background)]"
           >
             개인정보처리방침 보기
           </a>
         </section>
 
-        <section className="rounded-lg border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-          <h3 className="text-base font-semibold text-slate-950 dark:text-slate-50">
+        <section className="rounded-3xl border border-[var(--line-soft)] bg-[var(--surface)] p-4">
+          <h3 className="text-base font-semibold text-[var(--foreground)]">
             앱 정보
           </h3>
           <dl className="mt-3 grid gap-3 text-sm">
             <div>
-              <dt className="text-slate-500 dark:text-slate-500">앱 이름</dt>
-              <dd className="mt-1 font-medium text-slate-800 dark:text-slate-200">
+              <dt className="text-[var(--text-subtle)]">앱 이름</dt>
+              <dd className="mt-1 font-medium text-[var(--foreground)]">
                 마찰지도
               </dd>
             </div>
             <div>
-              <dt className="text-slate-500 dark:text-slate-500">버전</dt>
-              <dd className="mt-1 font-medium text-slate-800 dark:text-slate-200">
+              <dt className="text-[var(--text-subtle)]">버전</dt>
+              <dd className="mt-1 font-medium text-[var(--foreground)]">
                 v{packageInfo.version}
               </dd>
             </div>
             <div>
-              <dt className="text-slate-500 dark:text-slate-500">문의 이메일</dt>
-              <dd className="mt-1 font-medium text-slate-800 dark:text-slate-200">
+              <dt className="text-[var(--text-subtle)]">문의 이메일</dt>
+              <dd className="mt-1 font-medium text-[var(--foreground)]">
                 출시 전 등록 예정
               </dd>
             </div>

@@ -9,32 +9,32 @@ export const metadata = {
 
 export default function PrivacyPage() {
   return (
-    <main className="min-h-screen bg-linear-to-b from-slate-100 via-teal-50/40 to-slate-50 px-4 py-6 text-slate-950 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 dark:text-slate-100 sm:px-6 lg:px-10">
-      <article className="mx-auto max-w-3xl rounded-lg border border-white/70 bg-white/85 p-6 shadow-sm shadow-slate-200/70 backdrop-blur dark:border-slate-800 dark:bg-slate-900/85 dark:shadow-none sm:p-8">
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(201,130,115,0.18),transparent_28rem),linear-gradient(180deg,var(--background),var(--surface-muted))] px-4 py-6 text-[var(--foreground)] sm:px-6">
+      <article className="mx-auto max-w-[720px] rounded-[2rem] border border-[var(--line-soft)] bg-[var(--surface)]/90 p-6 shadow-[var(--shadow-float)] backdrop-blur sm:p-8">
         <Link
           href="/"
-          className="text-sm font-semibold text-teal-700 underline-offset-4 hover:underline focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:text-teal-300 dark:focus:ring-offset-slate-900"
+          className="text-sm font-semibold text-[var(--accent-strong)] underline-offset-4 hover:underline focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/40 focus:ring-offset-2 focus:ring-offset-[var(--background)]"
         >
           마찰지도로 돌아가기
         </Link>
 
-        <header className="mt-6 border-b border-slate-200 pb-6 dark:border-slate-800">
-          <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
+        <header className="mt-6 border-b border-[var(--line-soft)] pb-6">
+          <p className="text-sm font-medium text-[var(--text-muted)]">
             최종 업데이트: {updatedAt}
           </p>
-          <h1 className="mt-3 text-3xl font-semibold leading-tight text-slate-950 dark:text-slate-50">
+          <h1 className="mt-3 text-3xl font-semibold leading-tight text-[var(--foreground)]">
             마찰지도 개인정보처리방침
           </h1>
-          <p className="mt-4 text-base leading-7 text-slate-700 dark:text-slate-300">
+          <p className="mt-4 text-base leading-7 text-[var(--text-muted)]">
             마찰지도는 자꾸 막히는 순간을 한 줄로 남기고, 반복되는 패턴을
             보는 개인 기록 앱입니다. 정신건강 치료, 심리 진단, 의료 상담,
             처방을 제공하지 않습니다.
           </p>
         </header>
 
-        <div className="mt-8 space-y-8 text-sm leading-7 text-slate-700 dark:text-slate-300">
+        <div className="mt-8 space-y-8 text-sm leading-7 text-[var(--text-muted)]">
           <section>
-            <h2 className="text-lg font-semibold text-slate-950 dark:text-slate-50">
+            <h2 className="text-lg font-semibold text-[var(--foreground)]">
               1. 저장되는 정보
             </h2>
             <p className="mt-3">
@@ -50,7 +50,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-slate-950 dark:text-slate-50">
+            <h2 className="text-lg font-semibold text-[var(--foreground)]">
               2. 저장 위치
             </h2>
             <p className="mt-3">
@@ -61,7 +61,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-slate-950 dark:text-slate-50">
+            <h2 className="text-lg font-semibold text-[var(--foreground)]">
               3. 사용 목적
             </h2>
             <p className="mt-3">
@@ -72,7 +72,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-slate-950 dark:text-slate-50">
+            <h2 className="text-lg font-semibold text-[var(--foreground)]">
               4. 제3자 제공
             </h2>
             <p className="mt-3">
@@ -83,7 +83,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-slate-950 dark:text-slate-50">
+            <h2 className="text-lg font-semibold text-[var(--foreground)]">
               5. 기록 삭제와 내보내기
             </h2>
             <p className="mt-3">
@@ -94,7 +94,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-slate-950 dark:text-slate-50">
+            <h2 className="text-lg font-semibold text-[var(--foreground)]">
               6. 향후 변경
             </h2>
             <p className="mt-3">
@@ -105,7 +105,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-slate-950 dark:text-slate-50">
+            <h2 className="text-lg font-semibold text-[var(--foreground)]">
               7. 문의
             </h2>
             <p className="mt-3">

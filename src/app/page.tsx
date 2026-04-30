@@ -98,7 +98,7 @@ function RecentRecordPreview({
         description="한 줄을 남기면 최근 기록과 지도에 바로 반영됩니다."
         contentClassName="mt-4 pt-4"
       >
-        <p className="text-sm leading-6 text-slate-600 dark:text-slate-400">
+        <p className="text-sm leading-6 text-[var(--text-muted)]">
           예시 칩을 눌러 시작해도 실제 저장은 되지 않습니다. 내용을 확인한 뒤
           기록하기 버튼을 눌렀을 때만 저장됩니다.
         </p>
@@ -124,9 +124,9 @@ function RecentRecordPreview({
         {visibleLogs.map((log) => (
           <article
             key={log.id}
-            className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4 dark:border-slate-800 dark:bg-slate-950/50"
+            className="rounded-2xl border border-[var(--line-soft)] bg-[var(--surface-soft)] p-4"
           >
-            <p className="break-words text-sm font-semibold leading-6 text-slate-950 dark:text-slate-50">
+            <p className="break-words text-sm font-semibold leading-6 text-[var(--foreground)]">
               {log.text}
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
@@ -280,36 +280,36 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-linear-to-b from-slate-100 via-teal-50/40 to-slate-50 px-4 pb-28 pt-5 text-slate-950 transition-colors dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 dark:text-slate-100 sm:px-6 lg:px-10">
-      <div className="mx-auto flex w-full max-w-5xl flex-col gap-5">
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(201,130,115,0.18),transparent_28rem),linear-gradient(180deg,var(--background),var(--surface-muted))] px-4 pb-32 pt-5 text-[var(--foreground)] transition-colors sm:px-6">
+      <div className="mx-auto flex w-full max-w-[460px] flex-col gap-5">
         <header className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-2xl font-semibold leading-8 text-slate-950 dark:text-slate-50">
+            <p className="text-2xl font-semibold leading-8 text-[var(--foreground)]">
               마찰지도
             </p>
-            <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-400">
+            <p className="mt-1 text-sm leading-6 text-[var(--text-muted)]">
               자꾸 막히는 순간을 한 줄로 남기는 앱
             </p>
           </div>
           <ThemeToggle />
         </header>
 
-        <section className="rounded-3xl border border-white/70 bg-white/85 p-5 shadow-sm shadow-slate-200/70 backdrop-blur dark:border-slate-800 dark:bg-slate-900/85 dark:shadow-none sm:p-7">
+        <section className="overflow-hidden rounded-[2rem] border border-[var(--line-soft)] bg-[linear-gradient(145deg,var(--surface),var(--surface-soft))] p-5 shadow-[var(--shadow-float)] backdrop-blur sm:p-7">
           <Badge variant="status">{currentIntro.eyebrow}</Badge>
-          <h1 className="mt-4 text-3xl font-semibold leading-tight text-slate-950 dark:text-slate-50 sm:text-4xl">
+          <h1 className="mt-4 text-3xl font-semibold leading-tight text-[var(--foreground)] sm:text-4xl">
             {currentIntro.title}
           </h1>
-          <p className="mt-3 text-base leading-7 text-slate-700 dark:text-slate-300">
+          <p className="mt-3 text-base leading-7 text-[var(--text-muted)]">
             {currentIntro.description}
           </p>
 
           {activeTab === "record" ? (
             <>
-              <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
+              <p className="mt-3 text-sm leading-6 text-[var(--text-muted)]">
                 여기서는 하려고 했지만 이상하게 막혔던 순간을 마찰이라고
                 부릅니다.
               </p>
-              <p className="mt-4 rounded-2xl border border-teal-100 bg-teal-50 px-4 py-3 text-sm font-medium leading-6 text-teal-900 dark:border-teal-900 dark:bg-teal-950/70 dark:text-teal-100">
+              <p className="mt-4 rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent-soft)] px-4 py-3 text-sm font-medium leading-6 text-[var(--accent-strong)]">
                 할 일을 더 늘리지 않습니다. 자주 막히는 순간을 찾아, 다음에
                 덜 버겁게 만듭니다.
               </p>
@@ -318,7 +318,7 @@ export default function Home() {
         </section>
 
         {activeTab === "record" ? (
-          <section className="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,1.05fr)_minmax(300px,0.95fr)]">
+          <section className="grid min-w-0 gap-4">
             <SectionCard
               title="막힌 순간 남기기"
               description="정확히 고르지 않아도 괜찮습니다. 지금 가장 가까운 느낌으로 시작해보세요."
@@ -329,7 +329,7 @@ export default function Home() {
                 <div
                   role="status"
                   aria-live="polite"
-                  className="mt-5 rounded-xl border border-teal-100 bg-teal-50 px-4 py-3 text-sm leading-6 text-teal-900 shadow-sm shadow-teal-100/50 dark:border-teal-900 dark:bg-teal-950/70 dark:text-teal-100 dark:shadow-none"
+                  className="mt-5 rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent-soft)] px-4 py-3 text-sm leading-6 text-[var(--accent-strong)] shadow-[0_10px_24px_rgba(82,111,90,0.10)] dark:shadow-none"
                 >
                   <p>{logFeedbackMessage}</p>
                   <Button
@@ -337,7 +337,7 @@ export default function Home() {
                     variant="secondary"
                     size="sm"
                     onClick={() => setActiveTab("map")}
-                    className="mt-3 w-full bg-white/80 dark:bg-slate-900/80 sm:w-auto"
+                    className="mt-3 w-full sm:w-auto"
                   >
                     지도에서 보기
                   </Button>
@@ -388,20 +388,20 @@ export default function Home() {
             {hasNoLogs ? <SampleFrictionPreview /> : null}
 
             {hasOneLog ? (
-              <div className="rounded-xl border border-teal-100 bg-teal-50 px-4 py-3 text-sm leading-6 text-teal-900 dark:border-teal-900 dark:bg-teal-950/70 dark:text-teal-100">
+              <div className="rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent-soft)] px-4 py-3 text-sm leading-6 text-[var(--accent-strong)]">
                 아직은 관찰을 시작한 단계예요. 비슷한 기록이 쌓이면 자주
                 막히는 위치가 더 선명해집니다.
               </div>
             ) : null}
 
             {hasPatternReadyLogs ? (
-              <div className="rounded-xl border border-teal-100 bg-teal-50 px-4 py-3 text-sm leading-6 text-teal-900 dark:border-teal-900 dark:bg-teal-950/70 dark:text-teal-100">
+              <div className="rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent-soft)] px-4 py-3 text-sm leading-6 text-[var(--accent-strong)]">
                 반복해서 보이는 위치를 살펴보세요. 바로 고치지 않아도
                 괜찮습니다.
               </div>
             ) : null}
 
-            <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900 dark:shadow-none sm:p-6">
+            <section className="rounded-3xl border border-[var(--line-soft)] bg-[var(--surface)] p-5 shadow-[var(--shadow-soft)] sm:p-6">
               <FrictionMap logs={logs} />
             </section>
 
@@ -418,7 +418,7 @@ export default function Home() {
             />
 
             {hasNoLogs ? (
-              <div className="rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-sm leading-6 text-slate-600 shadow-sm dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-300">
+              <div className="rounded-2xl border border-[var(--line-soft)] bg-[var(--surface)] px-4 py-3 text-sm leading-6 text-[var(--text-muted)] shadow-[var(--shadow-soft)]">
                 <p>
                   아직 시도할 기록이 없어요. 먼저 막힌 순간을 하나
                   남겨보세요.
@@ -436,14 +436,14 @@ export default function Home() {
             ) : null}
 
             {hasEarlyExperimentLogs ? (
-              <div className="rounded-xl border border-teal-100 bg-teal-50 px-4 py-3 text-sm leading-6 text-teal-900 dark:border-teal-900 dark:bg-teal-950/70 dark:text-teal-100">
+              <div className="rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent-soft)] px-4 py-3 text-sm leading-6 text-[var(--accent-strong)]">
                 지금 바로 시도해봐도 되고, 비슷한 기록이 조금 더 쌓인 뒤
                 골라도 괜찮아요.
               </div>
             ) : null}
 
             {hasPatternReadyLogs ? (
-              <div className="rounded-xl border border-teal-100 bg-teal-50 px-4 py-3 text-sm leading-6 text-teal-900 dark:border-teal-900 dark:bg-teal-950/70 dark:text-teal-100">
+              <div className="rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent-soft)] px-4 py-3 text-sm leading-6 text-[var(--accent-strong)]">
                 지도에서 자주 보이는 위치를 골라 작게 시도해볼 수 있어요.
               </div>
             ) : null}
@@ -455,7 +455,7 @@ export default function Home() {
               />
 
               {experiments.length > 0 ? (
-                <div className="rounded-xl border border-teal-100 bg-teal-50 px-4 py-3 text-sm leading-6 text-teal-900 dark:border-teal-900 dark:bg-teal-950/70 dark:text-teal-100">
+                <div className="rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent-soft)] px-4 py-3 text-sm leading-6 text-[var(--accent-strong)]">
                   <p>
                     만든 시도 카드는 돌아보기 화면에서 상태를 바꾸고 다시
                     살펴볼 수 있습니다.
@@ -465,7 +465,7 @@ export default function Home() {
                     variant="secondary"
                     size="sm"
                     onClick={() => setActiveTab("review")}
-                    className="mt-3 w-full bg-white/80 dark:bg-slate-900/80 sm:w-auto"
+                    className="mt-3 w-full sm:w-auto"
                   >
                     돌아보러 가기
                   </Button>

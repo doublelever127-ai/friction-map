@@ -25,11 +25,11 @@ export function SectionHeader({
       )}
     >
       <div className="min-w-0">
-        <h2 className="text-2xl font-semibold leading-8 text-slate-950 dark:text-slate-50">
+        <h2 className="text-2xl font-semibold leading-8 text-[var(--foreground)]">
           {title}
         </h2>
         {description ? (
-          <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">
+          <p className="mt-2 text-sm leading-6 text-[var(--text-muted)]">
             {description}
           </p>
         ) : null}

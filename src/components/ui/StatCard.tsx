@@ -20,18 +20,18 @@ export function StatCard({
   return (
     <div
       className={joinClassNames(
-        "rounded-lg border border-slate-200 bg-white p-4 shadow-sm shadow-slate-200/50 dark:border-slate-800 dark:bg-slate-900 dark:shadow-none",
+        "rounded-3xl border border-[var(--line-soft)] bg-[var(--surface)] p-4 shadow-[var(--shadow-soft)]",
         className,
       )}
     >
-      <p className="text-sm font-medium leading-5 text-slate-500 dark:text-slate-400">
+      <p className="text-sm font-medium leading-5 text-[var(--text-muted)]">
         {label}
       </p>
-      <p className="mt-2 break-words text-2xl font-semibold leading-8 text-slate-950 dark:text-slate-50">
+      <p className="mt-2 break-words text-2xl font-semibold leading-8 text-[var(--foreground)]">
         {value}
       </p>
       {description ? (
-        <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">
+        <p className="mt-2 text-sm leading-6 text-[var(--text-muted)]">
           {description}
         </p>
       ) : null}

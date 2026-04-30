@@ -11,17 +11,17 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 const buttonVariants: Record<ButtonVariant, string> = {
   primary:
-    "border-teal-700 bg-teal-700 text-white hover:bg-teal-800 dark:border-teal-600 dark:bg-teal-600 dark:hover:bg-teal-500",
+    "border-[var(--accent-strong)] bg-[var(--accent-strong)] text-white shadow-[0_12px_28px_rgba(82,111,90,0.22)] hover:brightness-95 dark:border-[var(--accent)] dark:bg-[var(--accent)] dark:text-[#171512] dark:shadow-none",
   secondary:
-    "border-slate-300 bg-white text-slate-800 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800",
+    "border-[var(--line-soft)] bg-[var(--surface)] text-[var(--foreground)] hover:bg-[var(--surface-muted)] dark:hover:bg-[var(--surface-muted)]",
   ghost:
-    "border-transparent bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-50",
+    "border-transparent bg-transparent text-[var(--text-muted)] hover:bg-[var(--surface-muted)] hover:text-[var(--foreground)]",
   danger:
-    "border-rose-200 bg-rose-50 text-rose-700 hover:bg-rose-100 dark:border-rose-900 dark:bg-rose-950 dark:text-rose-200 dark:hover:bg-rose-900",
+    "border-[var(--coral)]/30 bg-[var(--coral-soft)] text-[var(--coral)] hover:brightness-95",
 };
 
 const buttonSizes: Record<ButtonSize, string> = {
-  sm: "min-h-11 px-3.5 text-sm",
+  sm: "min-h-11 px-4 text-sm",
   md: "min-h-12 px-5 text-sm",
 };
 
@@ -41,7 +41,7 @@ export function Button({
     <button
       type={type}
       className={joinClassNames(
-        "inline-flex max-w-full items-center justify-center rounded-lg border text-center font-semibold transition focus:outline-none focus:ring-2 focus:ring-teal-300 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:focus:ring-teal-800 dark:focus:ring-offset-slate-950",
+        "inline-flex max-w-full items-center justify-center rounded-2xl border text-center font-semibold transition duration-150 ease-out active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/40 focus:ring-offset-2 focus:ring-offset-[var(--background)] disabled:cursor-not-allowed disabled:opacity-50",
         buttonVariants[variant],
         buttonSizes[size],
         className,

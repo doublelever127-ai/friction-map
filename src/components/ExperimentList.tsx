@@ -63,11 +63,11 @@ function formatDateTime(value: string): string {
 
 function ExperimentDetail({ label, children }: ExperimentDetailProps) {
   return (
-    <div className="min-w-0 overflow-hidden rounded-xl border border-slate-200 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-950/50">
-      <dt className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+    <div className="min-w-0 overflow-hidden rounded-2xl border border-[var(--line-soft)] bg-[var(--surface-soft)] p-4">
+      <dt className="text-sm font-semibold text-[var(--foreground)]">
         {label}
       </dt>
-      <dd className="mt-2 break-words text-sm leading-6 text-slate-600 dark:text-slate-400">
+      <dd className="mt-2 break-words text-sm leading-6 text-[var(--text-muted)]">
         {children}
       </dd>
     </div>
@@ -101,18 +101,18 @@ function ExperimentReviewForm({
   }
 
   return (
-    <section className="mt-5 rounded-2xl border border-teal-100 bg-teal-50/60 p-4 dark:border-teal-900 dark:bg-teal-950/30">
+    <section className="mt-5 rounded-3xl border border-[var(--accent)]/25 bg-[var(--accent-soft)] p-4">
       <div className="flex flex-col gap-1">
-        <h4 className="text-base font-semibold text-slate-950 dark:text-slate-50">
+        <h4 className="text-base font-semibold text-[var(--foreground)]">
           해보니 어땠나요?
         </h4>
-        <p className="text-sm leading-6 text-slate-600 dark:text-slate-400">
+        <p className="text-sm leading-6 text-[var(--text-muted)]">
           판정하는 곳이 아니라, 다음 시도를 더 작게 조정하는 곳입니다.
         </p>
       </div>
 
       <fieldset className="mt-4 space-y-3">
-        <legend className="text-sm font-medium text-slate-900 dark:text-slate-100">
+        <legend className="text-sm font-medium text-[var(--foreground)]">
           지금 가장 가까운 느낌
         </legend>
         <div className="flex flex-wrap gap-2">
@@ -137,7 +137,7 @@ function ExperimentReviewForm({
           htmlFor={`experiment-review-note-${experiment.id}`}
           className="grid gap-2"
         >
-          <span className="text-sm font-medium text-slate-900 dark:text-slate-100">
+          <span className="text-sm font-medium text-[var(--foreground)]">
             짧게 남기기
           </span>
           <textarea
@@ -149,7 +149,7 @@ function ExperimentReviewForm({
             }}
             rows={3}
             placeholder="예: 운동복을 입는 건 생각보다 괜찮았지만, 퇴근 직후에는 조금 버거웠다"
-            className="min-h-24 w-full resize-y rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm leading-6 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-teal-600 focus:ring-4 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-teal-400 dark:focus:ring-teal-950"
+            className="min-h-24 w-full resize-y rounded-2xl border border-[var(--line-soft)] bg-[var(--surface)] px-4 py-3 text-sm leading-6 text-[var(--foreground)] outline-none transition placeholder:text-[var(--text-subtle)] focus:border-[var(--accent)] focus:ring-4 focus:ring-[var(--accent)]/15"
           />
         </label>
 
@@ -157,7 +157,7 @@ function ExperimentReviewForm({
           htmlFor={`experiment-next-adjustment-${experiment.id}`}
           className="grid gap-2"
         >
-          <span className="text-sm font-medium text-slate-900 dark:text-slate-100">
+          <span className="text-sm font-medium text-[var(--foreground)]">
             다음엔 어떻게 더 작게 해볼까요?
           </span>
           <textarea
@@ -169,7 +169,7 @@ function ExperimentReviewForm({
             }}
             rows={3}
             placeholder="예: 운동복을 입는 것도 크면, 운동복을 꺼내두기만 해본다"
-            className="min-h-24 w-full resize-y rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm leading-6 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-teal-600 focus:ring-4 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-teal-400 dark:focus:ring-teal-950"
+            className="min-h-24 w-full resize-y rounded-2xl border border-[var(--line-soft)] bg-[var(--surface)] px-4 py-3 text-sm leading-6 text-[var(--foreground)] outline-none transition placeholder:text-[var(--text-subtle)] focus:border-[var(--accent)] focus:ring-4 focus:ring-[var(--accent)]/15"
           />
         </label>
       </div>
@@ -179,7 +179,7 @@ function ExperimentReviewForm({
           돌아보기 저장
         </Button>
         {experiment.reviewedAt ? (
-          <p className="text-xs leading-5 text-slate-500 dark:text-slate-400">
+          <p className="text-xs leading-5 text-[var(--text-muted)]">
             마지막 저장 {formatDateTime(experiment.reviewedAt)}
           </p>
         ) : null}
@@ -189,7 +189,7 @@ function ExperimentReviewForm({
         <p
           role="status"
           aria-live="polite"
-          className="mt-3 text-sm leading-6 text-teal-800 dark:text-teal-200"
+          className="mt-3 text-sm leading-6 text-[var(--accent-strong)]"
         >
           {message}
         </p>
@@ -210,7 +210,7 @@ export function ExperimentList({
       <SoftEmptyState
         title="아직 시도 카드가 없습니다"
         description="반복되는 막힘이 보이면, 다음에 덜 버겁게 해볼 작은 방법을 정해보세요."
-        className="bg-white shadow-sm dark:bg-slate-900"
+        className="shadow-[var(--shadow-soft)]"
       />
     );
   }
@@ -230,7 +230,7 @@ export function ExperimentList({
         return (
           <article
             key={experiment.id}
-            className="min-w-0 overflow-hidden rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-6"
+            className="min-w-0 overflow-hidden rounded-3xl border border-[var(--line-soft)] bg-[var(--surface)] p-5 shadow-[var(--shadow-soft)] sm:p-6"
           >
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div className="min-w-0">
@@ -240,7 +240,7 @@ export function ExperimentList({
                   </Badge>
                   <Badge variant="subtle">{experiment.durationDays}일</Badge>
                 </div>
-                <h3 className="mt-3 break-words text-xl font-semibold leading-7 text-slate-950 dark:text-slate-50">
+                <h3 className="mt-3 break-words text-xl font-semibold leading-7 text-[var(--foreground)]">
                   {experiment.title}
                 </h3>
               </div>
@@ -257,13 +257,13 @@ export function ExperimentList({
               </Button>
             </div>
 
-            <div className="mt-5 min-w-0 overflow-hidden rounded-2xl border border-teal-100 bg-teal-50/70 p-4 dark:border-teal-900 dark:bg-teal-950/40">
-              <p className="text-xs font-semibold text-teal-800 dark:text-teal-200">
+            <div className="mt-5 min-w-0 overflow-hidden rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent-soft)] p-4">
+              <p className="text-xs font-semibold text-[var(--accent-strong)]">
                 연결된 기록
               </p>
               {linkedLog ? (
                 <>
-                  <p className="mt-2 break-words text-sm leading-6 text-slate-900 dark:text-slate-100">
+                  <p className="mt-2 break-words text-sm leading-6 text-[var(--foreground)]">
                     {linkedLog.text}
                   </p>
                   <div className="mt-3 flex flex-wrap gap-2">
@@ -273,7 +273,7 @@ export function ExperimentList({
                   </div>
                 </>
               ) : (
-                <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                <p className="mt-2 text-sm leading-6 text-[var(--text-muted)]">
                   연결된 기록을 찾을 수 없습니다. 이 카드는 그대로
                   유지됩니다.
                 </p>
@@ -295,14 +295,14 @@ export function ExperimentList({
               </ExperimentDetail>
             </dl>
 
-            <div className="mt-5 rounded-2xl border border-slate-200 p-4 dark:border-slate-800">
+            <div className="mt-5 rounded-2xl border border-[var(--line-soft)] p-4">
               <div className="flex flex-col gap-3">
                 <ExperimentStatusControl
                   id={`experiment-status-${experiment.id}`}
                   status={experiment.status}
                   onChange={(status) => onStatusChange(experiment.id, status)}
                 />
-                <p className="text-xs leading-5 text-slate-500 dark:text-slate-400">
+                <p className="text-xs leading-5 text-[var(--text-muted)]">
                   지금 상태는 평가가 아니라 어디까지 해봤는지 가볍게 표시하는
                   용도입니다.
                 </p>
@@ -314,7 +314,7 @@ export function ExperimentList({
               onSave={(review) => onReviewSave(experiment.id, review)}
             />
 
-            <div className="mt-4 flex flex-col gap-1 border-t border-slate-100 pt-4 text-xs leading-5 text-slate-500 dark:border-slate-800 dark:text-slate-400 sm:flex-row sm:justify-between">
+            <div className="mt-4 flex flex-col gap-1 border-t border-[var(--line-soft)] pt-4 text-xs leading-5 text-[var(--text-muted)] sm:flex-row sm:justify-between">
               <span>생성일 {formatDateTime(experiment.createdAt)}</span>
               <span>수정일 {formatDateTime(experiment.updatedAt)}</span>
             </div>
