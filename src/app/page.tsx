@@ -228,6 +228,7 @@ export default function Home() {
       saveExperiments(nextExperiments);
       return nextExperiments;
     });
+    setActiveTab("review");
   }
 
   function handleExperimentStatusChange(

@@ -25,6 +25,8 @@ type ExperimentStepProps = {
 
 const durationOptions = [3, 5, 7] as const;
 const defaultDurationDays: CreateFrictionExperimentInput["durationDays"] = 5;
+const defaultFailureInterpretation =
+  "잘 안 되면 방법을 더 작게 조정해봅니다.";
 
 const inputClassName =
   "h-12 w-full min-w-0 rounded-2xl border border-[var(--line-soft)] bg-[var(--surface)] px-4 text-sm text-[var(--foreground)] outline-none transition placeholder:text-[var(--text-subtle)] focus:border-[var(--accent)] focus:ring-4 focus:ring-[var(--accent)]/15";
@@ -130,11 +132,10 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
       !trimmedTitle ||
       !trimmedHypothesis ||
       !trimmedAction ||
-      !trimmedSuccessCriteria ||
-      !trimmedFailureInterpretation
+      !trimmedSuccessCriteria
     ) {
       setFormMessage(
-        "아직 비어 있는 항목이 있습니다. 지금 떠오르는 만큼만 차분히 채워주세요.",
+        "카드 이름, 떠오른 이유, 작게 해볼 것, 확인 방법만 채워도 충분합니다.",
       );
       return;
     }
@@ -151,7 +152,8 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
       action: trimmedAction,
       durationDays,
       successCriteria: trimmedSuccessCriteria,
-      failureInterpretation: trimmedFailureInterpretation,
+      failureInterpretation:
+        trimmedFailureInterpretation || defaultFailureInterpretation,
     });
 
     setTitle("");
@@ -320,7 +322,8 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
             className="flex min-w-0 flex-col gap-2"
           >
             <span className="text-sm font-medium text-[var(--foreground)]">
-              잘 안 됐을 때 어떻게 볼까요?
+              잘 안 됐을 때 어떻게 볼까요?{" "}
+              <span className="text-[var(--text-muted)]">(선택)</span>
             </span>
             <textarea
               id="experiment-interpretation"
@@ -328,7 +331,7 @@ export function ExperimentBuilder({ logs, onCreate }: ExperimentBuilderProps) {
               onChange={(event) =>
                 setFailureInterpretation(event.target.value)
               }
-              placeholder="예: 방법이 아직 컸다는 신호로 보고 더 작게 조정한다"
+              placeholder={defaultFailureInterpretation}
               rows={3}
               className={textareaClassName}
             />
