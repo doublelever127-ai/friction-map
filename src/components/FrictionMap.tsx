@@ -273,7 +273,7 @@ function VisualFrictionMap({
       })}
 
       <div className="absolute bottom-3 left-3 right-3 rounded-2xl border border-[var(--line-soft)] bg-[var(--surface)]/90 px-3 py-2 text-xs leading-5 text-[var(--text-muted)] shadow-[var(--shadow-soft)]">
-        생활 영역은 지도 위의 지역처럼, 막힌 순간은 핀처럼 표시됩니다.
+        남긴 기록만 핀으로 표시됩니다. 어느 쪽 일에서, 어디서 막혔는지 함께 볼 수 있어요.
       </div>
     </div>
   );
