@@ -232,29 +232,30 @@ export function ExperimentList({
             key={experiment.id}
             className="min-w-0 overflow-hidden rounded-3xl border border-[var(--line-soft)] bg-[var(--surface)] p-5 shadow-[var(--shadow-soft)] sm:p-6"
           >
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-              <div className="min-w-0">
-                <div className="flex flex-wrap gap-2">
+            <div className="grid min-w-0 gap-3">
+              <div className="flex min-w-0 items-start justify-between gap-3">
+                <div className="flex min-w-0 flex-wrap gap-2">
                   <Badge variant="status">
                     {getExperimentStatusLabel(experiment.status)}
                   </Badge>
                   <Badge variant="subtle">{experiment.durationDays}일</Badge>
                 </div>
-                <h3 className="mt-3 break-words text-xl font-semibold leading-7 text-[var(--foreground)]">
-                  {experiment.title}
-                </h3>
+
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onDelete(experiment.id)}
+                  className="shrink-0 self-start"
+                  aria-label={`${experiment.title} 카드 삭제`}
+                >
+                  삭제
+                </Button>
               </div>
 
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={() => onDelete(experiment.id)}
-                className="shrink-0 self-start sm:self-auto"
-                aria-label={`${experiment.title} 카드 삭제`}
-              >
-                삭제
-              </Button>
+              <h3 className="line-clamp-2 min-w-0 break-words text-xl font-semibold leading-7 text-[var(--foreground)]">
+                {experiment.title}
+              </h3>
             </div>
 
             <div className="mt-5 min-w-0 overflow-hidden rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent-soft)] p-4">
