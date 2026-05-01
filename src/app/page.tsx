@@ -314,32 +314,26 @@ export default function Home() {
 
         <section
           className={`overflow-hidden border border-[var(--line-soft)] bg-[linear-gradient(145deg,var(--surface),var(--surface-soft))] shadow-[var(--shadow-float)] backdrop-blur ${
-            activeTab === "map"
+            activeTab !== "record"
               ? "rounded-[1.25rem] p-3 sm:p-4"
-              : activeTab === "record"
-                ? "rounded-[1.5rem] p-4 sm:p-5"
-              : "rounded-[2rem] p-5 sm:p-7"
+              : "rounded-[1.5rem] p-4 sm:p-5"
           }`}
         >
           <Badge variant="status">{currentIntro.eyebrow}</Badge>
           <h1
             className={`font-semibold leading-tight text-[var(--foreground)] ${
-              activeTab === "map"
+              activeTab !== "record"
                 ? "mt-2 text-xl sm:text-2xl"
-                : activeTab === "record"
-                  ? "mt-2 text-2xl sm:text-3xl"
-                : "mt-4 text-3xl sm:text-4xl"
+                : "mt-2 text-2xl sm:text-3xl"
             }`}
           >
             {currentIntro.title}
           </h1>
           <p
             className={`text-[var(--text-muted)] ${
-              activeTab === "map"
+              activeTab !== "record"
                 ? "mt-1.5 text-sm leading-5"
-                : activeTab === "record"
-                  ? "mt-2 text-sm leading-6"
-                : "mt-3 text-base leading-7"
+                : "mt-2 text-sm leading-6"
             }`}
           >
             {currentIntro.description}
@@ -502,8 +496,8 @@ export default function Home() {
         {activeTab === "review" ? (
           <section className="grid min-w-0 gap-5">
             <SectionHeader
-              title="시도 돌아보기"
-              description="해보니 어땠는지 살펴보고, 다음에는 더 작게 조정할지 확인합니다."
+              title="내 시도 카드"
+              description="짧게 보고, 필요할 때만 펼쳐서 상태와 돌아보기를 확인할 수 있어요."
             />
             <ExperimentList
               experiments={experiments}

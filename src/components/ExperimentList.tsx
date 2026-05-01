@@ -230,95 +230,133 @@ export function ExperimentList({
         return (
           <article
             key={experiment.id}
-            className="min-w-0 overflow-hidden rounded-3xl border border-[var(--line-soft)] bg-[var(--surface)] p-5 shadow-[var(--shadow-soft)] sm:p-6"
+            className="min-w-0 overflow-hidden rounded-[1.5rem] border border-[var(--line-soft)] bg-[var(--surface)] p-4 shadow-[var(--shadow-soft)] sm:p-5"
           >
-            <div className="grid min-w-0 gap-3">
-              <div className="flex min-w-0 items-start justify-between gap-3">
-                <div className="flex min-w-0 flex-wrap gap-2">
-                  <Badge variant="status">
-                    {getExperimentStatusLabel(experiment.status)}
-                  </Badge>
-                  <Badge variant="subtle">{experiment.durationDays}일</Badge>
-                </div>
-
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => onDelete(experiment.id)}
-                  className="shrink-0 self-start"
-                  aria-label={`${experiment.title} 카드 삭제`}
-                >
-                  삭제
-                </Button>
+            <div className="flex min-w-0 items-start justify-between gap-3">
+              <div className="flex min-w-0 flex-wrap gap-2">
+                <Badge variant="status">
+                  {getExperimentStatusLabel(experiment.status)}
+                </Badge>
+                <Badge variant="subtle">{experiment.durationDays}일</Badge>
               </div>
 
-              <h3 className="line-clamp-2 min-w-0 break-words text-xl font-semibold leading-7 text-[var(--foreground)]">
-                {experiment.title}
-              </h3>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => onDelete(experiment.id)}
+                className="shrink-0 self-start px-2.5 text-xs"
+                aria-label={`${experiment.title} 카드 삭제`}
+              >
+                삭제
+              </Button>
             </div>
 
-            <div className="mt-5 min-w-0 overflow-hidden rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent-soft)] p-4">
-              <p className="text-xs font-semibold text-[var(--accent-strong)]">
-                연결된 기록
+            <h3 className="mt-3 line-clamp-2 min-w-0 break-words text-lg font-semibold leading-6 text-[var(--foreground)]">
+              {experiment.title}
+            </h3>
+
+            {linkedLog ? (
+              <p className="mt-2 line-clamp-2 break-words text-sm leading-6 text-[var(--text-muted)]">
+                {linkedLog.text}
               </p>
-              {linkedLog ? (
-                <>
-                  <p className="mt-2 break-words text-sm leading-6 text-[var(--foreground)]">
-                    {linkedLog.text}
-                  </p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    <Badge variant="domain">{linkedLog.domain}</Badge>
-                    <Badge variant="stage">{linkedLog.stage}</Badge>
-                    <Badge variant="emotion">{linkedLog.emotion}</Badge>
-                  </div>
-                </>
-              ) : (
-                <p className="mt-2 text-sm leading-6 text-[var(--text-muted)]">
-                  연결된 기록을 찾을 수 없습니다. 이 카드는 그대로
-                  유지됩니다.
-                </p>
-              )}
+            ) : (
+              <p className="mt-2 text-sm leading-6 text-[var(--text-muted)]">
+                연결된 기록은 없어졌지만, 이 시도 카드는 그대로 남아 있어요.
+              </p>
+            )}
+
+            <div className="mt-4 rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent-soft)] p-3.5">
+              <p className="text-xs font-semibold text-[var(--accent-strong)]">
+                다음에 작게 해볼 것
+              </p>
+              <p className="mt-1 line-clamp-3 break-words text-sm leading-6 text-[var(--foreground)]">
+                {experiment.action}
+              </p>
             </div>
 
-            <dl className="mt-4 grid min-w-0 gap-3 md:grid-cols-2">
-              <ExperimentDetail label="왜 그랬을까요?">
-                {experiment.hypothesis}
-              </ExperimentDetail>
-              <ExperimentDetail label="다음에 작게 바꿔볼 것">
-                {experiment.action}
-              </ExperimentDetail>
-              <ExperimentDetail label="어떻게 확인할까요?">
-                {experiment.successCriteria}
-              </ExperimentDetail>
-              <ExperimentDetail label="잘 안 됐을 때 어떻게 볼까요?">
-                {experiment.failureInterpretation}
-              </ExperimentDetail>
-            </dl>
+            <details className="group mt-3 rounded-2xl border border-[var(--line-soft)] bg-[var(--surface-soft)]">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold text-[var(--foreground)] outline-none focus-visible:ring-4 focus-visible:ring-[var(--accent)]/15">
+                <span>카드 내용 더 보기</span>
+                <span className="text-xs font-medium text-[var(--text-muted)] group-open:hidden">
+                  펼치기
+                </span>
+                <span className="hidden text-xs font-medium text-[var(--text-muted)] group-open:inline">
+                  접기
+                </span>
+              </summary>
 
-            <div className="mt-5 rounded-2xl border border-[var(--line-soft)] p-4">
-              <div className="flex flex-col gap-3">
+              <div className="grid gap-3 border-t border-[var(--line-soft)] p-3.5">
+                <div className="min-w-0 overflow-hidden rounded-2xl border border-[var(--accent)]/20 bg-[var(--surface)] p-3.5">
+                  <p className="text-xs font-semibold text-[var(--accent-strong)]">
+                    연결된 기록
+                  </p>
+                  {linkedLog ? (
+                    <>
+                      <p className="mt-2 break-words text-sm leading-6 text-[var(--foreground)]">
+                        {linkedLog.text}
+                      </p>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        <Badge variant="domain">{linkedLog.domain}</Badge>
+                        <Badge variant="stage">{linkedLog.stage}</Badge>
+                        <Badge variant="emotion">{linkedLog.emotion}</Badge>
+                      </div>
+                    </>
+                  ) : (
+                    <p className="mt-2 text-sm leading-6 text-[var(--text-muted)]">
+                      연결된 기록을 찾을 수 없습니다. 이 카드는 그대로
+                      유지됩니다.
+                    </p>
+                  )}
+                </div>
+
+                <dl className="grid min-w-0 gap-3">
+                  <ExperimentDetail label="왜 그랬을까요?">
+                    {experiment.hypothesis}
+                  </ExperimentDetail>
+                  <ExperimentDetail label="어떻게 확인할까요?">
+                    {experiment.successCriteria}
+                  </ExperimentDetail>
+                  <ExperimentDetail label="잘 안 됐을 때 어떻게 볼까요?">
+                    {experiment.failureInterpretation}
+                  </ExperimentDetail>
+                </dl>
+
+                <div className="flex flex-col gap-1 border-t border-[var(--line-soft)] pt-3 text-xs leading-5 text-[var(--text-muted)] sm:flex-row sm:justify-between">
+                  <span>생성일 {formatDateTime(experiment.createdAt)}</span>
+                  <span>수정일 {formatDateTime(experiment.updatedAt)}</span>
+                </div>
+              </div>
+            </details>
+
+            <details className="group mt-3 rounded-2xl border border-[var(--line-soft)] bg-[var(--surface)]">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold text-[var(--foreground)] outline-none focus-visible:ring-4 focus-visible:ring-[var(--accent)]/15">
+                <span>상태와 돌아보기</span>
+                <span className="text-xs font-medium text-[var(--text-muted)] group-open:hidden">
+                  열기
+                </span>
+                <span className="hidden text-xs font-medium text-[var(--text-muted)] group-open:inline">
+                  접기
+                </span>
+              </summary>
+
+              <div className="border-t border-[var(--line-soft)] p-3.5">
                 <ExperimentStatusControl
                   id={`experiment-status-${experiment.id}`}
                   status={experiment.status}
                   onChange={(status) => onStatusChange(experiment.id, status)}
                 />
-                <p className="text-xs leading-5 text-[var(--text-muted)]">
+                <p className="mt-3 text-xs leading-5 text-[var(--text-muted)]">
                   지금 상태는 평가가 아니라 어디까지 해봤는지 가볍게 표시하는
                   용도입니다.
                 </p>
+
+                <ExperimentReviewForm
+                  experiment={experiment}
+                  onSave={(review) => onReviewSave(experiment.id, review)}
+                />
               </div>
-            </div>
-
-            <ExperimentReviewForm
-              experiment={experiment}
-              onSave={(review) => onReviewSave(experiment.id, review)}
-            />
-
-            <div className="mt-4 flex flex-col gap-1 border-t border-[var(--line-soft)] pt-4 text-xs leading-5 text-[var(--text-muted)] sm:flex-row sm:justify-between">
-              <span>생성일 {formatDateTime(experiment.createdAt)}</span>
-              <span>수정일 {formatDateTime(experiment.updatedAt)}</span>
-            </div>
+            </details>
           </article>
         );
       })}
