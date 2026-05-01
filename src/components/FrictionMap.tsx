@@ -199,64 +199,15 @@ function getMapPoint(entry: HeatmapEntry) {
 
 function MapBackground() {
   return (
-    <svg
-      className="absolute inset-0 h-full w-full"
-      viewBox="0 0 100 100"
-      aria-hidden="true"
-      preserveAspectRatio="none"
-    >
-      <defs>
-        <linearGradient id="mapWater" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0%" stopColor="var(--accent-soft)" />
-          <stop offset="100%" stopColor="var(--surface)" />
-        </linearGradient>
-        <radialGradient id="mapLand" cx="50%" cy="48%" r="62%">
-          <stop offset="0%" stopColor="var(--surface)" />
-          <stop offset="100%" stopColor="var(--accent-soft)" />
-        </radialGradient>
-      </defs>
-
-      <rect width="100" height="100" rx="18" fill="url(#mapWater)" />
-      <path
-        d="M17 26 C24 11 42 14 49 24 C57 12 79 17 82 35 C92 44 85 63 72 65 C67 82 43 86 36 72 C22 79 10 67 15 53 C6 43 9 30 17 26 Z"
-        fill="url(#mapLand)"
-        stroke="var(--accent)"
-        strokeOpacity="0.18"
-        strokeWidth="1.2"
+    <>
+      <img
+        src="/images/map-illustration.svg"
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 h-full w-full object-cover opacity-90 dark:opacity-55"
       />
-      <path
-        d="M18 60 C31 50 35 37 48 42 C60 47 63 28 79 33"
-        fill="none"
-        stroke="var(--coral)"
-        strokeDasharray="2.5 3.5"
-        strokeLinecap="round"
-        strokeOpacity="0.34"
-        strokeWidth="1.8"
-      />
-      <path
-        d="M24 28 C34 37 46 25 52 39 C58 53 72 48 76 58"
-        fill="none"
-        stroke="var(--accent)"
-        strokeDasharray="1.5 4"
-        strokeLinecap="round"
-        strokeOpacity="0.28"
-        strokeWidth="1.4"
-      />
-      {frictionDomainOptions.map((domain) => {
-        const anchor = domainAnchors[domain];
-
-        return (
-          <circle
-            key={domain}
-            cx={anchor.x}
-            cy={anchor.y}
-            r="8.5"
-            fill="var(--surface)"
-            opacity="0.58"
-          />
-        );
-      })}
-    </svg>
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,253,248,0.06),rgba(255,253,248,0.28))] dark:bg-[linear-gradient(180deg,rgba(23,21,18,0.22),rgba(23,21,18,0.48))]" />
+    </>
   );
 }
 
