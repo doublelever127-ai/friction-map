@@ -63,6 +63,11 @@ const intensityOptions = [
   { value: 5, label: "매우 큼" },
 ] as const;
 
+const defaultEmotion = frictionEmotionOptions[0];
+const defaultDomain = frictionDomainOptions[0];
+const defaultStage = frictionStageOptions[0];
+const defaultIntensity = 3;
+
 function getShortStageLabel(stage: FrictionStage) {
   return stage.replace(" 마찰", "");
 }
@@ -73,15 +78,21 @@ type FrictionFormProps = {
 
 export function FrictionForm({ onCreate }: FrictionFormProps) {
   const [text, setText] = useState("");
-  const [emotion, setEmotion] = useState<FrictionEmotion>(
-    frictionEmotionOptions[0],
-  );
-  const [domain, setDomain] = useState<FrictionDomain>(
-    frictionDomainOptions[0],
-  );
-  const [stage, setStage] = useState<FrictionStage>(frictionStageOptions[0]);
-  const [intensity, setIntensity] = useState(3);
+  const [emotion, setEmotion] = useState<FrictionEmotion>(defaultEmotion);
+  const [domain, setDomain] = useState<FrictionDomain>(defaultDomain);
+  const [stage, setStage] = useState<FrictionStage>(defaultStage);
+  const [intensity, setIntensity] = useState(defaultIntensity);
   const [errorMessage, setErrorMessage] = useState("");
+
+  function isQuickExampleSelected(example: QuickExample) {
+    return (
+      text === example.text &&
+      emotion === example.emotion &&
+      domain === example.domain &&
+      stage === example.stage &&
+      intensity === example.intensity
+    );
+  }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -104,7 +115,10 @@ export function FrictionForm({ onCreate }: FrictionFormProps) {
     });
 
     setText("");
-    setIntensity(3);
+    setEmotion(defaultEmotion);
+    setDomain(defaultDomain);
+    setStage(defaultStage);
+    setIntensity(defaultIntensity);
     setErrorMessage("");
   }
 
@@ -152,7 +166,7 @@ export function FrictionForm({ onCreate }: FrictionFormProps) {
           {quickExamples.map((example) => (
             <ChoiceChip
               key={example.text}
-              selected={text === example.text}
+              selected={isQuickExampleSelected(example)}
               onClick={() => {
                 setText(example.text);
                 setEmotion(example.emotion);
